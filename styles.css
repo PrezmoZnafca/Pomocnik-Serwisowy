@@ -11,6 +11,26 @@ body {
     position: relative; /* Kontener do pozycjonowania boxa */
 }
 
+/* Nagłówek na samej górze */
+.header {
+    background-color: #ffcb00; /* Żółte tło */
+    color: #121212; /* Czarny tekst */
+    text-align: center; /* Wyśrodkowanie tekstu */
+    padding: 20px 0; /* Odstępy wokół tekstu */
+    font-size: 24px; /* Rozmiar czcionki */
+    font-weight: bold; /* Pogrubiona czcionka */
+    width: 100%; /* Szerokość na całą stronę */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1001; /* Ustawienie nad innymi elementami */
+}
+
+.header h1 {
+    margin: 0; /* Usunięcie marginesów z nagłówka */
+    font-size: 30px; /* Dostosowanie rozmiaru czcionki w nagłówku */
+}
+
 .container {
     display: flex;
     justify-content: space-between;
