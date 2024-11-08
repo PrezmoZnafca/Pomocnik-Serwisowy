@@ -118,7 +118,7 @@ body {
 /* Zegar */
 .clock {
     font-size: 36px;
-    color: #ffcb00;
+    color: #000000;
     position: fixed;
     top: 20px;
     right: 40px;
@@ -145,7 +145,7 @@ body {
 /* Powiadomienia */
 #notifications-container {
     position: fixed;
-    top: 100px;
+    top: 200px;
     right: 20px;
     z-index: 1000;
 }
