@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomocnik Serwisowy</title>
+    <!-- Link do zewnętrznego pliku CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="clock" id="clock"></div>
+
+    <div class="container">
+        <!-- Left side: Uchwyty Zakrętarki -->
+        <div class="devices-container fade-in">
+            <h3>Uchwyty Zakrętarki</h3>
+            <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nN919683, 1\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1')">DCF850</button>
+            <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1')">DCF887</button>
+            <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
+        </div>
+
+        <!-- Right side: Main Content -->
+        <div class="main-content fade-in">
+            <h1>Pomocnik Serwisowy</h1>
+
+            <div class="input-section fade-in">
+                <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
+                <input type="time" id="arrivalTime" name="arrivalTime">
+                <button onclick="calculateTime()">Oblicz czas wyjścia</button>
+            </div>
+
+            <div class="time-result fade-in">
+                <h3>Nowy czas wyjścia:</h3>
+                <p id="outputTime">--:--</p>
+            </div>
+
+            <div class="links-section fade-in">
+                <h3>Przydatne strony:</h3>
+                <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
+                <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
+                <a href="https://service.dewalt.co.uk/DEWALT/GB/en-GB" target="_blank">DeWalt</a>
+                <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black & Decker</a>
+                <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- New box for Smar Grafitowy in the bottom left corner -->
+    <div class="smar-container fade-in">
+        <h3>Inne</h3>
+        <button onclick="copyData('NA44444, 1')">Smar Grafitowy</button>
+    </div>
+
+    <script>
+        // Funkcja do obliczania nowego czasu
+        function calculateTime() {
+            const arrivalTime = document.getElementById('arrivalTime').value;
+            if (!arrivalTime) {
+                alert('Proszę wpisać czas przyjścia!');
+                return;
+            }
+
+            const [hours, minutes] = arrivalTime.split(':').map(num => parseInt(num));
+
+            const workHours = 8;
+            const workMinutes = 15;
+
+            let newHours = hours + workHours;
+            let newMinutes = minutes + workMinutes;
+
+            if (newMinutes >= 60) {
+                newMinutes -= 60;
+                newHours += 1;
+            }
+
+            newHours = String(newHours).padStart(2, '0');
+            newMinutes = String(newMinutes).padStart(2, '0');
+
+            document.getElementById('outputTime').innerText = `${newHours}:${newMinutes}`;
+        }
+
+        // Funkcja do kopiowania numerów części
+        function copyData(partNumbers) {
+            const textArea = document.createElement("textarea");
+            textArea.value = partNumbers;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+            alert('Numery części zostały skopiowane do schowka!');
+        }
+
+        // Funkcja do aktualizacji zegara
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // Inicjalizacja zegara
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
