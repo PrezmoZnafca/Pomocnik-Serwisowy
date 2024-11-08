@@ -1,16 +1,23 @@
 .header {
     background-color: #ffcb00; /* Żółte tło */
-    color: #000000 !important; /* Czarny tekst (zmiana z ciemnoszarego na czarny) */
+    color: #000000 !important; /* Czarny tekst */
     text-align: center; /* Wyśrodkowanie tekstu */
     padding: 20px 0; /* Odstępy wokół tekstu */
     font-size: 24px; /* Rozmiar czcionki */
     font-weight: bold; /* Pogrubiona czcionka */
     width: 100%; /* Szerokość na całą stronę */
-    position: absolute;
+    position: fixed; /* Pozycja stała (zamiast absolute, żeby nie znikał przy przewijaniu) */
     top: 0;
     left: 0;
     z-index: 1001; /* Ustawienie nad innymi elementami */
 }
+
+.header h1 {
+    margin: 0; /* Usunięcie marginesów z nagłówka */
+    font-size: 30px; /* Dostosowanie rozmiaru czcionki w nagłówku */
+    color: #000000; /* Ustalenie koloru tekstu w nagłówku */
+}
+
 
 body {
     background-color: #121212;
