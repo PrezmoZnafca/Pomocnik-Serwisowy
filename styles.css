@@ -1,6 +1,3 @@
-
-
-
 .header {
     background-color: #ffcb00; /* Żółte tło */
     color: #000000 !important; /* Czarny tekst */
@@ -21,21 +18,7 @@
     color: #000000; /* Ustalenie koloru tekstu w nagłówku */
 }
 
-/* Kontener dla powiadomień - ustawienie pod nagłówkiem */
-#notifications-container {
-    position: absolute;
-    top: 80px;  /* Przesuwamy powiadomienia poniżej nagłówka */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    width: 90%;  /* Szerokość powiadomienia */
-}
 
-/* Styl powiadomienia */
-.notification {
-    background-color: #4CAF50; /* Zielony kolor tła */
-    color: white;               /* Biały tekst */
-    padding: 10px 20px;         /* Odst
 
     
     body {
@@ -51,12 +34,6 @@
     position: relative; /* Kontener do pozycjonowania boxa */
 }
 
-
-
-.header h1 {
-    margin: 0; /* Usunięcie marginesów z nagłówka */
-    font-size: 30px; /* Dostosowanie rozmiaru czcionki w nagłówku */
-}
 
 .container {
     display: flex;
