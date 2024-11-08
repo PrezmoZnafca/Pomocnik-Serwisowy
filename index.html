@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomocnik Serwisowy</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="stylesv1.0.css">
 </head>
 
 <body>
@@ -68,22 +68,6 @@
     <button onclick="copyData('870889-03, 1')">Smar Zielony Mały</button>
 </div>
 
-<!-- Formularz do dodawania nowych części -->
-<div class="add-part-container fade-in">
-    <h3>Dodaj nową część</h3>
-    <label for="partNumber">Numer części:</label>
-    <input type="text" id="partNumber" placeholder="Numer części">
-    <label for="partQuantity">Ilość:</label>
-    <input type="number" id="partQuantity" placeholder="Ilość" min="1" value="1">
-    <button onclick="addPart()">Dodaj część</button>
-</div>
-
-<!-- Sekcja z dodanymi częściami -->
-<div id="customPartsContainer" class="fade-in">
-    <h3>Dodane części:</h3>
-    <div id="addedPartsList"></div>
-</div>
-
 <script>
 function calculateTime() {
     const arrivalTime = document.getElementById('arrivalTime').value;
@@ -104,37 +88,45 @@ function calculateTime() {
         endHours += 1;
     }
 
+    // Formatowanie czasu wyjścia
     const formattedEndHours = String(endHours).padStart(2, '0');
     const formattedEndMinutes = String(endMinutes).padStart(2, '0');
     document.getElementById('outputTime').innerText = `${formattedEndHours}:${formattedEndMinutes}`;
 
+    // Ustawienie godziny wyjścia w obiekcie Date
     const endTime = new Date();
     endTime.setHours(endHours, endMinutes, 0, 0);
 
+    // Zapisujemy czas przyjścia do localStorage
     localStorage.setItem('arrivalTime', arrivalTime);
 
+    // Ustawiamy funkcję aktualizacji postępu pracy
     updateProgress(endTime);
-    setInterval(() => updateProgress(endTime), 60000);
+    setInterval(() => updateProgress(endTime), 60000); // Aktualizacja co minutę
 }
 
 function updateProgress(endTime) {
     const now = new Date();
     
+    // Obliczamy całkowity czas pracy i czas, który pozostał
     const totalWorkTime = endTime.getTime() - now.getTime();
     const startTime = new Date(now);
     startTime.setHours(startTime.getHours() - 8, startTime.getMinutes() - 15);
 
     const fullDuration = endTime.getTime() - startTime.getTime();
-    const remainingDuration = Math.max(totalWorkTime, 0);
+    const remainingDuration = Math.max(totalWorkTime, 0); // Minimalnie 0 (po zakończeniu pracy)
     
+    // Obliczamy procent czasu pracy
     const progressPercentage = Math.min(100, Math.max(0, ((fullDuration - remainingDuration) / fullDuration) * 100));
     document.getElementById('workProgress').value = progressPercentage;
 
+    // Aktualizujemy tekst pozostałego czasu
     const hoursRemaining = Math.floor(remainingDuration / (1000 * 60 * 60));
     const minutesRemaining = Math.floor((remainingDuration % (1000 * 60 * 60)) / (1000 * 60));
     document.getElementById('timeRemaining').innerText = `Czas pozostały: ${hoursRemaining}:${String(minutesRemaining).padStart(2, '0')}`;
 }
 
+// Funkcja ładowania zapisanej godziny przyjścia
 function loadSavedTime() {
     const savedTime = localStorage.getItem('arrivalTime');
     if (savedTime) {
@@ -172,36 +164,14 @@ function updateClock() {
     document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
 }
 
+// Aktualizacja zegara
 setInterval(updateClock, 1000);
 
+// Ładowanie zapisanej godziny przy starcie strony
 window.onload = loadSavedTime;
 
-// Dodawanie nowej części
-function addPart() {
-    const partNumber = document.getElementById('partNumber').value.trim();
-    const partQuantity = document.getElementById('partQuantity').value.trim();
 
-    if (!partNumber || !partQuantity) {
-        alert('Proszę podać numer części oraz ilość!');
-        return;
-    }
 
-    const newPart = `${partNumber}, ${partQuantity}`;
-    const addedPartsList = document.getElementById('addedPartsList');
-    const newPartElement = document.createElement('div');
-    newPartElement.classList.add('part-item');
-    newPartElement.innerText = newPart;
-    addedPartsList.appendChild(newPartElement);
-
-    // Dodaj numer części do przycisku kopiowania
-    const copyButton = document.createElement('button');
-    copyButton.innerText = `Kopiuj: ${newPart}`;
-    copyButton.onclick = () => copyData(newPart);
-    addedPartsList.appendChild(copyButton);
-
-    document.getElementById('partNumber').value = '';
-    document.getElementById('partQuantity').value = '1';
-}
 </script>
 
 </body>
