@@ -13,10 +13,10 @@
 </header>
 <body>
 
-    <div class="clock" id="clock"></div>
+    <!-- Kontener dla powiadomień, przeniesiony poniżej nagłówka -->
+    <div id="notifications-container"></div>
 
-<!-- Kontener dla powiadomień -->
-<div id="notifications-container"></div>
+    <div class="clock" id="clock"></div>
 
     <div class="container">
         <!-- Left side: Uchwyty Zakrętarki -->
@@ -27,21 +27,18 @@
             <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
         </div>
 
-<div class="container">
         <!-- Left side: Uchwyty Zakrętarki -->
         <div class="devices-container fade-in">
             <h3>Aligator</h3>
 
-<button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>        
-</div>
+            <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>        
+        </div>
         
         <!-- Right side: Main Content -->
         <div class="main-content fade-in">
-
-
             <div class="input-section fade-in">
                 <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
-                <input type="time" id="arrivalTime" name="arrivalTime">
+                <input type="time" id="arrivalTime" name="arrivalTime" value="" onchange="saveTime()">
                 <button onclick="calculateTime()">Oblicz czas wyjścia</button>
             </div>
 
@@ -139,6 +136,22 @@
 
         // Inicjalizacja zegara
         setInterval(updateClock, 1000);
+
+        // Funkcja do zapisywania godziny w localStorage
+        function saveTime() {
+            const arrivalTime = document.getElementById('arrivalTime').value;
+            if (arrivalTime) {
+                localStorage.setItem('arrivalTime', arrivalTime);
+            }
+        }
+
+        // Funkcja do załadowania zapisanej godziny przy ładowaniu strony
+        window.onload = function() {
+            const savedTime = localStorage.getItem('arrivalTime');
+            if (savedTime) {
+                document.getElementById('arrivalTime').value = savedTime;
+            }
+        }
     </script>
 </body>
 </html>
