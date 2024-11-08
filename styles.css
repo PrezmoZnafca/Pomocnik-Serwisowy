@@ -181,6 +181,30 @@ button:hover {
 .fade-in {
     animation: fadeIn 1s ease-out;
 }
+/* Kontener dla powiadomień */
+#notifications-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Styl powiadomienia */
+.notification {
+    background-color: #4CAF50; /* Zielony kolor tła */
+    color: white;               /* Biały tekst */
+    padding: 10px 20px;         /* Odstępy wewnętrzne */
+    margin-bottom: 10px;        /* Odstęp między powiadomieniami */
+    border-radius: 5px;         /* Zaokrąglone rogi */
+    font-size: 14px;            /* Rozmiar czcionki */
+    opacity: 1;                 /* Początkowa widoczność */
+    transition: opacity 1s ease-out; /* Animacja znikania */
+}
+
+/* Klasa do ukrywania powiadomienia (po upływie 3 sekund) */
+.notification.hidden {
+    opacity: 0;                /* Ustawienie przezroczystości na 0 */
+}
 
 @keyframes fadeIn {
     0% {
