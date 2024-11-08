@@ -99,7 +99,26 @@
             textArea.select();
             document.execCommand("copy");
             document.body.removeChild(textArea);
-            alert('Numery części zostały skopiowane do schowka!');
+            showNotification('Numery części zostały skopiowane do schowka!');
+        }
+
+        function showNotification(message) {
+            const notificationContainer = document.getElementById('notifications-container');
+
+            // Tworzymy element powiadomienia
+            const notification = document.createElement('div');
+            notification.classList.add('notification');
+            notification.innerText = message;
+
+            // Dodajemy powiadomienie do kontenera
+            notificationContainer.appendChild(notification);
+
+            // Po 3 sekundach ukrywamy powiadomienie
+            setTimeout(() => {
+                notification.classList.add('hidden');
+                // Usuwamy powiadomienie po zakończeniu animacji
+                setTimeout(() => notification.remove(), 1000);
+            }, 3000);
         }
 
         // Funkcja do aktualizacji zegara
