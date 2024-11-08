@@ -4,184 +4,173 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomocnik Serwisowy</title>
-    <!-- Link do zewnętrznego pliku CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<!-- Panel logowania -->
-<div id="login-panel" class="login-panel">
-    <h2>Logowanie</h2>
-    <form id="loginForm" onsubmit="handleLogin(event)">
-        <div>
-            <label for="username">Nazwa użytkownika:</label>
-            <input type="text" id="username" required>
-        </div>
-        <div>
-            <label for="password">Hasło:</label>
-            <input type="password" id="password" required>
-        </div>
-        <button type="submit">Zaloguj się</button>
-        <p id="login-error" class="error-message"></p>
-    </form>
-    <p>Nie masz konta? <a href="#" onclick="showRegistrationForm()">Zarejestruj się</a></p>
-</div>
+<header class="header">
+    <h1>Pomocnik Serwisowy</h1>
+</header>
 
-<!-- Panel rejestracji -->
-<div id="registration-panel" class="login-panel hidden">
-    <h2>Rejestracja</h2>
-    <form id="registrationForm" onsubmit="handleRegistration(event)">
-        <div>
-            <label for="new-username">Nazwa użytkownika:</label>
-            <input type="text" id="new-username" required>
-        </div>
-        <div>
-            <label for="new-password">Hasło:</label>
-            <input type="password" id="new-password" required>
-        </div>
-        <div>
-            <label for="confirm-password">Potwierdź hasło:</label>
-            <input type="password" id="confirm-password" required>
-        </div>
-        <button type="submit">Zarejestruj się</button>
-        <p id="registration-error" class="error-message"></p>
-    </form>
-    <p>Masz już konto? <a href="#" onclick="showLoginForm()">Zaloguj się</a></p>
-</div>
+<div class="clock" id="clock"></div>
 
-<!-- Treść aplikacji, która będzie widoczna po zalogowaniu -->
-<div id="app-content" class="hidden">
-    <header class="header">
-        <h1>Pomocnik Serwisowy</h1>
-    </header>
+<div id="notifications-container"></div>
 
-    <div class="clock" id="clock"></div>
-
-    <!-- Kontener dla powiadomień -->
-    <div id="notifications-container"></div>
-
-    <div class="container">
-        <!-- Left side: Uchwyty Zakrętarki -->
-        <div class="devices-container fade-in">
-            <h3>Uchwyty Zakrętarki</h3>
-            <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nN919683, 1\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1')">DCF850</button>
-            <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1')">DCF887</button>
-            <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
-        </div>
-
-        <!-- Left side: Aligator -->
-        <div class="devices-container fade-in">
-            <h3>Aligator</h3>
-            <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>        
-        </div>
-
-        <!-- Right side: Main Content -->
-        <div class="main-content fade-in">
-            <div class="input-section fade-in">
-                <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
-                <input type="time" id="arrivalTime" name="arrivalTime">
-                <button onclick="calculateTime()">Oblicz czas wyjścia</button>
-            </div>
-
-            <div class="time-result fade-in">
-                <h3>Nowy czas wyjścia:</h3>
-                <p id="outputTime">--:--</p>
-            </div>
-
-            <div class="links-section fade-in">
-                <h3>Przydatne strony:</h3>
-                <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
-                <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
-                <a href="https://service.dewalt.co.uk/DEWALT/GB/en-GB" target="_blank">DeWalt</a>
-                <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black & Decker</a>
-                <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-            </div>
-        </div>
+<div class="container">
+    <div class="devices-container fade-in">
+        <h3>Uchwyty Zakrętarki</h3>
+        <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nN919683, 1\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1')">DCF850</button>
+        <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1')">DCF887</button>
+        <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
     </div>
 
-    <!-- New box for Smar Grafitowy in the bottom left corner -->
-    <div class="smar-container fade-in">
-        <h3>Inne</h3>
-        <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
-        <button onclick="copyData('583534-00, 1')">Smar Grafitowy Mały</button>
-        <button onclick="copyData('870889-02, 1')">Smar Zielony Duży</button>
-        <button onclick="copyData('870889-03, 1')">Smar Zielony Mały</button>
+    <div class="devices-container fade-in">
+        <h3>Aligator</h3>
+        <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>        
     </div>
 
+    <div class="main-content fade-in">
+        <div class="input-section fade-in">
+            <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
+            <input type="time" id="arrivalTime" name="arrivalTime">
+            <button onclick="calculateTime()">Oblicz czas wyjścia</button>
+        </div>
+
+        <div class="time-result fade-in">
+            <h3>Nowy czas wyjścia:</h3>
+            <p id="outputTime">--:--</p>
+        </div>
+
+        <!-- Pasek postępu dla czasu pracy -->
+        <div class="progress-section fade-in">
+            <h3>Progres pracy:</h3>
+            <progress id="workProgress" value="0" max="100"></progress>
+            <p id="timeRemaining">Czas pozostały: --:--</p>
+        </div>
+
+        <div class="links-section fade-in">
+            <h3>Przydatne strony:</h3>
+            <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
+            <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
+            <a href="https://service.dewalt.co.uk/DEWALT/GB/en-GB" target="_blank">DeWalt</a>
+            <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black & Decker</a>
+            <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
+        </div>
+    </div>
+</div>
+
+<div class="smar-container fade-in">
+    <h3>Inne</h3>
+    <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
+    <button onclick="copyData('583534-00, 1')">Smar Grafitowy Mały</button>
+    <button onclick="copyData('870889-02, 1')">Smar Zielony Duży</button>
+    <button onclick="copyData('870889-03, 1')">Smar Zielony Mały</button>
 </div>
 
 <script>
-// Przechowywanie danych użytkowników w localStorage
-let users = JSON.parse(localStorage.getItem('users')) || {};
-
-// Funkcja do obsługi logowania
-function handleLogin(event) {
-    event.preventDefault();
-
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    if (users[username] && users[username] === password) {
-        localStorage.setItem('loggedIn', true);
-        document.getElementById('login-panel').style.display = 'none';
-        document.getElementById('app-content').style.display = 'block';
-    } else {
-        document.getElementById('login-error').innerText = 'Błędna nazwa użytkownika lub hasło!';
-    }
-}
-
-// Funkcja do obsługi rejestracji
-function handleRegistration(event) {
-    event.preventDefault();
-
-    const newUsername = document.getElementById('new-username').value;
-    const newPassword = document.getElementById('new-password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
-
-    if (newPassword !== confirmPassword) {
-        document.getElementById('registration-error').innerText = 'Hasła się nie zgadzają!';
+function calculateTime() {
+    const arrivalTime = document.getElementById('arrivalTime').value;
+    if (!arrivalTime) {
+        alert('Proszę wpisać czas przyjścia!');
         return;
     }
 
-    if (users[newUsername]) {
-        document.getElementById('registration-error').innerText = 'Nazwa użytkownika już istnieje!';
-        return;
+    const [hours, minutes] = arrivalTime.split(':').map(num => parseInt(num));
+    const workHours = 8;
+    const workMinutes = 15;
+
+    let endHours = hours + workHours;
+    let endMinutes = minutes + workMinutes;
+
+    if (endMinutes >= 60) {
+        endMinutes -= 60;
+        endHours += 1;
     }
 
-    users[newUsername] = newPassword;
-    localStorage.setItem('users', JSON.stringify(users));
+    // Formatowanie czasu wyjścia
+    const formattedEndHours = String(endHours).padStart(2, '0');
+    const formattedEndMinutes = String(endMinutes).padStart(2, '0');
+    document.getElementById('outputTime').innerText = `${formattedEndHours}:${formattedEndMinutes}`;
 
-    showLoginForm();
+    // Ustawienie godziny wyjścia w obiekcie Date
+    const endTime = new Date();
+    endTime.setHours(endHours, endMinutes, 0, 0);
+
+    // Zapisujemy czas przyjścia do localStorage
+    localStorage.setItem('arrivalTime', arrivalTime);
+
+    // Ustawiamy funkcję aktualizacji postępu pracy
+    updateProgress(endTime);
+    setInterval(() => updateProgress(endTime), 60000); // Aktualizacja co minutę
 }
 
-// Funkcja do wyświetlania formularza logowania
-function showLoginForm() {
-    document.getElementById('login-panel').style.display = 'block';
-    document.getElementById('registration-panel').style.display = 'none';
+function updateProgress(endTime) {
+    const now = new Date();
+    
+    // Obliczamy całkowity czas pracy i czas, który pozostał
+    const totalWorkTime = endTime.getTime() - now.getTime();
+    const startTime = new Date(now);
+    startTime.setHours(startTime.getHours() - 8, startTime.getMinutes() - 15);
+
+    const fullDuration = endTime.getTime() - startTime.getTime();
+    const remainingDuration = Math.max(totalWorkTime, 0); // Minimalnie 0 (po zakończeniu pracy)
+    
+    // Obliczamy procent czasu pracy
+    const progressPercentage = Math.min(100, Math.max(0, ((fullDuration - remainingDuration) / fullDuration) * 100));
+    document.getElementById('workProgress').value = progressPercentage;
+
+    // Aktualizujemy tekst pozostałego czasu
+    const hoursRemaining = Math.floor(remainingDuration / (1000 * 60 * 60));
+    const minutesRemaining = Math.floor((remainingDuration % (1000 * 60 * 60)) / (1000 * 60));
+    document.getElementById('timeRemaining').innerText = `Czas pozostały: ${hoursRemaining}:${String(minutesRemaining).padStart(2, '0')}`;
 }
 
-// Funkcja do wyświetlania formularza rejestracji
-function showRegistrationForm() {
-    document.getElementById('login-panel').style.display = 'none';
-    document.getElementById('registration-panel').style.display = 'block';
+// Funkcja ładowania zapisanej godziny przyjścia
+function loadSavedTime() {
+    const savedTime = localStorage.getItem('arrivalTime');
+    if (savedTime) {
+        document.getElementById('arrivalTime').value = savedTime;
+    }
 }
 
-// Funkcja do wylogowywania
-function logout() {
-    localStorage.removeItem('loggedIn');
-    document.getElementById('login-panel').style.display = 'block';
-    document.getElementById('app-content').style.display = 'none';
+function copyData(partNumbers) {
+    const textArea = document.createElement("textarea");
+    textArea.value = partNumbers;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    showNotification('Numery części zostały skopiowane do schowka!');
 }
 
-// Inicjalizacja strony w zależności od stanu logowania
-if (localStorage.getItem('loggedIn') === 'true') {
-    document.getElementById('login-panel').style.display = 'none';
-    document.getElementById('app-content').style.display = 'block';
-} else {
-    document.getElementById('login-panel').style.display = 'block';
-    document.getElementById('app-content').style.display = 'none';
+function showNotification(message) {
+    const notificationContainer = document.getElementById('notifications-container');
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.innerText = message;
+    notificationContainer.appendChild(notification);
+    setTimeout(() => {
+        notification.classList.add('hidden');
+        setTimeout(() => notification.remove(), 1000);
+    }, 3000);
 }
+
+function updateClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+}
+
+// Aktualizacja zegara
+setInterval(updateClock, 1000);
+
+// Ładowanie zapisanej godziny przy starcie strony
+window.onload = loadSavedTime;
+
+
 
 </script>
 
