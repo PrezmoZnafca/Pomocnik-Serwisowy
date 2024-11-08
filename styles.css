@@ -1,7 +1,6 @@
-/* Nagłówek na samej górze */
 .header {
     background-color: #ffcb00; /* Żółte tło */
-    color: #121212 !important; /* Czarny tekst */
+    color: #000000 !important; /* Czarny tekst (zmiana z ciemnoszarego na czarny) */
     text-align: center; /* Wyśrodkowanie tekstu */
     padding: 20px 0; /* Odstępy wokół tekstu */
     font-size: 24px; /* Rozmiar czcionki */
