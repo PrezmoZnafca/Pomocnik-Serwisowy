@@ -139,6 +139,30 @@
 
         // Inicjalizacja zegara
         setInterval(updateClock, 1000);
+
+        // Funkcja, która zapisuje godzinę w localStorage
+        function saveTime() {
+            const timeInput = document.getElementById('arrivalTime');  // Pobieramy input
+            const timeValue = timeInput.value;  // Zapisujemy wartość inputa (godzinę)
+            if (timeValue) {
+                localStorage.setItem('savedTime', timeValue);  // Zapisujemy godzinę w localStorage
+            }
+        }
+
+        // Funkcja, która ładuje zapisaną godzinę z localStorage
+        function loadSavedTime() {
+            const savedTime = localStorage.getItem('savedTime');  // Pobieramy zapisaną godzinę z localStorage
+            if (savedTime) {
+                const timeInput = document.getElementById('arrivalTime');
+                timeInput.value = savedTime;  // Ustawiamy wartość inputa na zapisaną godzinę
+            }
+        }
+
+        // Nasłuchujemy na zmiany w inputcie i zapisujemy godzinę
+        document.getElementById('arrivalTime').addEventListener('change', saveTime);
+
+        // Ładujemy zapisaną godzinę po załadowaniu strony
+        window.addEventListener('load', loadSavedTime);
     </script>
 </body>
 </html>
