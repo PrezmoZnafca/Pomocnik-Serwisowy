@@ -21,24 +21,24 @@
     color: #000000; /* Ustalenie koloru tekstu w nagłówku */
 }
 
+/* Kontener dla powiadomień - ustawienie pod nagłówkiem */
+#notifications-container {
+    position: absolute;
+    top: 80px;  /* Przesuwamy powiadomienia poniżej nagłówka */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;  /* Szerokość powiadomienia */
+}
+
 /* Styl powiadomienia */
 .notification {
     background-color: #4CAF50; /* Zielony kolor tła */
     color: white;               /* Biały tekst */
-    padding: 10px 20px;         /* Odstępy wewnętrzne */
-    margin-bottom: 10px;        /* Odstęp między powiadomieniami */
-    border-radius: 5px;         /* Zaokrąglone rogi */
-    font-size: 14px;            /* Rozmiar czcionki */
-    opacity: 1;                 /* Początkowa widoczność */
-    transition: opacity 1s ease-out; /* Animacja znikania */
-}
+    padding: 10px 20px;         /* Odst
 
-/* Klasa do ukrywania powiadomienia (po upływie 3 sekund) */
-.notification.hidden {
-    opacity: 0;                /* Ustawienie przezroczystości na 0 */
-}
-
-body {
+    
+    body {
     background-color: #121212;
     color: #f5f5f5;
     font-family: 'Roboto', sans-serif;
