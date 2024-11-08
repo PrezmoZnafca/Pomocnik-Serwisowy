@@ -1,3 +1,4 @@
+/* Header */
 .header {
     background-color: #ffcb00; /* Żółte tło */
     color: #000000 !important; /* Czarny tekst */
@@ -6,7 +7,7 @@
     font-size: 24px; /* Rozmiar czcionki */
     font-weight: bold; /* Pogrubiona czcionka */
     width: 100%; /* Szerokość na całą stronę */
-    position: fixed; /* Pozycja stała (zamiast absolute, żeby nie znikał przy przewijaniu) */
+    position: fixed; /* Pozycja stała */
     top: 0;
     left: 0;
     z-index: 1001; /* Ustawienie nad innymi elementami */
@@ -18,10 +19,8 @@
     color: #000000; /* Ustalenie koloru tekstu w nagłówku */
 }
 
-
-
-    
-    body {
+/* Body */
+body {
     background-color: #121212;
     color: #f5f5f5;
     font-family: 'Roboto', sans-serif;
@@ -34,7 +33,7 @@
     position: relative; /* Kontener do pozycjonowania boxa */
 }
 
-
+/* Kontener */
 .container {
     display: flex;
     justify-content: space-between;
@@ -44,9 +43,10 @@
     height: 80%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     border-radius: 12px;
+    overflow: hidden; /* Unikamy wystających elementów */
 }
 
-/* Main content on the right side */
+/* Main content */
 .main-content {
     width: 65%;
     padding: 30px;
@@ -55,85 +55,7 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-.device-section {
-    background-color: #333;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-h1, h3 {
-    text-align: center;
-    color: #ffcb00;
-    margin-bottom: 20px;
-}
-
-.input-section, .time-result, .device-section, .links {
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-input[type="time"] {
-    padding: 12px;
-    font-size: 18px;
-    border: none;
-    background-color: #333;
-    color: #fff;
-    border-radius: 8px;
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-button {
-    background-color: #ffcb00;
-    border: none;
-    padding: 12px 24px;
-    font-size: 16px;
-    color: #121212;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-    width: 100%;
-}
-
-button:hover {
-    background-color: #e0a700;
-}
-
-.time-result p, .day p {
-    font-size: 20px;
-    margin-top: 10px;
-    color: #fff;
-}
-
-.links-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.links-section a {
-    display: block;
-    background-color: #444;
-    color: #ffcb00;
-    padding: 10px 20px;
-    text-decoration: none;
-    margin: 10px;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-.links-section a:hover {
-    background-color: #666;
-}
-
-.links-section a:active {
-    background-color: #e0a700;
-}
-
-/* Devices section on the left side */
+/* Devices section */
 .devices-container {
     width: 30%;
     padding: 20px;
@@ -164,9 +86,9 @@ button:hover {
     background-color: #666;
 }
 
-/* Smar Grafitowy box in the bottom left corner */
+/* Smar Grafitowy */
 .smar-container {
-    position: absolute;
+    position: fixed; /* Zmienione z absolute na fixed */
     bottom: 30px;
     left: 30px;
     background-color: #333;
@@ -175,6 +97,7 @@ button:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     width: 180px; /* Mniejszy rozmiar */
     text-align: center;
+    z-index: 1001;
 }
 
 .smar-container button {
@@ -192,20 +115,34 @@ button:hover {
     background-color: #666;
 }
 
+/* Zegar */
 .clock {
     font-size: 36px;
     color: #ffcb00;
-    position: absolute;
+    position: fixed;
     top: 20px;
     right: 40px;
     font-weight: bold;
+    z-index: 1002; /* Wyższy priorytet niż inne elementy */
 }
 
 /* Animacja */
 .fade-in {
     animation: fadeIn 1s ease-out;
 }
-/* Kontener dla powiadomień */
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Powiadomienia */
 #notifications-container {
     position: fixed;
     top: 20px;
@@ -213,15 +150,83 @@ button:hover {
     z-index: 1000;
 }
 
-
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+.notification {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    opacity: 1;
+    transition: opacity 1s ease, transform 0.3s ease;
 }
-Teraz
 
+.notification.hidden {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* Input i button */
+input[type="time"] {
+    padding: 12px;
+    font-size: 18px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    border-radius: 8px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+button {
+    background-color: #ffcb00;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    color: #121212;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #e0a700;
+}
+
+/* Przydatne linki */
+.links-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.links-section a {
+    display: block;
+    background-color: #444;
+    color: #ffcb00;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.links-section a:hover {
+    background-color: #666;
+}
+
+.links-section a:active {
+    background-color: #e0a700;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .devices-container, .main-content {
+        width: 100%;
