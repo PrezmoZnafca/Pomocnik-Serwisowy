@@ -7,151 +7,152 @@
     <!-- Link do zewnętrznego pliku CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
+<body>
 
 <header class="header">
     <h1>Pomocnik Serwisowy</h1>
 </header>
-<body>
 
-    <!-- Kontener dla powiadomień, przeniesiony poniżej nagłówka -->
-    <div id="notifications-container"></div>
+<!-- Kontener dla powiadomień -->
+<div id="notifications-container"></div>
 
-    <div class="clock" id="clock"></div>
+<!-- Zegar -->
+<div class="clock" id="clock"></div>
 
-    <div class="container">
-        <!-- Left side: Uchwyty Zakrętarki -->
-        <div class="devices-container fade-in">
-            <h3>Uchwyty Zakrętarki</h3>
-            <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nN919683, 1\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1')">DCF850</button>
-            <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1')">DCF887</button>
-            <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
-        </div>
-
-        <!-- Left side: Uchwyty Zakrętarki -->
-        <div class="devices-container fade-in">
-            <h3>Aligator</h3>
-
-            <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>        
-        </div>
-        
-        <!-- Right side: Main Content -->
-        <div class="main-content fade-in">
-            <div class="input-section fade-in">
-                <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
-                <input type="time" id="arrivalTime" name="arrivalTime" value="" onchange="saveTime()">
-                <button onclick="calculateTime()">Oblicz czas wyjścia</button>
-            </div>
-
-            <div class="time-result fade-in">
-                <h3>Nowy czas wyjścia:</h3>
-                <p id="outputTime">--:--</p>
-            </div>
-
-            <div class="links-section fade-in">
-                <h3>Przydatne strony:</h3>
-                <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
-                <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
-                <a href="https://service.dewalt.co.uk/DEWALT/GB/en-GB" target="_blank">DeWalt</a>
-                <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black & Decker</a>
-                <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-            </div>
-        </div>
+<div class="container">
+    <!-- Left side: Uchwyty Zakrętarki -->
+    <div class="devices-container fade-in">
+        <h3>Uchwyty Zakrętarki</h3>
+        <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nN919683, 1\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1')">DCF850</button>
+        <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1')">DCF887</button>
+        <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
     </div>
 
-    <!-- New box for Smar Grafitowy in the bottom left corner -->
-    <div class="smar-container fade-in">
-        <h3>Inne</h3>
-        <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
-        <button onclick="copyData('583534-00, 1')">Smar Grafitowy Mały</button>
-        <button onclick="copyData('870889-02, 1')">Smar Zielony Duży</button>
-        <button onclick="copyData('870889-03, 1')">Smar Zielony Mały</button>
+    <!-- Left side: Uchwyty Zakrętarki -->
+    <div class="devices-container fade-in">
+        <h3>Aligator</h3>
+        <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>
     </div>
 
-    <script>
-        // Funkcja do obliczania nowego czasu
-        function calculateTime() {
-            const arrivalTime = document.getElementById('arrivalTime').value;
-            if (!arrivalTime) {
-                alert('Proszę wpisać czas przyjścia!');
-                return;
-            }
+    <!-- Right side: Main Content -->
+    <div class="main-content fade-in">
+        <div class="input-section fade-in">
+            <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
+            <input type="time" id="arrivalTime" name="arrivalTime" onchange="saveTime()">
+            <button onclick="calculateTime()">Oblicz czas wyjścia</button>
+        </div>
 
-            const [hours, minutes] = arrivalTime.split(':').map(num => parseInt(num));
+        <div class="time-result fade-in">
+            <h3>Nowy czas wyjścia:</h3>
+            <p id="outputTime">--:--</p>
+        </div>
 
-            const workHours = 8;
-            const workMinutes = 15;
+        <div class="links-section fade-in">
+            <h3>Przydatne strony:</h3>
+            <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
+            <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
+            <a href="https://service.dewalt.co.uk/DEWALT/GB/en-GB" target="_blank">DeWalt</a>
+            <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black & Decker</a>
+            <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
+        </div>
+    </div>
+</div>
 
-            let newHours = hours + workHours;
-            let newMinutes = minutes + workMinutes;
+<!-- New box for Smar Grafitowy in the bottom left corner -->
+<div class="smar-container fade-in">
+    <h3>Inne</h3>
+    <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
+    <button onclick="copyData('583534-00, 1')">Smar Grafitowy Mały</button>
+    <button onclick="copyData('870889-02, 1')">Smar Zielony Duży</button>
+    <button onclick="copyData('870889-03, 1')">Smar Zielony Mały</button>
+</div>
 
-            if (newMinutes >= 60) {
-                newMinutes -= 60;
-                newHours += 1;
-            }
-
-            newHours = String(newHours).padStart(2, '0');
-            newMinutes = String(newMinutes).padStart(2, '0');
-
-            document.getElementById('outputTime').innerText = `${newHours}:${newMinutes}`;
+<script>
+    // Funkcja do obliczania nowego czasu
+    function calculateTime() {
+        const arrivalTime = document.getElementById('arrivalTime').value;
+        if (!arrivalTime) {
+            alert('Proszę wpisać czas przyjścia!');
+            return;
         }
 
-        // Funkcja do kopiowania numerów części
-        function copyData(partNumbers) {
-            const textArea = document.createElement("textarea");
-            textArea.value = partNumbers;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textArea);
-            showNotification('Numery części zostały skopiowane do schowka!');
+        const [hours, minutes] = arrivalTime.split(':').map(num => parseInt(num));
+
+        const workHours = 8;
+        const workMinutes = 15;
+
+        let newHours = hours + workHours;
+        let newMinutes = minutes + workMinutes;
+
+        if (newMinutes >= 60) {
+            newMinutes -= 60;
+            newHours += 1;
         }
 
-        function showNotification(message) {
-            const notificationContainer = document.getElementById('notifications-container');
+        newHours = String(newHours).padStart(2, '0');
+        newMinutes = String(newMinutes).padStart(2, '0');
 
-            // Tworzymy element powiadomienia
-            const notification = document.createElement('div');
-            notification.classList.add('notification');
-            notification.innerText = message;
+        document.getElementById('outputTime').innerText = `${newHours}:${newMinutes}`;
+    }
 
-            // Dodajemy powiadomienie do kontenera
-            notificationContainer.appendChild(notification);
+    // Funkcja do kopiowania numerów części
+    function copyData(partNumbers) {
+        const textArea = document.createElement("textarea");
+        textArea.value = partNumbers;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        showNotification('Numery części zostały skopiowane do schowka!');
+    }
 
-            // Po 3 sekundach ukrywamy powiadomienie
-            setTimeout(() => {
-                notification.classList.add('hidden');
-                // Usuwamy powiadomienie po zakończeniu animacji
-                setTimeout(() => notification.remove(), 1000);
-            }, 3000);
+    function showNotification(message) {
+        const notificationContainer = document.getElementById('notifications-container');
+
+        // Tworzymy element powiadomienia
+        const notification = document.createElement('div');
+        notification.classList.add('notification');
+        notification.innerText = message;
+
+        // Dodajemy powiadomienie do kontenera
+        notificationContainer.appendChild(notification);
+
+        // Po 3 sekundach ukrywamy powiadomienie
+        setTimeout(() => {
+            notification.classList.add('hidden');
+            // Usuwamy powiadomienie po zakończeniu animacji
+            setTimeout(() => notification.remove(), 1000);
+        }, 3000);
+    }
+
+    // Funkcja do aktualizacji zegara
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+    }
+
+    // Inicjalizacja zegara
+    setInterval(updateClock, 1000);
+
+    // Funkcja do zapisywania godziny w localStorage
+    function saveTime() {
+        const arrivalTime = document.getElementById('arrivalTime').value;
+        if (arrivalTime) {
+            localStorage.setItem('arrivalTime', arrivalTime);
         }
+    }
 
-        // Funkcja do aktualizacji zegara
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+    // Funkcja do załadowania zapisanej godziny przy ładowaniu strony
+    window.onload = function() {
+        const savedTime = localStorage.getItem('arrivalTime');
+        if (savedTime) {
+            document.getElementById('arrivalTime').value = savedTime;
         }
+    }
+</script>
 
-        // Inicjalizacja zegara
-        setInterval(updateClock, 1000);
-
-        // Funkcja do zapisywania godziny w localStorage
-        function saveTime() {
-            const arrivalTime = document.getElementById('arrivalTime').value;
-            if (arrivalTime) {
-                localStorage.setItem('arrivalTime', arrivalTime);
-            }
-        }
-
-        // Funkcja do załadowania zapisanej godziny przy ładowaniu strony
-        window.onload = function() {
-            const savedTime = localStorage.getItem('arrivalTime');
-            if (savedTime) {
-                document.getElementById('arrivalTime').value = savedTime;
-            }
-        }
-    </script>
 </body>
 </html>
