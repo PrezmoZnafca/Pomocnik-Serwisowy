@@ -80,42 +80,53 @@ function calculateTime() {
     const workHours = 8;
     const workMinutes = 15;
 
-    let newHours = hours + workHours;
-    let newMinutes = minutes + workMinutes;
+    let endHours = hours + workHours;
+    let endMinutes = minutes + workMinutes;
 
-    if (newMinutes >= 60) {
-        newMinutes -= 60;
-        newHours += 1;
+    if (endMinutes >= 60) {
+        endMinutes -= 60;
+        endHours += 1;
     }
 
-    newHours = String(newHours).padStart(2, '0');
-    newMinutes = String(newMinutes).padStart(2, '0');
-    document.getElementById('outputTime').innerText = `${newHours}:${newMinutes}`;
+    // Formatowanie czasu wyjścia
+    const formattedEndHours = String(endHours).padStart(2, '0');
+    const formattedEndMinutes = String(endMinutes).padStart(2, '0');
+    document.getElementById('outputTime').innerText = `${formattedEndHours}:${formattedEndMinutes}`;
+
+    // Ustawienie godziny wyjścia w obiekcie Date
+    const endTime = new Date();
+    endTime.setHours(endHours, endMinutes, 0, 0);
+
+    // Zapisujemy czas przyjścia do localStorage
     localStorage.setItem('arrivalTime', arrivalTime);
 
-    const endTime = new Date();
-    endTime.setHours(newHours, newMinutes, 0, 0);
+    // Ustawiamy funkcję aktualizacji postępu pracy
     updateProgress(endTime);
-    setInterval(() => updateProgress(endTime), 60000); // aktualizacja co minutę
+    setInterval(() => updateProgress(endTime), 60000); // Aktualizacja co minutę
 }
 
 function updateProgress(endTime) {
     const now = new Date();
-    const totalWorkTime = endTime - now;
-    const startTime = new Date(localStorage.getItem('arrivalTime'));
-    startTime.setHours(startTime.getHours() + 8, startTime.getMinutes() + 15);
+    
+    // Obliczamy całkowity czas pracy i czas, który pozostał
+    const totalWorkTime = endTime.getTime() - now.getTime();
+    const startTime = new Date(now);
+    startTime.setHours(startTime.getHours() - 8, startTime.getMinutes() - 15);
 
-    const totalDuration = endTime - startTime;
-    const remainingDuration = Math.max(totalWorkTime, 0);
-    const progressPercentage = Math.max(0, Math.min(100, (1 - remainingDuration / totalDuration) * 100));
-
+    const fullDuration = endTime.getTime() - startTime.getTime();
+    const remainingDuration = Math.max(totalWorkTime, 0); // Minimalnie 0 (po zakończeniu pracy)
+    
+    // Obliczamy procent czasu pracy
+    const progressPercentage = Math.min(100, Math.max(0, ((fullDuration - remainingDuration) / fullDuration) * 100));
     document.getElementById('workProgress').value = progressPercentage;
 
+    // Aktualizujemy tekst pozostałego czasu
     const hoursRemaining = Math.floor(remainingDuration / (1000 * 60 * 60));
     const minutesRemaining = Math.floor((remainingDuration % (1000 * 60 * 60)) / (1000 * 60));
     document.getElementById('timeRemaining').innerText = `Czas pozostały: ${hoursRemaining}:${String(minutesRemaining).padStart(2, '0')}`;
 }
 
+// Funkcja ładowania zapisanej godziny przyjścia
 function loadSavedTime() {
     const savedTime = localStorage.getItem('arrivalTime');
     if (savedTime) {
@@ -153,8 +164,13 @@ function updateClock() {
     document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
 }
 
+// Aktualizacja zegara
 setInterval(updateClock, 1000);
+
+// Ładowanie zapisanej godziny przy starcie strony
 window.onload = loadSavedTime;
+
+
 
 </script>
 
