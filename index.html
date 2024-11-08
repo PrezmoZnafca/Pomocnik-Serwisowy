@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomocnik Serwisowy</title>
-    <!-- Link do zewnętrznego pliku CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -16,11 +15,9 @@
 
 <div class="clock" id="clock"></div>
 
-<!-- Kontener dla powiadomień -->
 <div id="notifications-container"></div>
 
 <div class="container">
-    <!-- Left side: Uchwyty Zakrętarki -->
     <div class="devices-container fade-in">
         <h3>Uchwyty Zakrętarki</h3>
         <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nN919683, 1\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1')">DCF850</button>
@@ -28,13 +25,11 @@
         <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
     </div>
 
-    <!-- Left side: Aligator -->
     <div class="devices-container fade-in">
         <h3>Aligator</h3>
         <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>        
     </div>
 
-    <!-- Right side: Main Content -->
     <div class="main-content fade-in">
         <div class="input-section fade-in">
             <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
@@ -47,6 +42,13 @@
             <p id="outputTime">--:--</p>
         </div>
 
+        <!-- Pasek postępu dla czasu pracy -->
+        <div class="progress-section fade-in">
+            <h3>Progres pracy:</h3>
+            <progress id="workProgress" value="0" max="100"></progress>
+            <p id="timeRemaining">Czas pozostały: --:--</p>
+        </div>
+
         <div class="links-section fade-in">
             <h3>Przydatne strony:</h3>
             <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
@@ -56,10 +58,8 @@
             <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
         </div>
     </div>
-
 </div>
 
-<!-- New box for Smar Grafitowy in the bottom left corner -->
 <div class="smar-container fade-in">
     <h3>Inne</h3>
     <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
@@ -69,7 +69,6 @@
 </div>
 
 <script>
-// Funkcja do obliczania nowego czasu
 function calculateTime() {
     const arrivalTime = document.getElementById('arrivalTime').value;
     if (!arrivalTime) {
@@ -78,7 +77,6 @@ function calculateTime() {
     }
 
     const [hours, minutes] = arrivalTime.split(':').map(num => parseInt(num));
-
     const workHours = 8;
     const workMinutes = 15;
 
@@ -92,14 +90,32 @@ function calculateTime() {
 
     newHours = String(newHours).padStart(2, '0');
     newMinutes = String(newMinutes).padStart(2, '0');
-
     document.getElementById('outputTime').innerText = `${newHours}:${newMinutes}`;
-
-    // Zapisanie godziny do localStorage
     localStorage.setItem('arrivalTime', arrivalTime);
+
+    const endTime = new Date();
+    endTime.setHours(newHours, newMinutes, 0, 0);
+    updateProgress(endTime);
+    setInterval(() => updateProgress(endTime), 60000); // aktualizacja co minutę
 }
 
-// Funkcja do ładowania zapisanej godziny z localStorage
+function updateProgress(endTime) {
+    const now = new Date();
+    const totalWorkTime = endTime - now;
+    const startTime = new Date(localStorage.getItem('arrivalTime'));
+    startTime.setHours(startTime.getHours() + 8, startTime.getMinutes() + 15);
+
+    const totalDuration = endTime - startTime;
+    const remainingDuration = Math.max(totalWorkTime, 0);
+    const progressPercentage = Math.max(0, Math.min(100, (1 - remainingDuration / totalDuration) * 100));
+
+    document.getElementById('workProgress').value = progressPercentage;
+
+    const hoursRemaining = Math.floor(remainingDuration / (1000 * 60 * 60));
+    const minutesRemaining = Math.floor((remainingDuration % (1000 * 60 * 60)) / (1000 * 60));
+    document.getElementById('timeRemaining').innerText = `Czas pozostały: ${hoursRemaining}:${String(minutesRemaining).padStart(2, '0')}`;
+}
+
 function loadSavedTime() {
     const savedTime = localStorage.getItem('arrivalTime');
     if (savedTime) {
@@ -107,7 +123,6 @@ function loadSavedTime() {
     }
 }
 
-// Funkcja do kopiowania numerów części
 function copyData(partNumbers) {
     const textArea = document.createElement("textarea");
     textArea.value = partNumbers;
@@ -120,24 +135,16 @@ function copyData(partNumbers) {
 
 function showNotification(message) {
     const notificationContainer = document.getElementById('notifications-container');
-
-    // Tworzymy element powiadomienia
     const notification = document.createElement('div');
     notification.classList.add('notification');
     notification.innerText = message;
-
-    // Dodajemy powiadomienie do kontenera
     notificationContainer.appendChild(notification);
-
-    // Po 3 sekundach ukrywamy powiadomienie
     setTimeout(() => {
         notification.classList.add('hidden');
-        // Usuwamy powiadomienie po zakończeniu animacji
         setTimeout(() => notification.remove(), 1000);
     }, 3000);
 }
 
-// Funkcja do aktualizacji zegara
 function updateClock() {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, '0');
@@ -146,10 +153,7 @@ function updateClock() {
     document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
 }
 
-// Inicjalizacja zegara
 setInterval(updateClock, 1000);
-
-// Ładowanie zapisanej godziny po załadowaniu strony
 window.onload = loadSavedTime;
 
 </script>
