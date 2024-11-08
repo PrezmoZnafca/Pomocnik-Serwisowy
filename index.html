@@ -69,74 +69,89 @@
 </div>
 
 <script>
-    // Funkcja do obliczania nowego czasu
-    function calculateTime() {
-        const arrivalTime = document.getElementById('arrivalTime').value;
-        if (!arrivalTime) {
-            alert('Proszę wpisać czas przyjścia!');
-            return;
-        }
-
-        const [hours, minutes] = arrivalTime.split(':').map(num => parseInt(num));
-
-        const workHours = 8;
-        const workMinutes = 15;
-
-        let newHours = hours + workHours;
-        let newMinutes = minutes + workMinutes;
-
-        if (newMinutes >= 60) {
-            newMinutes -= 60;
-            newHours += 1;
-        }
-
-        newHours = String(newHours).padStart(2, '0');
-        newMinutes = String(newMinutes).padStart(2, '0');
-
-        document.getElementById('outputTime').innerText = `${newHours}:${newMinutes}`;
+// Funkcja do obliczania nowego czasu
+function calculateTime() {
+    const arrivalTime = document.getElementById('arrivalTime').value;
+    if (!arrivalTime) {
+        alert('Proszę wpisać czas przyjścia!');
+        return;
     }
 
-    // Funkcja do kopiowania numerów części (zaktualizowana do użycia nowoczesnego API)
-    function copyData(partNumbers) {
-        navigator.clipboard.writeText(partNumbers)
-            .then(() => {
-                showNotification('Numery części zostały skopiowane do schowka!');
-            })
-            .catch(err => {
-                console.error('Nie udało się skopiować do schowka: ', err);
-            });
+    const [hours, minutes] = arrivalTime.split(':').map(num => parseInt(num));
+
+    const workHours = 8;
+    const workMinutes = 15;
+
+    let newHours = hours + workHours;
+    let newMinutes = minutes + workMinutes;
+
+    if (newMinutes >= 60) {
+        newMinutes -= 60;
+        newHours += 1;
     }
 
-    function showNotification(message) {
-        const notificationContainer = document.getElementById('notifications-container');
+    newHours = String(newHours).padStart(2, '0');
+    newMinutes = String(newMinutes).padStart(2, '0');
 
-        // Tworzymy element powiadomienia
-        const notification = document.createElement('div');
-        notification.classList.add('notification');
-        notification.innerText = message;
+    document.getElementById('outputTime').innerText = `${newHours}:${newMinutes}`;
 
-        // Dodajemy powiadomienie do kontenera
-        notificationContainer.appendChild(notification);
+    // Zapisanie godziny do localStorage
+    localStorage.setItem('arrivalTime', arrivalTime);
+}
 
-        // Po 3 sekundach ukrywamy powiadomienie
-        setTimeout(() => {
-            notification.classList.add('hidden');
-            // Usuwamy powiadomienie po zakończeniu animacji
-            setTimeout(() => notification.remove(), 1000);
-        }, 3000);
+// Funkcja do ładowania zapisanej godziny z localStorage
+function loadSavedTime() {
+    const savedTime = localStorage.getItem('arrivalTime');
+    if (savedTime) {
+        document.getElementById('arrivalTime').value = savedTime;
     }
+}
 
-    // Funkcja do aktualizacji zegara
-    function updateClock() {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
-    }
+// Funkcja do kopiowania numerów części
+function copyData(partNumbers) {
+    const textArea = document.createElement("textarea");
+    textArea.value = partNumbers;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    showNotification('Numery części zostały skopiowane do schowka!');
+}
 
-    // Inicjalizacja zegara
-    setInterval(updateClock, 1000);
+function showNotification(message) {
+    const notificationContainer = document.getElementById('notifications-container');
+
+    // Tworzymy element powiadomienia
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.innerText = message;
+
+    // Dodajemy powiadomienie do kontenera
+    notificationContainer.appendChild(notification);
+
+    // Po 3 sekundach ukrywamy powiadomienie
+    setTimeout(() => {
+        notification.classList.add('hidden');
+        // Usuwamy powiadomienie po zakończeniu animacji
+        setTimeout(() => notification.remove(), 1000);
+    }, 3000);
+}
+
+// Funkcja do aktualizacji zegara
+function updateClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+}
+
+// Inicjalizacja zegara
+setInterval(updateClock, 1000);
+
+// Ładowanie zapisanej godziny po załadowaniu strony
+window.onload = loadSavedTime;
+
 </script>
 
 </body>
