@@ -15,8 +15,8 @@
 
     <div class="clock" id="clock"></div>
 
-    <!-- Kontener dla powiadomień -->
-    <div id="notifications-container"></div>
+<!-- Kontener dla powiadomień -->
+<div id="notifications-container"></div>
 
     <div class="container">
         <!-- Left side: Uchwyty Zakrętarki -->
@@ -27,46 +27,47 @@
             <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
         </div>
 
-        <div class="container">
-            <!-- Left side: Uchwyty Zakrętarki -->
-            <div class="devices-container fade-in">
-                <h3>Aligator</h3>
-                <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>        
+<div class="container">
+        <!-- Left side: Uchwyty Zakrętarki -->
+        <div class="devices-container fade-in">
+            <h3>Aligator</h3>
+
+<button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>        
+</div>
+        
+        <!-- Right side: Main Content -->
+        <div class="main-content fade-in">
+
+
+            <div class="input-section fade-in">
+                <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
+                <input type="time" id="arrivalTime" name="arrivalTime">
+                <button onclick="calculateTime()">Oblicz czas wyjścia</button>
             </div>
-            
-            <!-- Right side: Main Content -->
-            <div class="main-content fade-in">
-                <div class="input-section fade-in">
-                    <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
-                    <input type="time" id="arrivalTime" name="arrivalTime">
-                    <button onclick="calculateTime()">Oblicz czas wyjścia</button>
-                </div>
 
-                <div class="time-result fade-in">
-                    <h3>Nowy czas wyjścia:</h3>
-                    <p id="outputTime">--:--</p>
-                </div>
+            <div class="time-result fade-in">
+                <h3>Nowy czas wyjścia:</h3>
+                <p id="outputTime">--:--</p>
+            </div>
 
-                <div class="links-section fade-in">
-                    <h3>Przydatne strony:</h3>
-                    <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
-                    <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
-                    <a href="https://service.dewalt.co.uk/DEWALT/GB/en-GB" target="_blank">DeWalt</a>
-                    <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black & Decker</a>
-                    <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-                </div>
+            <div class="links-section fade-in">
+                <h3>Przydatne strony:</h3>
+                <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
+                <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
+                <a href="https://service.dewalt.co.uk/DEWALT/GB/en-GB" target="_blank">DeWalt</a>
+                <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black & Decker</a>
+                <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
             </div>
         </div>
+    </div>
 
-        <!-- New box for Smar Grafitowy in the bottom left corner -->
-        <div class="smar-container fade-in">
-            <h3>Inne</h3>
-            <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
-            <button onclick="copyData('583534-00, 1')">Smar Grafitowy Mały</button>
-            <button onclick="copyData('870889-02, 1')">Smar Zielony Duży</button>
-            <button onclick="copyData('870889-03, 1')">Smar Zielony Mały</button>
-        </div>
-
+    <!-- New box for Smar Grafitowy in the bottom left corner -->
+    <div class="smar-container fade-in">
+        <h3>Inne</h3>
+        <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
+        <button onclick="copyData('583534-00, 1')">Smar Grafitowy Mały</button>
+        <button onclick="copyData('870889-02, 1')">Smar Zielony Duży</button>
+        <button onclick="copyData('870889-03, 1')">Smar Zielony Mały</button>
     </div>
 
     <script>
@@ -77,9 +78,6 @@
                 alert('Proszę wpisać czas przyjścia!');
                 return;
             }
-
-            // Zapisujemy czas przyjścia w localStorage
-            localStorage.setItem('arrivalTime', arrivalTime);
 
             const [hours, minutes] = arrivalTime.split(':').map(num => parseInt(num));
 
@@ -98,19 +96,6 @@
             newMinutes = String(newMinutes).padStart(2, '0');
 
             document.getElementById('outputTime').innerText = `${newHours}:${newMinutes}`;
-        }
-
-        // Funkcja do załadowania zapisanej godziny z localStorage
-        function loadSavedTime() {
-            const savedTime = localStorage.getItem('arrivalTime');
-            if (savedTime) {
-                document.getElementById('arrivalTime').value = savedTime;
-            }
-        }
-
-        // Uruchamiamy funkcję, aby wczytać zapisany czas, gdy strona się ładuje
-        window.onload = function() {
-            loadSavedTime();
         }
 
         // Funkcja do kopiowania numerów części
