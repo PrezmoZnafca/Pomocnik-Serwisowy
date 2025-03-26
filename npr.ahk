@@ -1,3 +1,5 @@
+Esc::Reload
+
 PgUp::
     OriginalClipboard := ClipboardAll 
     Send, {end}    
@@ -27,6 +29,8 @@ Send, {F5}
 return
 
 
+
+
 Numpad1::
     WinActivate, Zlecenia
     WinWaitActive, Zlecenia
@@ -42,103 +46,46 @@ Numpad1::
     Send, {Enter}
     Sleep, 200
 
-   
     Send, ^v
     Sleep, 500
-
-
-
-    Send,; faktura}
+    Send, `; faktura} 
     Sleep, 200
-  send, {enter}
-   WinActivate, Zlecenia
+    Send, {Enter}
+    WinActivate, Zlecenia
 return
-
 
 Numpad2::
-    WinActivate, Zlecenia
+Menu, MyMenu, Add, Pismo Sprawne, MenuHandler2
+Menu, MyMenu, Add, Pismo Wymiana, MenuHandler2
+Menu, MyMenu, Add, Zgoda, MenuHandler2
+Menu, MyMenu, Add, Faktura, MenuHandler2
+Menu, MyMenu, Add, Naprawa Warunkowa Konserwacja, MenuHandler2   
+
+   WinActivate, Zlecenia
     WinWaitActive, Zlecenia
     Send, ^c
     Sleep, 50
+	Menu, MyMenu, Show
 
     WinActivate, Signal
     WinWaitActive, Signal
     Send, ^f
     Sleep, 80
-    Send, Przemek Pam
+    Send, Przemek P
     Sleep, 300
     Send, {Enter}
     Sleep, 100
 
-   
     Send, ^v
     Sleep, 500
+      
 
-
-
-    Send,; pismo}
-    Sleep, 200
-  send, {enter}
-   WinActivate, Zlecenia
-return
-
-Numpad3::
-    WinActivate, Zlecenia
-    WinWaitActive, Zlecenia
-    Send, ^c
-    Sleep, 50
-
-    WinActivate, Signal
-    WinWaitActive, Signal
-    Send, ^f
-    Sleep, 80
-    Send, Przemek Pam
-    Sleep, 300
-    Send, {Enter}
-    Sleep, 100
-
-   
-    Send, ^v
-    Sleep, 500
-
-
-
-    Send,; warunek}
-    Sleep, 200
-
-send, {enter}
-  
-   WinActivate, Zlecenia
-return
-
-Numpad4::
-    WinActivate, Zlecenia
-    WinWaitActive, Zlecenia
-    Send, ^c
-    Sleep, 50
-
-    WinActivate, Signal
-    WinWaitActive, Signal
-    Send, ^f
-    Sleep, 80
-    Send, Przemek Pam
-    Sleep, 300
-    Send, {Enter}
-    Sleep, 100
-
-   
-    Send, ^v
-    Sleep, 500
-
-send, {space}
-
-    Send, utylizacja}
-    Sleep, 200
-
-send, {enter}
-  
-   WinActivate, Zlecenia
-return
+MenuHandler2:
+    Send, `; %A_ThisMenuItem%
+	Sleep, 50
+	send, {Enter}
+	WinActivate, Zlecenia
+	return
 
 
 
