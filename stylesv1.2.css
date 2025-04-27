@@ -1,25 +1,21 @@
-/* Reset i ustawienia ogólne */
+/* Podstawowe ustawienia */
 body {
     background-color: #181818;
     color: #f5f5f5;
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     position: relative;
     overflow-x: hidden;
 }
 
-/* Nagłówek */
 .header {
     background-color: #ffcb00;
     color: #000000;
     text-align: center;
-    padding: 20px 0;
-    font-size: 24px;
+    padding: 20px;
+    font-size: 28px;
     font-weight: bold;
     width: 100%;
     position: fixed;
@@ -30,34 +26,86 @@ body {
 
 .header h1 {
     margin: 0;
-    font-size: 30px;
 }
 
-/* Główny kontener */
 .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 90%;
-    max-width: 1000px;
-    height: auto;
     margin-top: 120px;
-    gap: 20px;
+    padding: 20px;
+    width: 90%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* Sekcje urządzeń */
-.devices-container {
-    width: 30%;
-    padding: 20px;
+/* Sekcja logowania i rejestracji */
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 150px;
+}
+
+.auth-form {
     background-color: #333;
+    padding: 30px;
+    border-radius: 12px;
+    width: 300px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #444;
+    color: white;
+    font-size: 16px;
+}
+
+.auth-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ffcb00;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-form button:hover {
+    background-color: #e0a700;
+}
+
+.switch-auth {
+    color: #ffcb00;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.switch-auth:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Główna sekcja użytkownika */
+.devices-container {
+    background-color: #333;
+    margin-bottom: 20px;
+    padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .devices-container h3 {
+    margin-top: 0;
     color: #ffcb00;
-    text-align: center;
-    margin-bottom: 20px;
 }
 
 .devices-container button {
@@ -65,109 +113,56 @@ body {
     color: #fff;
     margin: 10px 0;
     padding: 15px;
-    font-size: 18px;
+    font-size: 16px;
     border-radius: 8px;
     width: 100%;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
     cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .devices-container button:hover {
     background-color: #666;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
 
-/* Sekcja główna */
 .main-content {
-    width: 65%;
-    padding: 30px;
     background-color: #1e1e1e;
+    padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Sekcja smarów */
-.smar-container {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    background-color: #333;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    width: 200px;
-    text-align: center;
-    z-index: 1001;
+.input-section {
+    margin-bottom: 20px;
 }
 
-.smar-container button {
-    background-color: #444;
-    color: #fff;
-    margin: 10px 0;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 8px;
-    width: 100%;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-}
-
-.smar-container button:hover {
-    background-color: #666;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-}
-
-/* Zegar */
-.clock {
-    font-size: 36px;
-    color: #000000;
-    position: fixed;
-    top: 20px;
-    right: 40px;
-    font-weight: bold;
-    z-index: 1002;
-    transition: transform 0.2s ease;
-}
-
-/* Input i przycisk obliczania */
 input[type="time"] {
-    padding: 12px;
-    font-size: 18px;
-    border: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
     background-color: #333;
     color: #fff;
+    border: none;
     border-radius: 8px;
-    width: 100%;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    margin-bottom: 10px;
 }
 
 button {
     background-color: #ffcb00;
+    color: #000;
+    padding: 10px;
     border: none;
-    padding: 12px 24px;
-    font-size: 16px;
-    color: #121212;
-    cursor: pointer;
     border-radius: 8px;
-    width: 100%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
     background-color: #e0a700;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
 
-/* Linki */
 .links-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     margin-top: 20px;
 }
 
@@ -175,22 +170,16 @@ button:hover {
     display: block;
     background-color: #444;
     color: #ffcb00;
-    padding: 10px 20px;
     text-decoration: none;
-    margin: 10px;
+    padding: 10px;
+    margin: 10px 0;
     border-radius: 8px;
+    text-align: center;
     font-size: 16px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
 .links-section a:hover {
     background-color: #666;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-}
-
-.links-section a:active {
-    background-color: #e0a700;
 }
 
 /* Toast powiadomienia */
@@ -207,7 +196,7 @@ button:hover {
     padding: 10px 20px;
     margin-top: 10px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     opacity: 1;
     transition: opacity 0.5s ease, transform 0.5s ease;
 }
@@ -217,60 +206,57 @@ button:hover {
     transform: translateY(20px);
 }
 
-/* Licznik wejść */
-.visit-counter {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+/* Panel Administratora */
+#user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#user-table th, #user-table td {
+    padding: 12px;
+    border-bottom: 1px solid #444;
+    text-align: center;
+}
+
+#user-table th {
     background-color: #333;
     color: #ffcb00;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 16px;
+}
+
+#user-table td {
+    background-color: #2a2a2a;
+}
+
+.admin-btn {
+    background-color: #d9534f;
+    color: white;
+    padding: 8px 12px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin-btn:hover {
+    background-color: #c9302c;
+}
+
+/* Zegar */
+.clock {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;
     font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
-    transition: transform 0.3s ease;
+    color: #000;
+    background-color: #ffcb00;
+    padding: 10px 20px;
+    border-radius: 12px;
+    z-index: 1002;
 }
 
-.visit-counter:hover {
-    transform: scale(1.05);
-}
-
-/* Animacje */
-.fade-in {
-    animation: fadeIn 1s ease-out;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Responsywność */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .devices-container, .main-content {
-        width: 90%;
-    }
-
-    .smar-container {
-        bottom: 20px;
-        left: 20px;
-        width: 160px;
-    }
-
-    .clock {
-        font-size: 28px;
-        right: 20px;
-    }
+.stats-section {
+    margin-top: 20px;
 }
