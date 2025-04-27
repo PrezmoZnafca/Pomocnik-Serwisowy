@@ -1,7 +1,22 @@
-/* Header */
+/* Reset i ustawienia ogólne */
+body {
+    background-color: #181818;
+    color: #f5f5f5;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Nagłówek */
 .header {
     background-color: #ffcb00;
-    color: #000000 !important;
+    color: #000000;
     text-align: center;
     padding: 20px 0;
     font-size: 24px;
@@ -18,50 +33,25 @@
     font-size: 30px;
 }
 
-/* Body */
-body {
-    background-color: #181818;
-    color: #f5f5f5;
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    position: relative;
-}
-
-/* Kontener */
+/* Główny kontener */
 .container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     width: 90%;
     max-width: 1000px;
-    height: 80%;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
-    overflow: hidden;
+    height: auto;
+    margin-top: 120px;
+    gap: 20px;
 }
 
-/* Main content */
-.main-content {
-    width: 65%;
-    padding: 30px;
-    background-color: #1e1e1e;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Devices section */
+/* Sekcje urządzeń */
 .devices-container {
     width: 30%;
     padding: 20px;
     background-color: #333;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    margin-right: 20px;
 }
 
 .devices-container h3 {
@@ -80,6 +70,7 @@ body {
     width: 100%;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    cursor: pointer;
 }
 
 .devices-container button:hover {
@@ -87,16 +78,25 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
 
-/* Smar Grafitowy */
+/* Sekcja główna */
+.main-content {
+    width: 65%;
+    padding: 30px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Sekcja smarów */
 .smar-container {
     position: fixed;
     bottom: 30px;
     left: 30px;
     background-color: #333;
-    padding: 10px;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    width: 180px;
+    width: 200px;
     text-align: center;
     z-index: 1001;
 }
@@ -109,6 +109,7 @@ body {
     font-size: 14px;
     border-radius: 8px;
     width: 100%;
+    cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
@@ -130,20 +131,66 @@ body {
     transition: transform 0.2s ease;
 }
 
-/* Animacja fade-in */
-.fade-in {
-    animation: fadeIn 1s ease-out;
+/* Input i przycisk obliczania */
+input[type="time"] {
+    padding: 12px;
+    font-size: 18px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    border-radius: 8px;
+    width: 100%;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+button {
+    background-color: #ffcb00;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    color: #121212;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+    background-color: #e0a700;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+}
+
+/* Linki */
+.links-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.links-section a {
+    display: block;
+    background-color: #444;
+    color: #ffcb00;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.links-section a:hover {
+    background-color: #666;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+}
+
+.links-section a:active {
+    background-color: #e0a700;
 }
 
 /* Toast powiadomienia */
@@ -170,93 +217,7 @@ body {
     transform: translateY(20px);
 }
 
-/* Input i button */
-input[type="time"] {
-    padding: 12px;
-    font-size: 18px;
-    border: none;
-    background-color: #333;
-    color: #fff;
-    border-radius: 8px;
-    width: 100%;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-}
-
-button {
-    background-color: #ffcb00;
-    border: none;
-    padding: 12px 24px;
-    font-size: 16px;
-    color: #121212;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    width: 100%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-}
-
-button:hover {
-    background-color: #e0a700;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-}
-
-/* Przydatne linki */
-.links-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.links-section a {
-    display: block;
-    background-color: #444;
-    color: #ffcb00;
-    padding: 10px 20px;
-    text-decoration: none;
-    margin: 10px;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-}
-
-.links-section a:hover {
-    background-color: #666;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-}
-
-.links-section a:active {
-    background-color: #e0a700;
-}
-
-/* Responsywność */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-        height: auto;
-    }
-
-    .devices-container, .main-content {
-        width: 100%;
-        margin: 10px 0;
-    }
-
-    .smar-container {
-        width: 150px;
-        bottom: 20px;
-        left: 20px;
-    }
-
-    .clock {
-        font-size: 28px;
-        top: 10px;
-        right: 20px;
-    }
-}
-
-/* Nowy wygląd licznika wejść */
+/* Licznik wejść */
 .visit-counter {
     position: fixed;
     bottom: 20px;
@@ -266,11 +227,50 @@ button:hover {
     padding: 10px 20px;
     border-radius: 20px;
     font-size: 16px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
     font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
     transition: transform 0.3s ease;
 }
 
 .visit-counter:hover {
     transform: scale(1.05);
+}
+
+/* Animacje */
+.fade-in {
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .devices-container, .main-content {
+        width: 90%;
+    }
+
+    .smar-container {
+        bottom: 20px;
+        left: 20px;
+        width: 160px;
+    }
+
+    .clock {
+        font-size: 28px;
+        right: 20px;
+    }
 }
