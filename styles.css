@@ -20,6 +20,11 @@ body, html {
     overflow-x: hidden;
 }
 
+/* Ukrywanie elementów */
+.hidden {
+    display: none !important;
+}
+
 /* Nagłówek */
 .header {
     position: fixed;
@@ -69,7 +74,7 @@ body, html {
     transform: scale(1.05);
 }
 
-/* Ukryj stary górny panel */
+/* Ukryj stary górny panel (jeśli jest) */
 .buttons-top {
     display: none !important;
 }
