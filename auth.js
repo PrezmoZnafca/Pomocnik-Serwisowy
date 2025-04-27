@@ -1,10 +1,12 @@
+
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import { getDatabase, ref, set, update, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-// KONFIGURACJA Firebase (Wstaw swoje dane!)
+// Konfiguracja Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
+    apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
   authDomain: "pomocnik-serwisowy.firebaseapp.com",
   databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "pomocnik-serwisowy",
@@ -17,7 +19,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Przełączanie logowanie/rejestracja
+// Logowanie i rejestracja
 document.getElementById('show-register').addEventListener('click', () => {
     document.getElementById('login-form').classList.add('hidden');
     document.getElementById('register-form').classList.remove('hidden');
@@ -35,6 +37,10 @@ document.getElementById('register-btn').addEventListener('click', () => {
 
     if (!username || !password) {
         alert('Proszę wypełnić wszystkie pola!');
+        return;
+    }
+    if (password.length < 6) {
+        alert('Hasło musi mieć minimum 6 znaków!');
         return;
     }
 
@@ -101,3 +107,30 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById('main-section').classList.add('hidden');
     }
 });
+
+// Funkcja wylogowania
+if (document.getElementById('logout-btn')) {
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        signOut(auth).then(() => {
+            showToast('Wylogowano pomyślnie!');
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1500);
+        }).catch((error) => {
+            alert('Błąd wylogowania: ' + error.message);
+        });
+    });
+}
+
+// Toast funkcja
+function showToast(message) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.classList.add('toast');
+    toast.innerText = message;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.classList.add('hidden');
+        setTimeout(() => toast.remove(), 500);
+    }, 3000);
+}
