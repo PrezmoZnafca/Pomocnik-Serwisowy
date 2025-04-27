@@ -1,0 +1,107 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, deleteUser } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+// KONFIGURACJA Firebase (WSTAW SWOJE DANE!)
+const firebaseConfig = {
+    apiKey: "TU_WSTAW_TWOJ_KLUCZ",
+    authDomain: "TU_WSTAW_TWOJ_AUTHDOMAIN",
+    databaseURL: "TU_WSTAW_TWOJ_DATABASEURL",
+    projectId: "TU_WSTAW_TWOJ_PROJECTID",
+    storageBucket: "TU_WSTAW_TWOJ_STORAGEBUCKET",
+    messagingSenderId: "TU_WSTAW_TWOJ_SENDERID",
+    appId: "TU_WSTAW_TWOJ_APPID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+// Funkcja do ładowania użytkowników
+function loadUsers() {
+    const usersRef = ref(db, 'users');
+    get(usersRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            const users = snapshot.val();
+            const tbody = document.getElementById('user-table-body');
+            tbody.innerHTML = '';
+
+            Object.keys(users).forEach(uid => {
+                const user = users[uid];
+                const tr = document.createElement('tr');
+
+                const usernameTd = document.createElement('td');
+                usernameTd.innerText = user.username;
+
+                const createdAtTd = document.createElement('td');
+                createdAtTd.innerText = user.createdAt ? new Date(user.createdAt).toLocaleString() : 'Brak danych';
+
+                const lastActiveTd = document.createElement('td');
+                lastActiveTd.innerText = user.lastActive ? new Date(user.lastActive).toLocaleString() : 'Brak aktywności';
+
+                const copiesTd = document.createElement('td');
+                copiesTd.innerText = user.copies || 0;
+
+                const actionTd = document.createElement('td');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.innerText = 'Usuń';
+                deleteBtn.classList.add('admin-btn');
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm('Czy na pewno chcesz usunąć tego użytkownika?')) {
+                        remove(ref(db, 'users/' + uid)).then(() => {
+                            showToast('Użytkownik usunięty!');
+                            loadUsers();
+                        }).catch((error) => {
+                            showToast('Błąd usuwania: ' + error.message);
+                        });
+                    }
+                });
+
+                actionTd.appendChild(deleteBtn);
+
+                tr.appendChild(usernameTd);
+                tr.appendChild(createdAtTd);
+                tr.appendChild(lastActiveTd);
+                tr.appendChild(copiesTd);
+                tr.appendChild(actionTd);
+
+                tbody.appendChild(tr);
+            });
+        }
+    }).catch((error) => {
+        showToast('Błąd ładowania użytkowników: ' + error.message);
+    });
+}
+
+// Toast powiadomienia
+function showToast(message) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.classList.add('toast');
+    toast.innerText = message;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.classList.add('hidden');
+        setTimeout(() => toast.remove(), 500);
+    }, 3000);
+}
+
+// Obsługa powrotu
+document.getElementById('back-to-main').addEventListener('click', () => {
+    window.location.href = "index.html";
+});
+
+// Tylko dla admina
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const username = user.email.split('@')[0];
+        if (username !== "PPZ") {
+            alert('Brak dostępu!');
+            window.location.href = "index.html";
+        } else {
+            loadUsers();
+        }
+    } else {
+        window.location.href = "index.html";
+    }
+});
