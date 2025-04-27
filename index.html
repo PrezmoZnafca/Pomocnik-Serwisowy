@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomocnik Serwisowy</title>
-    <link rel="stylesheet" href="stylesv1.3.css">
+    <link rel="stylesheet" href="stylesv1.4.css">
     <script type="module" src="auth.js"></script>
     <script type="module" src="counter.js"></script>
 </head>
@@ -45,6 +45,8 @@
     <button id="admin-panel-btn" class="hidden">Przejdź do panelu administratora</button>
 
     <div class="container">
+
+        <!-- Lewa sekcja: Urządzenia -->
         <div class="devices-container">
             <h3>Uchwyty Zakrętarki</h3>
             <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1')">DCF850</button>
@@ -52,20 +54,14 @@
             <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1')">DCF860N</button>
         </div>
 
-        <div class="devices-container">
-            <h3>Różne</h3>
-            <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1')">Aligator</button>
-        </div>
-
+        <!-- Środkowa sekcja: Kalkulator czasu pracy -->
         <div class="main-content">
-            <div class="input-section">
-                <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
-                <input type="time" id="arrivalTime" name="arrivalTime">
-                <button onclick="calculateTime()">Oblicz czas wyjścia</button>
-            </div>
-
+            <h3>Oblicz Czas Wyjścia</h3>
+            <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
+            <input type="time" id="arrivalTime" name="arrivalTime">
+            <button onclick="calculateTime()">Oblicz czas wyjścia</button>
             <div class="time-result">
-                <h3>Nowy czas wyjścia:</h3>
+                <h4>Nowy czas wyjścia:</h4>
                 <p id="outputTime">--:--</p>
             </div>
 
@@ -73,14 +69,22 @@
                 <h3>Twoje kopiowania:</h3>
                 <p id="copy-count">Skopiowano: 0 razy</p>
             </div>
-
-            <div class="links-section">
-                <h3>Przydatne strony:</h3>
-                <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
-                <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-                <a href="https://service.dewalt.pl/" target="_blank">DeWalt</a>
-            </div>
         </div>
+
+        <!-- Prawa sekcja: Smary -->
+        <div class="devices-container">
+            <h3>Różne</h3>
+            <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1')">Aligator</button>
+        </div>
+
+    </div>
+
+    <!-- Przydatne linki -->
+    <div class="links-section">
+        <h3>Przydatne strony:</h3>
+        <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
+        <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
+        <a href="https://service.dewalt.pl/" target="_blank">DeWalt</a>
     </div>
 
 </div>
@@ -91,10 +95,14 @@ function updateClock() {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-    document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+    const clock = document.getElementById('clock');
+    clock.innerText = `${hours}:${minutes}:${seconds}`;
+    clock.style.transform = "scale(1.1)";
+    setTimeout(() => {
+        clock.style.transform = "scale(1)";
+    }, 500);
 }
 setInterval(updateClock, 1000);
-
 window.onload = updateClock;
 
 function copyData(text) {
