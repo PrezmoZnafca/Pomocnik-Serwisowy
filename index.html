@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomocnik Serwisowy</title>
-    <link rel="stylesheet" href="stylesv1.0.css">
+    <link rel="stylesheet" href="stylesv1.2.css">
 </head>
 
 <body>
@@ -16,7 +16,10 @@
 
 <div class="clock" id="clock"></div>
 
-<div id="notifications-container"></div>
+<div id="toast-container"></div>
+
+<!-- Licznik wejść -->
+<div id="visitCounter" class="visit-counter"></div>
 
 <div class="container">
     <div class="devices-container fade-in">
@@ -45,22 +48,13 @@
             <p id="outputTime">--:--</p>
         </div>
 
-        <!-- Pasek postępu dla czasu pracy -->
-        <div class="progress-section fade-in">
-<h3>Progres pracy:</h3>
-            <progress id="workProgress" value="0" max="100"></progress>
-            
-            <p id="timeRemaining">Czas pozostały: --:--</p>
-        </div>
-
         <div class="links-section fade-in">
             <h3>Przydatne strony:</h3>
-<a href="https://erpatech.com/" target="_blank">ErpaTech</a>            
-<a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-<a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/" target="_blank">DeWalt</a>
-<a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
-<a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black & Decker</a>
-            
+            <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
+            <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
+            <a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/" target="_blank">DeWalt</a>
+            <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
+            <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black & Decker</a>
         </div>
     </div>
 </div>
@@ -69,17 +63,22 @@
     <h3>Inne</h3>
     <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
     <button onclick="copyData('583534-00, 1')">Smar Grafitowy Mały</button>
-<button onclick="window.open('Akumulatory.pdf', '_blank')">Otwórz plik PDF</button>
-<button onclick="window.location.href='npr.ahk'" download>Pobierz plik npr.ahk</button>
+    <button onclick="window.open('Akumulatory.pdf', '_blank')">Otwórz plik PDF</button>
+    <button onclick="window.location.href='npr.ahk'" download>Pobierz plik npr.ahk</button>
 </div>
 
 <script>
 function calculateTime() {
-    const arrivalTime = document.getElementById('arrivalTime').value;
+    const arrivalInput = document.getElementById('arrivalTime');
+    const arrivalTime = arrivalInput.value;
+
     if (!arrivalTime) {
         alert('Proszę wpisać czas przyjścia!');
+        arrivalInput.style.border = '2px solid red';
         return;
     }
+
+    arrivalInput.style.border = '';
 
     const [hours, minutes] = arrivalTime.split(':').map(num => parseInt(num));
     const workHours = 8;
@@ -93,45 +92,13 @@ function calculateTime() {
         endHours += 1;
     }
 
-    // Formatowanie czasu wyjścia
     const formattedEndHours = String(endHours).padStart(2, '0');
     const formattedEndMinutes = String(endMinutes).padStart(2, '0');
     document.getElementById('outputTime').innerText = `${formattedEndHours}:${formattedEndMinutes}`;
 
-    // Ustawienie godziny wyjścia w obiekcie Date
-    const endTime = new Date();
-    endTime.setHours(endHours, endMinutes, 0, 0);
-
-    // Zapisujemy czas przyjścia do localStorage
     localStorage.setItem('arrivalTime', arrivalTime);
-
-    // Ustawiamy funkcję aktualizacji postępu pracy
-    updateProgress(endTime);
-    setInterval(() => updateProgress(endTime), 60000); // Aktualizacja co minutę
 }
 
-function updateProgress(endTime) {
-    const now = new Date();
-    
-    // Obliczamy całkowity czas pracy i czas, który pozostał
-    const totalWorkTime = endTime.getTime() - now.getTime();
-    const startTime = new Date(now);
-    startTime.setHours(startTime.getHours() - 8, startTime.getMinutes() - 15);
-
-    const fullDuration = endTime.getTime() - startTime.getTime();
-    const remainingDuration = Math.max(totalWorkTime, 0); // Minimalnie 0 (po zakończeniu pracy)
-    
-    // Obliczamy procent czasu pracy
-    const progressPercentage = Math.min(100, Math.max(0, ((fullDuration - remainingDuration) / fullDuration) * 100));
-    document.getElementById('workProgress').value = progressPercentage;
-
-    // Aktualizujemy tekst pozostałego czasu
-    const hoursRemaining = Math.floor(remainingDuration / (1000 * 60 * 60));
-    const minutesRemaining = Math.floor((remainingDuration % (1000 * 60 * 60)) / (1000 * 60));
-    document.getElementById('timeRemaining').innerText = `Czas pozostały: ${hoursRemaining}:${String(minutesRemaining).padStart(2, '0')}`;
-}
-
-// Funkcja ładowania zapisanej godziny przyjścia
 function loadSavedTime() {
     const savedTime = localStorage.getItem('arrivalTime');
     if (savedTime) {
@@ -139,25 +106,25 @@ function loadSavedTime() {
     }
 }
 
-function copyData(partNumbers) {
-    const textArea = document.createElement("textarea");
-    textArea.value = partNumbers;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textArea);
-    showNotification('Numery części zostały skopiowane do schowka!');
+async function copyData(partNumbers) {
+    try {
+        await navigator.clipboard.writeText(partNumbers);
+        showToast('Skopiowano numery części!');
+    } catch (err) {
+        console.error('Błąd kopiowania: ', err);
+        showToast('Nie udało się skopiować danych.');
+    }
 }
 
-function showNotification(message) {
-    const notificationContainer = document.getElementById('notifications-container');
-    const notification = document.createElement('div');
-    notification.classList.add('notification');
-    notification.innerText = message;
-    notificationContainer.appendChild(notification);
+function showToast(message) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.classList.add('toast');
+    toast.innerText = message;
+    container.appendChild(toast);
     setTimeout(() => {
-        notification.classList.add('hidden');
-        setTimeout(() => notification.remove(), 1000);
+        toast.classList.add('hidden');
+        setTimeout(() => toast.remove(), 500);
     }, 3000);
 }
 
@@ -166,17 +133,46 @@ function updateClock() {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-    document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+
+    const clock = document.getElementById('clock');
+    clock.innerText = `${hours}:${minutes}:${seconds}`;
+
+    clock.style.transform = 'scale(1.05)';
+    setTimeout(() => clock.style.transform = 'scale(1)', 200);
 }
 
-// Aktualizacja zegara
-setInterval(updateClock, 1000);
+// Funkcja animująca licznik
+function animateCounter(element, start, end, duration) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        element.innerText = `Liczba wejść: ${Math.floor(progress * (end - start) + start)}`;
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        }
+    };
+    window.requestAnimationFrame(step);
+}
 
-// Ładowanie zapisanej godziny przy starcie strony
-window.onload = loadSavedTime;
+// Funkcja do aktualizacji globalnego licznika wejść
+function updateVisitCounter() {
+    fetch('https://api.countapi.xyz/hit/pomocnikserwisowy/strona')
+    .then(response => response.json())
+    .then(data => {
+        const counterElement = document.getElementById('visitCounter');
+        const current = parseInt(counterElement.innerText.replace(/\D/g, '')) || 0;
+        animateCounter(counterElement, current, data.value, 1000);
+    });
+}
 
-
-
+// Uruchamiamy funkcje po załadowaniu strony
+window.onload = function() {
+    loadSavedTime();
+    updateClock();
+    updateVisitCounter();
+    setInterval(updateClock, 1000);
+};
 </script>
 
 </body>
