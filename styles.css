@@ -1,8 +1,9 @@
 :root {
-    --yellow: #ffcb00;
+    --primary: #ffcb00;
     --dark-bg: #181818;
-    --card-bg: #333;
-    --text-color: #f5f5f5;
+    --card-bg: #2b2b2b;
+    --text: #f5f5f5;
+    --accent-hover: #e0a700;
 }
 
 /* Reset */
@@ -13,8 +14,8 @@
 }
 body, html {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--dark-bg);
-    color: var(--text-color);
+    background: var(--dark-bg);
+    color: var(--text);
     height: 100%;
     overflow-x: hidden;
 }
@@ -22,54 +23,60 @@ body, html {
 /* Nagłówek */
 .header {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     width: 100%;
-    background: var(--yellow);
+    background: var(--primary);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    padding: 10px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     z-index: 1000;
 }
 .header-left h1 {
     font-size: 24px;
     color: #000;
 }
+.header-right {
+    display: flex;
+    align-items: center;
+}
 .clock {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
-    background: var(--yellow);
+    background: var(--primary);
     color: #000;
-    padding: 8px 12px;
-    border-radius: 8px;
-    margin-left: 10px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-left: 12px;
 }
 
-/* Przycisk wyloguj – zawsze w prawym dolnym rogu */
-.logout-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--yellow);
+/* Przyciski w nagłówku */
+.header-btn {
+    background: transparent;
+    border: 2px solid #000;
     color: #000;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 16px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    margin-right: 10px;
+    font-size: 14px;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    z-index: 1002;
-    transition: background 0.3s, transform 0.2s;
+    transition: background 0.3s, color 0.3s, transform 0.1s;
 }
-.logout-btn:hover {
-    background: #e0a700;
+.header-btn:hover {
+    background: #000;
+    color: var(--primary);
     transform: scale(1.05);
 }
 
-/* Sekcja główna pod nagłówkiem */
+/* Ukryj stary górny panel */
+.buttons-top {
+    display: none !important;
+}
+
+/* Sekcje poniżej nagłówka */
 #auth-section, #main-section {
-    padding-top: 80px;
+    padding-top: 70px;
 }
 
 /* Kontener ogólny */
@@ -83,35 +90,42 @@ body, html {
     justify-content: center;
 }
 
-/* Karty i przyciski */
+/* Karty */
 .devices-container, .main-content {
     background: var(--card-bg);
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 8px;
     flex: 1 1 280px;
-    min-width: 280px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    min-width: 260px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
 }
 .devices-container h3, .main-content h3 {
-    color: var(--yellow);
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+/* Główne przyciski */
+button {
+    font-family: inherit;
 }
 .devices-container button, .main-content button {
     width: 100%;
     margin-top: 10px;
-    padding: 12px;
-    background: var(--yellow);
+    padding: 10px;
+    background: var(--primary);
     color: #000;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
+    font-size: 15px;
     cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
+    transition: background 0.3s, transform 0.1s;
 }
 .devices-container button:hover, .main-content button:hover {
-    background: #e0a700;
-    transform: scale(1.05);
+    background: var(--accent-hover);
+    transform: scale(1.03);
 }
 
-/* Linki */
+/* Linki zewnętrzne */
 .links-section {
     width: 100%;
     text-align: center;
@@ -119,75 +133,76 @@ body, html {
 }
 .links-section a {
     display: inline-block;
-    padding: 10px 16px;
+    padding: 8px 14px;
     margin: 5px;
-    background: #444;
-    color: var(--yellow);
+    background: var(--card-bg);
+    color: var(--primary);
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 6px;
     transition: background 0.3s;
 }
 .links-section a:hover {
-    background: #666;
+    background: #3a3a3a;
 }
 
-/* Formularze auth */
+/* Formularze logowania/rejestracji */
 .auth-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 40px;
 }
 .auth-form {
     background: var(--card-bg);
     padding: 30px;
-    border-radius: 12px;
+    border-radius: 8px;
     width: 320px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
     margin-bottom: 20px;
+}
+.auth-form h2 {
+    margin-bottom: 15px;
+    color: var(--primary);
 }
 .auth-form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border-radius: 8px;
     border: none;
-    background: #444;
+    border-radius: 6px;
+    background: #3a3a3a;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
 }
 .auth-form button {
     width: 100%;
-    padding: 12px;
-    background: var(--yellow);
+    padding: 10px;
+    background: var(--primary);
     color: #000;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.3s;
 }
 .auth-form button:hover {
-    background: #e0a700;
-}
-
-/* Ukrywanie */
-.hidden {
-    display: none !important;
+    background: var(--accent-hover);
 }
 
 /* Toast */
 #toast-container {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 20px; right: 20px;
     z-index: 2000;
 }
 .toast {
     background: #4CAF50;
     color: #fff;
-    padding: 10px 20px;
+    padding: 10px 16px;
     margin-top: 10px;
-    border-radius: 8px;
+    border-radius: 6px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-    opacity: 1;
-    transition: opacity 0.5s, transform 0.5s;
+    transition: opacity 0.4s, transform 0.4s;
 }
 .toast.hidden {
     opacity: 0;
@@ -201,23 +216,23 @@ body, html {
     margin-top: 20px;
 }
 #user-table th, #user-table td {
-    padding: 12px;
+    padding: 10px;
     border-bottom: 1px solid #444;
     text-align: center;
 }
 #user-table th {
     background: var(--card-bg);
-    color: var(--yellow);
+    color: var(--primary);
 }
 #user-table td {
-    background: #2a2a2a;
+    background: #252525;
 }
 .admin-btn {
     background: #d9534f;
     color: #fff;
-    padding: 8px 12px;
+    padding: 6px 10px;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background 0.3s;
 }
