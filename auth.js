@@ -1,10 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import { getDatabase, ref, set, update, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-// KONFIGURACJA Firebase
+// KONFIGURACJA Firebase (Wstaw swoje dane!)
 const firebaseConfig = {
-apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
+  apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
   authDomain: "pomocnik-serwisowy.firebaseapp.com",
   databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "pomocnik-serwisowy",
@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Przełączanie formularzy
+// Przełączanie logowanie/rejestracja
 document.getElementById('show-register').addEventListener('click', () => {
     document.getElementById('login-form').classList.add('hidden');
     document.getElementById('register-form').classList.remove('hidden');
@@ -28,13 +28,13 @@ document.getElementById('show-login').addEventListener('click', () => {
     document.getElementById('login-form').classList.remove('hidden');
 });
 
-// REJESTRACJA użytkownika
+// Rejestracja użytkownika
 document.getElementById('register-btn').addEventListener('click', () => {
-    const username = document.getElementById('register-username').value;
+    const username = document.getElementById('register-username').value.trim();
     const password = document.getElementById('register-password').value;
 
     if (!username || !password) {
-        alert('Proszę uzupełnić wszystkie pola!');
+        alert('Proszę wypełnić wszystkie pola!');
         return;
     }
 
@@ -57,13 +57,13 @@ document.getElementById('register-btn').addEventListener('click', () => {
         });
 });
 
-// LOGOWANIE użytkownika
+// Logowanie użytkownika
 document.getElementById('login-btn').addEventListener('click', () => {
-    const username = document.getElementById('login-username').value;
+    const username = document.getElementById('login-username').value.trim();
     const password = document.getElementById('login-password').value;
 
     if (!username || !password) {
-        alert('Proszę uzupełnić wszystkie pola!');
+        alert('Proszę wypełnić wszystkie pola!');
         return;
     }
 
@@ -80,7 +80,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
         });
 });
 
-// OBSŁUGA sesji
+// Zarządzanie sesją użytkownika
 onAuthStateChanged(auth, (user) => {
     if (user) {
         document.getElementById('auth-section').classList.add('hidden');
@@ -96,14 +96,6 @@ onAuthStateChanged(auth, (user) => {
                 window.location.href = "admin.html";
             });
         }
-
-        // Wylogowanie admina w panelu (przycisk na admin.html)
-        if (window.location.pathname.includes('admin.html')) {
-            document.getElementById('back-to-main').addEventListener('click', () => {
-                window.location.href = "index.html";
-            });
-        }
-
     } else {
         document.getElementById('auth-section').classList.remove('hidden');
         document.getElementById('main-section').classList.add('hidden');
