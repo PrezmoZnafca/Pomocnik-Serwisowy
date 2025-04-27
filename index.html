@@ -12,10 +12,12 @@
 <body>
 
 <header class="header">
-  <div class="header-left"><h1>Pomocnik Serwisowy</h1></div>
+  <div class="header-left">
+    <h1>Pomocnik Serwisowy</h1>
+  </div>
   <div class="header-right">
     <button id="admin-panel-btn" class="header-btn hidden">Panel Admina</button>
-    <button id="logout-btn" class="header-btn hidden">Wyloguj się</button>
+    <button id="logout-btn"       class="header-btn hidden">Wyloguj się</button>
     <div id="clock" class="clock"></div>
   </div>
 </header>
@@ -25,14 +27,14 @@
 <div id="auth-section" class="auth-container">
   <div id="login-form" class="auth-form">
     <h2>Logowanie</h2>
-    <input type="text" id="login-username" placeholder="Nazwa użytkownika">
+    <input type="text"     id="login-username" placeholder="Nazwa użytkownika">
     <input type="password" id="login-password" placeholder="Hasło">
     <button id="login-btn">Zaloguj się</button>
     <p>Nie masz konta? <span id="show-register" class="switch-auth">Zarejestruj się</span></p>
   </div>
   <div id="register-form" class="auth-form hidden">
     <h2>Rejestracja</h2>
-    <input type="text" id="register-username" placeholder="Nazwa użytkownika">
+    <input type="text"     id="register-username" placeholder="Nazwa użytkownika">
     <input type="password" id="register-password" placeholder="Hasło">
     <button id="register-btn">Zarejestruj się</button>
     <p>Masz już konto? <span id="show-login" class="switch-auth">Zaloguj się</span></p>
@@ -71,9 +73,9 @@
 
   <div class="links-section">
     <h3>Linki:</h3>
-    <a href="https://erpatech.com/" target="_blank">ERPATECH</a>
+    <a href="https://erpatech.com/"           target="_blank">ERPATECH</a>
     <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-    <a href="https://service.dewalt.pl/" target="_blank">DeWalt Service</a>
+    <a href="https://service.dewalt.pl/"      target="_blank">DeWalt Service</a>
   </div>
 </div>
 
@@ -92,30 +94,30 @@
   // kopiowanie
   function copyData(text) {
     navigator.clipboard.writeText(text)
-      .then(()=>{ showToast('Skopiowano numery części!'); window.incrementCopy(); })
-      .catch(()=> showToast('Błąd kopiowania!'));
+      .then(() => { showToast('Skopiowano numery części!'); window.incrementCopy(); })
+      .catch(() => showToast('Błąd kopiowania!'));
   }
 
   // toast
   function showToast(msg) {
-    const c=document.getElementById('toast-container');
-    const t=document.createElement('div');
-    t.classList.add('toast'); t.innerText=msg;
+    const c = document.getElementById('toast-container');
+    const t = document.createElement('div');
+    t.classList.add('toast');
+    t.innerText = msg;
     c.appendChild(t);
-    setTimeout(()=>{
+    setTimeout(() => {
       t.classList.add('hidden');
-      setTimeout(()=>t.remove(),500);
-    },3000);
+      setTimeout(() => t.remove(), 500);
+    }, 3000);
   }
 
   // obliczanie czasu + increment
   function calculateTime() {
-    const v=document.getElementById('arrivalTime').value;
-    if(!v){ showToast('Proszę podać czas przyjścia!'); return; }
-    let [h,m]=v.split(':').map(Number);
-    m+=15; h+=8+Math.floor(m/60); m%=60;
-    const out=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-    document.getElementById('outputTime').innerText=out;
+    const v = document.getElementById('arrivalTime').value;
+    if (!v) { showToast('Podaj czas przyjścia!'); return; }
+    let [h,m] = v.split(':').map(Number);
+    m += 15; h += 8 + Math.floor(m/60); m %= 60;
+    document.getElementById('outputTime').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
     window.incrementCalc();
   }
 </script>
