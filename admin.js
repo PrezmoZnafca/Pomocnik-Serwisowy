@@ -107,7 +107,7 @@ document.getElementById('back-to-main').addEventListener('click', () => {
 onAuthStateChanged(auth, (user) => {
     if (user) {
         const username = user.email.split('@')[0];
-        if (username !== "PPZ") {
+        if (username !== "ppz") {
             alert('Brak dostępu!');
             window.location.href = "index.html";
         } else {
