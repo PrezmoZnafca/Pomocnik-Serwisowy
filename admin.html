@@ -1,58 +1,55 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administratora - Pomocnik Serwisowy</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script type="module" src="admin.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel Administratora - Pomocnik Serwisowy</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script type="module" src="admin.js" defer></script>
 </head>
 <body>
 
 <header class="header">
-    <div class="header-left">
-        <h1>Panel Administratora</h1>
-    </div>
-    <div class="header-right">
-        <button id="back-to-main" class="header-btn">Strona Główna</button>
-        <button id="logout-btn" class="header-btn">Wyloguj się</button>
-        <div id="clock" class="clock"></div>
-    </div>
+  <div class="header-left"><h1>Panel Administratora</h1></div>
+  <div class="header-right">
+    <button id="back-to-main" class="header-btn">Strona Główna</button>
+    <button id="logout-btn" class="header-btn">Wyloguj się</button>
+    <div id="clock" class="clock"></div>
+  </div>
 </header>
 
 <div id="toast-container"></div>
 
 <div class="container admin-container">
-    <h2>Lista użytkowników</h2>
-    <table id="user-table">
-        <thead>
-            <tr>
-                <th>Nazwa użytkownika</th>
-                <th>Data rejestracji</th>
-                <th>Ostatnia aktywność</th>
-                <th>Ilość kopiowań</th>
-                <th>Ilość logowań</th>
-                <th>Akcje</th>
-            </tr>
-        </thead>
-        <tbody id="user-table-body">
-            <!-- Ładowanie użytkowników -->
-        </tbody>
-    </table>
+  <h2>Lista użytkowników</h2>
+  <table id="user-table">
+    <thead>
+      <tr>
+        <th>Nazwa</th>
+        <th>Rola</th>
+        <th>Rejestracja</th>
+        <th>Ostatnia aktywność</th>
+        <th>Kopiowań</th>
+        <th>Obliczeń</th>
+        <th>Logowań</th>
+        <th>Akcje</th>
+      </tr>
+    </thead>
+    <tbody id="user-table-body"></tbody>
+  </table>
 </div>
 
 <script>
-// zegar w nagłówku
-function updateClock() {
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2,'0');
-    const m = String(now.getMinutes()).padStart(2,'0');
-    const s = String(now.getSeconds()).padStart(2,'0');
-    document.getElementById('clock').innerText = `${h}:${m}:${s}`;
-}
-setInterval(updateClock, 1000);
-window.onload = updateClock;
+  function updateClock() {
+    const d=new Date();
+    const h=String(d.getHours()).padStart(2,'0');
+    const m=String(d.getMinutes()).padStart(2,'0');
+    const s=String(d.getSeconds()).padStart(2,'0');
+    document.getElementById('clock').innerText=`${h}:${m}:${s}`;
+  }
+  setInterval(updateClock,1000);
+  window.onload=updateClock;
 </script>
 
 </body>
