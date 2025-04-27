@@ -94,13 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
             authSection.classList.add('hidden');
             mainSection.classList.remove('hidden');
 
+            // pokaż i obsłuż wylogowanie
             if (logoutBtn) {
+                logoutBtn.classList.remove('hidden');
                 logoutBtn.addEventListener('click', () => {
-                    signOut(auth).then(() => {
-                        window.location.reload();
-                    }).catch((error) => {
-                        alert('Błąd wylogowania: ' + error.message);
-                    });
+                    signOut(auth)
+                        .then(() => window.location.reload())
+                        .catch((error) => alert('Błąd wylogowania: ' + error.message));
                 });
             }
 
@@ -114,6 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             authSection.classList.remove('hidden');
             mainSection.classList.add('hidden');
+            if (logoutBtn) logoutBtn.classList.add('hidden');
+            if (adminBtn) adminBtn.classList.add('hidden');
         }
     });
 });
