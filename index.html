@@ -12,13 +12,20 @@
 <body>
 
 <header class="header">
-    <h1>Pomocnik Serwisowy</h1>
-    <div id="clock" class="clock"></div>
+    <div class="header-left">
+        <h1>Pomocnik Serwisowy</h1>
+    </div>
+    <div class="header-right">
+        <button id="admin-panel-btn" class="header-btn hidden">Panel Admina</button>
+        <button id="logout-btn" class="header-btn hidden">Wyloguj się</button>
+        <div id="clock" class="clock"></div>
+    </div>
 </header>
 
 <div id="toast-container"></div>
 
 <div id="auth-section" class="auth-container">
+    <!-- logowanie / rejestracja bez zmian -->
     <div id="login-form" class="auth-form">
         <h2>Logowanie</h2>
         <input type="text" id="login-username" placeholder="Nazwa użytkownika">
@@ -26,7 +33,6 @@
         <button id="login-btn">Zaloguj się</button>
         <p>Nie masz konta? <span id="show-register" class="switch-auth">Zarejestruj się</span></p>
     </div>
-
     <div id="register-form" class="auth-form hidden">
         <h2>Rejestracja</h2>
         <input type="text" id="register-username" placeholder="Nazwa użytkownika">
@@ -37,11 +43,6 @@
 </div>
 
 <div id="main-section" class="hidden">
-    <div class="buttons-top">
-        <button id="admin-panel-btn" class="hidden">Panel Administratora</button>
-        <button id="logout-btn" class="logout-btn">Wyloguj się</button>
-    </div>
-
     <div class="container">
         <div class="devices-container">
             <h3>Zakładki Kopiowania</h3>
@@ -58,7 +59,6 @@
                 <h4>Nowy czas wyjścia:</h4>
                 <p id="outputTime">--:--</p>
             </div>
-
             <div class="stats-section">
                 <h3>Twoje kopiowania:</h3>
                 <p id="copy-count">Skopiowano: 0 razy</p>
@@ -80,57 +80,38 @@
 </div>
 
 <script>
+// Funkcje kopiowania, toast, zegar i obliczania czasu – bez zmian
 function updateClock() {
     const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('clock').innerText = `${h}:${m}:${s}`;
 }
 setInterval(updateClock, 1000);
 window.onload = updateClock;
 
 function copyData(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        showToast('Skopiowano numery części!');
-        window.incrementCopy();
-    }).catch(() => {
-        showToast('Błąd kopiowania!');
-    });
+    navigator.clipboard.writeText(text)
+        .then(() => { showToast('Skopiowano numery części!'); window.incrementCopy(); })
+        .catch(() => showToast('Błąd kopiowania!'));
 }
 
 function showToast(message) {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    toast.classList.add('toast');
-    toast.innerText = message;
-    container.appendChild(toast);
-    setTimeout(() => {
-        toast.classList.add('hidden');
-        setTimeout(() => toast.remove(), 500);
-    }, 3000);
+    const c = document.getElementById('toast-container');
+    const t = document.createElement('div');
+    t.classList.add('toast');
+    t.innerText = message;
+    c.appendChild(t);
+    setTimeout(() => { t.classList.add('hidden'); setTimeout(() => t.remove(), 500); }, 3000);
 }
 
 function calculateTime() {
-    const arrivalInput = document.getElementById('arrivalTime');
-    const arrivalTime = arrivalInput.value;
-    if (!arrivalTime) {
-        showToast('Proszę podać czas przyjścia!');
-        return;
-    }
-
-    const [hours, minutes] = arrivalTime.split(':').map(Number);
-    const workHours = 8;
-    const workMinutes = 15;
-    let endHours = hours + workHours;
-    let endMinutes = minutes + workMinutes;
-
-    if (endMinutes >= 60) {
-        endMinutes -= 60;
-        endHours += 1;
-    }
-
-    document.getElementById('outputTime').innerText = `${String(endHours).padStart(2, '0')}:${String(endMinutes).padStart(2, '0')}`;
+    const v = document.getElementById('arrivalTime').value;
+    if (!v) { showToast('Proszę podać czas przyjścia!'); return; }
+    let [h, m] = v.split(':').map(Number);
+    m += 15; h += 8 + Math.floor(m/60); m %= 60;
+    document.getElementById('outputTime').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
 }
 </script>
 

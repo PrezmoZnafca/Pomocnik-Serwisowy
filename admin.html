@@ -11,13 +11,19 @@
 <body>
 
 <header class="header">
-    <h1>Panel Administratora</h1>
-    <div id="clock" class="clock"></div>
+    <div class="header-left">
+        <h1>Panel Administratora</h1>
+    </div>
+    <div class="header-right">
+        <button id="back-to-main" class="header-btn">Strona Główna</button>
+        <button id="logout-btn" class="header-btn">Wyloguj się</button>
+        <div id="clock" class="clock"></div>
+    </div>
 </header>
 
 <div id="toast-container"></div>
 
-<div class="container">
+<div class="container admin-container">
     <h2>Lista użytkowników</h2>
     <table id="user-table">
         <thead>
@@ -34,18 +40,16 @@
             <!-- Ładowanie użytkowników -->
         </tbody>
     </table>
-
-    <button id="back-to-main" class="admin-btn">Powrót do strony głównej</button>
-    <button id="logout-btn" class="logout-btn">Wyloguj się</button>
 </div>
 
 <script>
+// zegar w nagłówku
 function updateClock() {
     const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('clock').innerText = `${h}:${m}:${s}`;
 }
 setInterval(updateClock, 1000);
 window.onload = updateClock;
