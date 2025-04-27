@@ -80,7 +80,6 @@
   </div>
 
   <script>
-    // zegar
     function updateClock() {
       const d = new Date();
       document.getElementById('clock').innerText =
@@ -91,14 +90,12 @@
     setInterval(updateClock, 1000);
     window.onload = updateClock;
 
-    // kopiowanie
     function copyData(text) {
       navigator.clipboard.writeText(text)
         .then(()=>{ showToast('Skopiowano numery części!'); window.incrementCopy(); })
         .catch(()=> showToast('Błąd kopiowania!'));
     }
 
-    // obliczanie czasu + increment
     function calculateTime() {
       const v = document.getElementById('arrivalTime').value;
       if (!v) { showToast('Podaj czas przyjścia!'); return; }
@@ -109,7 +106,6 @@
       window.incrementCalc();
     }
 
-    // toast
     function showToast(msg) {
       const c = document.getElementById('toast-container');
       const t = document.createElement('div');
