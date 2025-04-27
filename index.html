@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomocnik Serwisowy</title>
     <link rel="stylesheet" href="stylesv1.2.css">
+    <script type="module" src="counter.js"></script>
 </head>
 
 <body>
@@ -71,13 +72,11 @@
 function calculateTime() {
     const arrivalInput = document.getElementById('arrivalTime');
     const arrivalTime = arrivalInput.value;
-
     if (!arrivalTime) {
         alert('Proszę wpisać czas przyjścia!');
         arrivalInput.style.border = '2px solid red';
         return;
     }
-
     arrivalInput.style.border = '';
 
     const [hours, minutes] = arrivalTime.split(':').map(num => parseInt(num));
@@ -99,21 +98,13 @@ function calculateTime() {
     localStorage.setItem('arrivalTime', arrivalTime);
 }
 
-function loadSavedTime() {
-    const savedTime = localStorage.getItem('arrivalTime');
-    if (savedTime) {
-        document.getElementById('arrivalTime').value = savedTime;
-    }
-}
-
-async function copyData(partNumbers) {
-    try {
-        await navigator.clipboard.writeText(partNumbers);
+function copyData(partNumbers) {
+    navigator.clipboard.writeText(partNumbers).then(() => {
         showToast('Skopiowano numery części!');
-    } catch (err) {
+    }).catch(err => {
         console.error('Błąd kopiowania: ', err);
         showToast('Nie udało się skopiować danych.');
-    }
+    });
 }
 
 function showToast(message) {
@@ -133,46 +124,13 @@ function updateClock() {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-
     const clock = document.getElementById('clock');
     clock.innerText = `${hours}:${minutes}:${seconds}`;
-
     clock.style.transform = 'scale(1.05)';
     setTimeout(() => clock.style.transform = 'scale(1)', 200);
 }
-
-// Funkcja animująca licznik
-function animateCounter(element, start, end, duration) {
-    let startTimestamp = null;
-    const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        element.innerText = `Liczba wejść: ${Math.floor(progress * (end - start) + start)}`;
-        if (progress < 1) {
-            window.requestAnimationFrame(step);
-        }
-    };
-    window.requestAnimationFrame(step);
-}
-
-// Funkcja do aktualizacji globalnego licznika wejść
-function updateVisitCounter() {
-    fetch('https://api.countapi.xyz/hit/pomocnikserwisowy/strona')
-    .then(response => response.json())
-    .then(data => {
-        const counterElement = document.getElementById('visitCounter');
-        const current = parseInt(counterElement.innerText.replace(/\D/g, '')) || 0;
-        animateCounter(counterElement, current, data.value, 1000);
-    });
-}
-
-// Uruchamiamy funkcje po załadowaniu strony
-window.onload = function() {
-    loadSavedTime();
-    updateClock();
-    updateVisitCounter();
-    setInterval(updateClock, 1000);
-};
+setInterval(updateClock, 1000);
+window.onload = updateClock;
 </script>
 
 </body>
