@@ -4,7 +4,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 const db = getDatabase();
 const auth = getAuth();
 
-// Funkcja do zwiększania liczby kopiowań użytkownika
+// Funkcja zwiększająca liczbę kopiowań
 function incrementCopy() {
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -14,13 +14,13 @@ function incrementCopy() {
                 lastActive: Date.now()
             });
 
-            // Aktualizuj wyświetlaną liczbę kopiowań na stronie
+            // Odśwież liczbę kopiowań na stronie
             fetchUserCopies(user.uid);
         }
     });
 }
 
-// Funkcja do pobrania aktualnej liczby kopiowań i pokazania jej na stronie
+// Funkcja pobierająca aktualną liczbę kopiowań
 function fetchUserCopies(uid) {
     const userRef = ref(db, 'users/' + uid);
     import("https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js").then(({ get }) => {
@@ -35,12 +35,12 @@ function fetchUserCopies(uid) {
     });
 }
 
-// Używamy od razu po załadowaniu strony
+// Używamy od razu po załadowaniu
 onAuthStateChanged(auth, (user) => {
     if (user) {
         fetchUserCopies(user.uid);
     }
 });
 
-// Umożliwienie używania funkcji copyData() w index.html
+// Pozwól na wywoływanie z HTML
 window.incrementCopy = incrementCopy;
