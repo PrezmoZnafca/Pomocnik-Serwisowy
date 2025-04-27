@@ -17,6 +17,7 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 document.addEventListener('DOMContentLoaded', () => {
+
     document.getElementById('show-register').addEventListener('click', () => {
         document.getElementById('login-form').classList.add('hidden');
         document.getElementById('register-form').classList.remove('hidden');
@@ -84,39 +85,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     onAuthStateChanged(auth, (user) => {
+        const authSection = document.getElementById('auth-section');
+        const mainSection = document.getElementById('main-section');
+        const logoutBtn = document.getElementById('logout-btn');
+        const adminBtn = document.getElementById('admin-panel-btn');
+
         if (user) {
-            document.getElementById('auth-section').classList.add('hidden');
-            document.getElementById('main-section').classList.remove('hidden');
-
-            const logoutBtn = document.getElementById('logout-btn');
-            const adminBtn = document.getElementById('admin-panel-btn');
-
-            const email = user.email;
-            const username = email.split('@')[0];
-
-            if (username === "PPZ" && adminBtn) {
-                adminBtn.classList.remove('hidden');
-                adminBtn.addEventListener('click', () => {
-                    window.location.href = "admin.html";
-                });
-            }
+            authSection.classList.add('hidden');
+            mainSection.classList.remove('hidden');
 
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', () => {
                     signOut(auth).then(() => {
-                        showToast('Wylogowano pomyślnie!');
-                        setTimeout(() => {
-                            window.location.href = "index.html";
-                        }, 1500);
+                        window.location.reload();
                     }).catch((error) => {
                         alert('Błąd wylogowania: ' + error.message);
                     });
                 });
             }
 
+            const username = user.email.split('@')[0];
+            if (username === "PPZ" && adminBtn) {
+                adminBtn.classList.remove('hidden');
+                adminBtn.addEventListener('click', () => {
+                    window.location.href = "admin.html";
+                });
+            }
         } else {
-            document.getElementById('auth-section').classList.remove('hidden');
-            document.getElementById('main-section').classList.add('hidden');
+            authSection.classList.remove('hidden');
+            mainSection.classList.add('hidden');
         }
     });
 });
