@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomocnik Serwisowy</title>
-    <link rel="stylesheet" href="stylesv1.2.css">
+    <link rel="stylesheet" href="stylesv1.3.css">
+    <script type="module" src="auth.js"></script>
     <script type="module" src="counter.js"></script>
 </head>
 
@@ -19,91 +20,89 @@
 
 <div id="toast-container"></div>
 
-<!-- Licznik wejść -->
-<div id="visitCounter" class="visit-counter"></div>
-
-<div class="container">
-    <div class="devices-container fade-in">
-        <h3>Uchwyty Zakrętarki</h3>
-        <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nBC-N019351\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1\nN919242, 1')">DCF850</button>
-        <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1\nN075339, 1')">DCF887</button>
-        <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
-        <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN611681, 1\nN424032, 1\nN437890, 1\nN019351, 1\nN612522, 1\nN453417, 1\nN421245, 1')">DCF809</button>
+<!-- Sekcja logowania/rejestracji -->
+<div id="auth-section" class="auth-container">
+    <div id="login-form" class="auth-form">
+        <h2>Logowanie</h2>
+        <input type="text" id="login-username" placeholder="Nazwa użytkownika">
+        <input type="password" id="login-password" placeholder="Hasło">
+        <button id="login-btn">Zaloguj się</button>
+        <p>Nie masz konta? <span id="show-register" class="switch-auth">Zarejestruj się</span></p>
     </div>
 
-    <div class="devices-container fade-in">
-        <h3>Różne</h3>
-        <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>
-        <button onclick="copyData('N430442, 1\nN329079, 1\nNA293294, 1')">Oscylacyjna DWE6423</button>
-    </div>
-
-    <div class="main-content fade-in">
-        <div class="input-section fade-in">
-            <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
-            <input type="time" id="arrivalTime" name="arrivalTime">
-            <button onclick="calculateTime()">Oblicz czas wyjścia</button>
-        </div>
-
-        <div class="time-result fade-in">
-            <h3>Nowy czas wyjścia:</h3>
-            <p id="outputTime">--:--</p>
-        </div>
-
-        <div class="links-section fade-in">
-            <h3>Przydatne strony:</h3>
-            <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
-            <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-            <a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/" target="_blank">DeWalt</a>
-            <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
-            <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black & Decker</a>
-        </div>
+    <div id="register-form" class="auth-form hidden">
+        <h2>Rejestracja</h2>
+        <input type="text" id="register-username" placeholder="Nazwa użytkownika">
+        <input type="password" id="register-password" placeholder="Hasło">
+        <button id="register-btn">Zarejestruj się</button>
+        <p>Masz już konto? <span id="show-login" class="switch-auth">Zaloguj się</span></p>
     </div>
 </div>
 
-<div class="smar-container fade-in">
-    <h3>Inne</h3>
-    <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
-    <button onclick="copyData('583534-00, 1')">Smar Grafitowy Mały</button>
-    <button onclick="window.open('Akumulatory.pdf', '_blank')">Otwórz plik PDF</button>
-    <button onclick="window.location.href='npr.ahk'" download>Pobierz plik npr.ahk</button>
+<!-- Sekcja główna (widoczna po zalogowaniu) -->
+<div id="main-section" class="hidden">
+
+    <button id="admin-panel-btn" class="hidden">Przejdź do panelu administratora</button>
+
+    <div class="container">
+        <div class="devices-container">
+            <h3>Uchwyty Zakrętarki</h3>
+            <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1')">DCF850</button>
+            <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1')">DCF887</button>
+            <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1')">DCF860N</button>
+        </div>
+
+        <div class="devices-container">
+            <h3>Różne</h3>
+            <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1')">Aligator</button>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
+                <input type="time" id="arrivalTime" name="arrivalTime">
+                <button onclick="calculateTime()">Oblicz czas wyjścia</button>
+            </div>
+
+            <div class="time-result">
+                <h3>Nowy czas wyjścia:</h3>
+                <p id="outputTime">--:--</p>
+            </div>
+
+            <div class="stats-section">
+                <h3>Twoje kopiowania:</h3>
+                <p id="copy-count">Skopiowano: 0 razy</p>
+            </div>
+
+            <div class="links-section">
+                <h3>Przydatne strony:</h3>
+                <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
+                <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
+                <a href="https://service.dewalt.pl/" target="_blank">DeWalt</a>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
-function calculateTime() {
-    const arrivalInput = document.getElementById('arrivalTime');
-    const arrivalTime = arrivalInput.value;
-    if (!arrivalTime) {
-        alert('Proszę wpisać czas przyjścia!');
-        arrivalInput.style.border = '2px solid red';
-        return;
-    }
-    arrivalInput.style.border = '';
-
-    const [hours, minutes] = arrivalTime.split(':').map(num => parseInt(num));
-    const workHours = 8;
-    const workMinutes = 15;
-
-    let endHours = hours + workHours;
-    let endMinutes = minutes + workMinutes;
-
-    if (endMinutes >= 60) {
-        endMinutes -= 60;
-        endHours += 1;
-    }
-
-    const formattedEndHours = String(endHours).padStart(2, '0');
-    const formattedEndMinutes = String(endMinutes).padStart(2, '0');
-    document.getElementById('outputTime').innerText = `${formattedEndHours}:${formattedEndMinutes}`;
-
-    localStorage.setItem('arrivalTime', arrivalTime);
+function updateClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
 }
+setInterval(updateClock, 1000);
 
-function copyData(partNumbers) {
-    navigator.clipboard.writeText(partNumbers).then(() => {
+window.onload = updateClock;
+
+function copyData(text) {
+    navigator.clipboard.writeText(text).then(() => {
         showToast('Skopiowano numery części!');
+        incrementCopy();
     }).catch(err => {
-        console.error('Błąd kopiowania: ', err);
-        showToast('Nie udało się skopiować danych.');
+        showToast('Błąd kopiowania!');
     });
 }
 
@@ -119,18 +118,32 @@ function showToast(message) {
     }, 3000);
 }
 
-function updateClock() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    const clock = document.getElementById('clock');
-    clock.innerText = `${hours}:${minutes}:${seconds}`;
-    clock.style.transform = 'scale(1.05)';
-    setTimeout(() => clock.style.transform = 'scale(1)', 200);
+function calculateTime() {
+    const arrivalInput = document.getElementById('arrivalTime');
+    const arrivalTime = arrivalInput.value;
+    if (!arrivalTime) {
+        showToast('Proszę wpisać czas przyjścia!');
+        arrivalInput.style.border = '2px solid red';
+        return;
+    }
+    arrivalInput.style.border = '';
+
+    const [hours, minutes] = arrivalTime.split(':').map(Number);
+    const workHours = 8;
+    const workMinutes = 15;
+
+    let endHours = hours + workHours;
+    let endMinutes = minutes + workMinutes;
+
+    if (endMinutes >= 60) {
+        endMinutes -= 60;
+        endHours += 1;
+    }
+
+    const formattedEndHours = String(endHours).padStart(2, '0');
+    const formattedEndMinutes = String(endMinutes).padStart(2, '0');
+    document.getElementById('outputTime').innerText = `${formattedEndHours}:${formattedEndMinutes}`;
 }
-setInterval(updateClock, 1000);
-window.onload = updateClock;
 </script>
 
 </body>
