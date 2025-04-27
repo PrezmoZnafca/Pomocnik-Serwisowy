@@ -1,5 +1,3 @@
-
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import { getDatabase, ref, set, update, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
@@ -7,19 +5,19 @@ import { getDatabase, ref, set, update, serverTimestamp } from "https://www.gsta
 // Konfiguracja Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
-  authDomain: "pomocnik-serwisowy.firebaseapp.com",
-  databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "pomocnik-serwisowy",
-  storageBucket: "pomocnik-serwisowy.firebasestorage.app",
-  messagingSenderId: "683654368007",
-  appId: "1:683654368007:web:d90e76b516275a847153a2"
+    authDomain: "pomocnik-serwisowy.firebaseapp.com",
+    databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "pomocnik-serwisowy",
+    storageBucket: "pomocnik-serwisowy.appspot.com",
+    messagingSenderId: "683654368007",
+    appId: "1:683654368007:web:d90e76b516275a847153a2"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Logowanie i rejestracja
+// Przełączanie formularzy
 document.getElementById('show-register').addEventListener('click', () => {
     document.getElementById('login-form').classList.add('hidden');
     document.getElementById('register-form').classList.remove('hidden');
@@ -92,37 +90,40 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById('auth-section').classList.add('hidden');
         document.getElementById('main-section').classList.remove('hidden');
 
-        const uid = user.uid;
         const email = user.email;
         const username = email.split('@')[0];
 
-        if (username === "PPZ") {
-            document.getElementById('admin-panel-btn').classList.remove('hidden');
-            document.getElementById('admin-panel-btn').addEventListener('click', () => {
+        // Pokazywanie przycisku admina tylko dla PPZ
+        const adminBtn = document.getElementById('admin-panel-btn');
+        if (username === "PPZ" && adminBtn) {
+            adminBtn.classList.remove('hidden');
+            adminBtn.addEventListener('click', () => {
                 window.location.href = "admin.html";
             });
         }
+
+        // Obsługa wylogowania
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                signOut(auth).then(() => {
+                    showToast('Wylogowano pomyślnie!');
+                    setTimeout(() => {
+                        window.location.href = "index.html";
+                    }, 1500);
+                }).catch((error) => {
+                    alert('Błąd wylogowania: ' + error.message);
+                });
+            });
+        }
+
     } else {
         document.getElementById('auth-section').classList.remove('hidden');
         document.getElementById('main-section').classList.add('hidden');
     }
 });
 
-// Funkcja wylogowania
-if (document.getElementById('logout-btn')) {
-    document.getElementById('logout-btn').addEventListener('click', () => {
-        signOut(auth).then(() => {
-            showToast('Wylogowano pomyślnie!');
-            setTimeout(() => {
-                window.location.href = "index.html";
-            }, 1500);
-        }).catch((error) => {
-            alert('Błąd wylogowania: ' + error.message);
-        });
-    });
-}
-
-// Toast funkcja
+// Toast - powiadomienia
 function showToast(message) {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
