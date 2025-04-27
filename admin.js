@@ -1,25 +1,57 @@
-
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-// Konfiguracja Firebase (wstaw swoje dane!)
 const firebaseConfig = {
-apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
-  authDomain: "pomocnik-serwisowy.firebaseapp.com",
-  databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "pomocnik-serwisowy",
-  storageBucket: "pomocnik-serwisowy.firebasestorage.app",
-  messagingSenderId: "683654368007",
-  appId: "1:683654368007:web:d90e76b516275a847153a2"
+    apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
+    authDomain: "pomocnik-serwisowy.firebaseapp.com",
+    databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "pomocnik-serwisowy",
+    storageBucket: "pomocnik-serwisowy.appspot.com",
+    messagingSenderId: "683654368007",
+    appId: "1:683654368007:web:d90e76b516275a847153a2"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Ładowanie użytkowników
+document.addEventListener('DOMContentLoaded', () => {
+    // Tylko dla admina
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const username = user.email.split('@')[0];
+            if (username !== "PPZ") {
+                alert('Brak dostępu!');
+                window.location.href = "index.html";
+            } else {
+                loadUsers();
+            }
+        } else {
+            window.location.href = "index.html";
+        }
+    });
+
+    // Wyloguj
+    if (document.getElementById('logout-btn')) {
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            signOut(auth).then(() => {
+                showToast('Wylogowano pomyślnie!');
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 1500);
+            }).catch((error) => {
+                alert('Błąd wylogowania: ' + error.message);
+            });
+        });
+    }
+
+    // Wróć na główną
+    document.getElementById('back-to-main').addEventListener('click', () => {
+        window.location.href = "index.html";
+    });
+});
+
 function loadUsers() {
     const usersRef = ref(db, 'users');
     get(usersRef).then((snapshot) => {
@@ -75,7 +107,6 @@ function loadUsers() {
     });
 }
 
-// Formatowanie dat
 function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
     return date.toLocaleString('pl-PL', {
@@ -87,7 +118,6 @@ function formatTimestamp(timestamp) {
     });
 }
 
-// Toast funkcja
 function showToast(message) {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
@@ -99,37 +129,3 @@ function showToast(message) {
         setTimeout(() => toast.remove(), 500);
     }, 3000);
 }
-
-// Obsługa powrotu na stronę główną
-document.getElementById('back-to-main').addEventListener('click', () => {
-    window.location.href = "index.html";
-});
-
-// Funkcja wylogowania
-if (document.getElementById('logout-btn')) {
-    document.getElementById('logout-btn').addEventListener('click', () => {
-        signOut(auth).then(() => {
-            showToast('Wylogowano pomyślnie!');
-            setTimeout(() => {
-                window.location.href = "index.html";
-            }, 1500);
-        }).catch((error) => {
-            alert('Błąd wylogowania: ' + error.message);
-        });
-    });
-}
-
-// Tylko dla admina (PPZ)
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        const username = user.email.split('@')[0];
-        if (username !== "PPZ") {
-            alert('Brak dostępu!');
-            window.location.href = "index.html";
-        } else {
-            loadUsers();
-        }
-    } else {
-        window.location.href = "index.html";
-    }
-});
