@@ -4,13 +4,13 @@ import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasej
 
 // KONFIGURACJA Firebase (WSTAW SWOJE DANE!)
 const firebaseConfig = {
-    apiKey: "TU_WSTAW_TWOJ_KLUCZ",
-    authDomain: "TU_WSTAW_TWOJ_AUTHDOMAIN",
-    databaseURL: "TU_WSTAW_TWOJ_DATABASEURL",
-    projectId: "TU_WSTAW_TWOJ_PROJECTID",
-    storageBucket: "TU_WSTAW_TWOJ_STORAGEBUCKET",
-    messagingSenderId: "TU_WSTAW_TWOJ_SENDERID",
-    appId: "TU_WSTAW_TWOJ_APPID"
+apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
+  authDomain: "pomocnik-serwisowy.firebaseapp.com",
+  databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "pomocnik-serwisowy",
+  storageBucket: "pomocnik-serwisowy.firebasestorage.app",
+  messagingSenderId: "683654368007",
+  appId: "1:683654368007:web:d90e76b516275a847153a2"
 };
 
 const app = initializeApp(firebaseConfig);
