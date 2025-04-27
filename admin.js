@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, deleteUser } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-// KONFIGURACJA Firebase (WSTAW SWOJE DANE!)
+// KONFIGURACJA Firebase (wstaw swoje dane!)
 const firebaseConfig = {
 apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
   authDomain: "pomocnik-serwisowy.firebaseapp.com",
@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Funkcja do ładowania użytkowników
+// Funkcja ładowania użytkowników
 function loadUsers() {
     const usersRef = ref(db, 'users');
     get(usersRef).then((snapshot) => {
@@ -34,10 +34,10 @@ function loadUsers() {
                 usernameTd.innerText = user.username;
 
                 const createdAtTd = document.createElement('td');
-                createdAtTd.innerText = user.createdAt ? new Date(user.createdAt).toLocaleString() : 'Brak danych';
+                createdAtTd.innerText = user.createdAt ? formatTimestamp(user.createdAt) : 'Brak danych';
 
                 const lastActiveTd = document.createElement('td');
-                lastActiveTd.innerText = user.lastActive ? new Date(user.lastActive).toLocaleString() : 'Brak aktywności';
+                lastActiveTd.innerText = user.lastActive ? formatTimestamp(user.lastActive) : 'Brak aktywności';
 
                 const copiesTd = document.createElement('td');
                 copiesTd.innerText = user.copies || 0;
@@ -73,6 +73,18 @@ function loadUsers() {
     });
 }
 
+// Funkcja formatująca timestamp do czytelnej daty
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleString('pl-PL', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
 // Toast powiadomienia
 function showToast(message) {
     const container = document.getElementById('toast-container');
@@ -86,7 +98,7 @@ function showToast(message) {
     }, 3000);
 }
 
-// Obsługa powrotu
+// Powrót do strony głównej
 document.getElementById('back-to-main').addEventListener('click', () => {
     window.location.href = "index.html";
 });
