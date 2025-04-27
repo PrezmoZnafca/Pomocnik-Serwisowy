@@ -88,10 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('auth-section').classList.add('hidden');
             document.getElementById('main-section').classList.remove('hidden');
 
+            const logoutBtn = document.getElementById('logout-btn');
+            const adminBtn = document.getElementById('admin-panel-btn');
+
             const email = user.email;
             const username = email.split('@')[0];
 
-            const adminBtn = document.getElementById('admin-panel-btn');
             if (username === "PPZ" && adminBtn) {
                 adminBtn.classList.remove('hidden');
                 adminBtn.addEventListener('click', () => {
@@ -99,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
-            const logoutBtn = document.getElementById('logout-btn');
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', () => {
                     signOut(auth).then(() => {
