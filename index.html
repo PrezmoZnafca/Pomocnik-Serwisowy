@@ -1,26 +1,23 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomocnik Serwisowy</title>
-    <link rel="stylesheet" href="stylesv1.4.css">
-    <script type="module" src="auth.js"></script>
-    <script type="module" src="counter.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script type="module" src="auth.js" defer></script>
+    <script type="module" src="counter.js" defer></script>
 </head>
-
 <body>
 
 <header class="header">
     <h1>Pomocnik Serwisowy</h1>
+    <div id="clock" class="clock"></div>
 </header>
-
-<div class="clock" id="clock"></div>
 
 <div id="toast-container"></div>
 
-<!-- Sekcja logowania/rejestracji -->
 <div id="auth-section" class="auth-container">
     <div id="login-form" class="auth-form">
         <h2>Logowanie</h2>
@@ -39,29 +36,24 @@
     </div>
 </div>
 
-<!-- Sekcja główna (widoczna po zalogowaniu) -->
 <div id="main-section" class="hidden">
-
-    <button id="admin-panel-btn" class="hidden">Przejdź do panelu administratora</button>
-	<button id="logout-btn" class="logout-btn">Wyloguj się</button>
-
+    <div class="buttons-top">
+        <button id="admin-panel-btn" class="hidden">Panel Administratora</button>
+        <button id="logout-btn" class="logout-btn">Wyloguj się</button>
+    </div>
 
     <div class="container">
-
-        <!-- Lewa sekcja: Urządzenia -->
         <div class="devices-container">
-            <h3>Uchwyty Zakrętarki</h3>
-            <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1')">DCF850</button>
-            <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1')">DCF887</button>
-            <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1')">DCF860N</button>
+            <h3>Zakładki Kopiowania</h3>
+            <button onclick="copyData('Kod1, 1\nKod2, 1')">DCF850</button>
+            <button onclick="copyData('Kod3, 1\nKod4, 1')">DCF887</button>
+            <button onclick="copyData('Kod5, 1\nKod6, 1')">DCF860N</button>
         </div>
 
-        <!-- Środkowa sekcja: Kalkulator czasu pracy -->
         <div class="main-content">
-            <h3>Oblicz Czas Wyjścia</h3>
-            <label for="arrivalTime">Wpisz czas przyjścia (np. 08:30):</label>
-            <input type="time" id="arrivalTime" name="arrivalTime">
-            <button onclick="calculateTime()">Oblicz czas wyjścia</button>
+            <h3>Oblicz czas wyjścia</h3>
+            <input type="time" id="arrivalTime">
+            <button onclick="calculateTime()">Oblicz</button>
             <div class="time-result">
                 <h4>Nowy czas wyjścia:</h4>
                 <p id="outputTime">--:--</p>
@@ -73,22 +65,18 @@
             </div>
         </div>
 
-        <!-- Prawa sekcja: Smary -->
         <div class="devices-container">
-            <h3>Różne</h3>
-            <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1')">Aligator</button>
+            <h3>Inne</h3>
+            <button onclick="copyData('Kod7, 1\nKod8, 1')">Aligator</button>
         </div>
-
     </div>
 
-    <!-- Przydatne linki -->
     <div class="links-section">
-        <h3>Przydatne strony:</h3>
-        <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
+        <h3>Linki:</h3>
+        <a href="https://erpatech.com/" target="_blank">ERPATECH</a>
         <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-        <a href="https://service.dewalt.pl/" target="_blank">DeWalt</a>
+        <a href="https://service.dewalt.pl/" target="_blank">DeWalt Service</a>
     </div>
-
 </div>
 
 <script>
@@ -97,12 +85,7 @@ function updateClock() {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-    const clock = document.getElementById('clock');
-    clock.innerText = `${hours}:${minutes}:${seconds}`;
-    clock.style.transform = "scale(1.1)";
-    setTimeout(() => {
-        clock.style.transform = "scale(1)";
-    }, 500);
+    document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
 }
 setInterval(updateClock, 1000);
 window.onload = updateClock;
@@ -110,8 +93,8 @@ window.onload = updateClock;
 function copyData(text) {
     navigator.clipboard.writeText(text).then(() => {
         showToast('Skopiowano numery części!');
-        incrementCopy();
-    }).catch(err => {
+        window.incrementCopy();
+    }).catch(() => {
         showToast('Błąd kopiowania!');
     });
 }
@@ -132,16 +115,13 @@ function calculateTime() {
     const arrivalInput = document.getElementById('arrivalTime');
     const arrivalTime = arrivalInput.value;
     if (!arrivalTime) {
-        showToast('Proszę wpisać czas przyjścia!');
-        arrivalInput.style.border = '2px solid red';
+        showToast('Proszę podać czas przyjścia!');
         return;
     }
-    arrivalInput.style.border = '';
 
     const [hours, minutes] = arrivalTime.split(':').map(Number);
     const workHours = 8;
     const workMinutes = 15;
-
     let endHours = hours + workHours;
     let endMinutes = minutes + workMinutes;
 
@@ -150,9 +130,7 @@ function calculateTime() {
         endHours += 1;
     }
 
-    const formattedEndHours = String(endHours).padStart(2, '0');
-    const formattedEndMinutes = String(endMinutes).padStart(2, '0');
-    document.getElementById('outputTime').innerText = `${formattedEndHours}:${formattedEndMinutes}`;
+    document.getElementById('outputTime').innerText = `${String(endHours).padStart(2, '0')}:${String(endMinutes).padStart(2, '0')}`;
 }
 </script>
 

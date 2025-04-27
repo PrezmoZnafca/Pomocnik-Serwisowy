@@ -4,7 +4,6 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 const db = getDatabase();
 const auth = getAuth();
 
-// Funkcja zwiększająca liczbę kopiowań
 function incrementCopy() {
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -14,13 +13,11 @@ function incrementCopy() {
                 lastActive: Date.now()
             });
 
-            // Odśwież liczbę kopiowań na stronie
             fetchUserCopies(user.uid);
         }
     });
 }
 
-// Funkcja pobierająca aktualną liczbę kopiowań
 function fetchUserCopies(uid) {
     const userRef = ref(db, 'users/' + uid);
     import("https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js").then(({ get }) => {
@@ -35,12 +32,10 @@ function fetchUserCopies(uid) {
     });
 }
 
-// Używamy od razu po załadowaniu
 onAuthStateChanged(auth, (user) => {
     if (user) {
         fetchUserCopies(user.uid);
     }
 });
 
-// Pozwól na wywoływanie z HTML
 window.incrementCopy = incrementCopy;

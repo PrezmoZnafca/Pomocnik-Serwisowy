@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Administratora - Pomocnik Serwisowy</title>
-    <link rel="stylesheet" href="stylesv1.4.css">
-    <script type="module" src="admin.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script type="module" src="admin.js" defer></script>
 </head>
-
 <body>
 
 <header class="header">
     <h1>Panel Administratora</h1>
+    <div id="clock" class="clock"></div>
 </header>
-
-<div class="clock" id="clock"></div>
 
 <div id="toast-container"></div>
 
@@ -27,18 +25,18 @@
                 <th>Nazwa użytkownika</th>
                 <th>Data rejestracji</th>
                 <th>Ostatnia aktywność</th>
-                <th>Skopiowania</th>
+                <th>Ilość kopiowań</th>
+                <th>Ilość logowań</th>
                 <th>Akcje</th>
             </tr>
         </thead>
         <tbody id="user-table-body">
-            <!-- Generowana tabela użytkowników -->
+            <!-- Ładowanie użytkowników -->
         </tbody>
     </table>
 
-    <button id="back-to-main" class="admin-btn">Wróć na stronę główną</button>
-	<button id="logout-btn" class="logout-btn">Wyloguj się</button>
-
+    <button id="back-to-main" class="admin-btn">Powrót do strony głównej</button>
+    <button id="logout-btn" class="logout-btn">Wyloguj się</button>
 </div>
 
 <script>
@@ -47,12 +45,7 @@ function updateClock() {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-    const clock = document.getElementById('clock');
-    clock.innerText = `${hours}:${minutes}:${seconds}`;
-    clock.style.transform = "scale(1.1)";
-    setTimeout(() => {
-        clock.style.transform = "scale(1)";
-    }, 500);
+    document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
 }
 setInterval(updateClock, 1000);
 window.onload = updateClock;

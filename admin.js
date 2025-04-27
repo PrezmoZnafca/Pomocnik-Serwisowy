@@ -31,19 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            signOut(auth).then(() => {
-                showToast('Wylogowano pomyślnie!');
-                setTimeout(() => {
-                    window.location.href = "index.html";
-                }, 1500);
-            }).catch((error) => {
-                alert('Błąd wylogowania: ' + error.message);
-            });
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        signOut(auth).then(() => {
+            window.location.href = "index.html";
         });
-    }
+    });
 
     document.getElementById('back-to-main').addEventListener('click', () => {
         window.location.href = "index.html";
@@ -62,50 +54,33 @@ function loadUsers() {
                 const user = users[uid];
                 const tr = document.createElement('tr');
 
-                const usernameTd = document.createElement('td');
-                usernameTd.innerText = user.username || 'Brak danych';
-
-                const createdAtTd = document.createElement('td');
-                createdAtTd.innerText = user.createdAt ? formatTimestamp(user.createdAt) : 'Brak danych';
-
-                const lastActiveTd = document.createElement('td');
-                lastActiveTd.innerText = user.lastActive ? formatTimestamp(user.lastActive) : 'Brak aktywności';
-
-                const copiesTd = document.createElement('td');
-                copiesTd.innerText = user.copies ?? 0;
-
-                const loginsTd = document.createElement('td');
-                loginsTd.innerText = user.logins ?? 0;
-
-                const actionTd = document.createElement('td');
-                const deleteBtn = document.createElement('button');
-                deleteBtn.innerText = 'Usuń';
-                deleteBtn.classList.add('admin-btn');
-                deleteBtn.addEventListener('click', () => {
-                    if (confirm('Czy na pewno chcesz usunąć tego użytkownika?')) {
-                        remove(ref(db, 'users/' + uid)).then(() => {
-                            showToast('Użytkownik usunięty!');
-                            loadUsers();
-                        }).catch((error) => {
-                            showToast('Błąd usuwania: ' + error.message);
-                        });
-                    }
-                });
-
-                tr.appendChild(usernameTd);
-                tr.appendChild(createdAtTd);
-                tr.appendChild(lastActiveTd);
-                tr.appendChild(copiesTd);
-                tr.appendChild(loginsTd);
-                tr.appendChild(actionTd);
+                tr.innerHTML = `
+                    <td>${user.username || 'Brak'}</td>
+                    <td>${user.createdAt ? formatTimestamp(user.createdAt) : 'Brak'}</td>
+                    <td>${user.lastActive ? formatTimestamp(user.lastActive) : 'Brak'}</td>
+                    <td>${user.copies ?? 0}</td>
+                    <td>${user.logins ?? 0}</td>
+                    <td><button class="admin-btn" onclick="deleteUser('${uid}')">Usuń</button></td>
+                `;
 
                 tbody.appendChild(tr);
             });
         }
     }).catch((error) => {
-        showToast('Błąd ładowania użytkowników: ' + error.message);
+        console.error('Błąd ładowania użytkowników:', error);
     });
 }
+
+window.deleteUser = (uid) => {
+    if (confirm('Na pewno chcesz usunąć tego użytkownika?')) {
+        remove(ref(db, 'users/' + uid)).then(() => {
+            alert('Użytkownik usunięty');
+            loadUsers();
+        }).catch((error) => {
+            console.error('Błąd usuwania:', error);
+        });
+    }
+};
 
 function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
@@ -116,16 +91,4 @@ function formatTimestamp(timestamp) {
         hour: '2-digit',
         minute: '2-digit'
     });
-}
-
-function showToast(message) {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    toast.classList.add('toast');
-    toast.innerText = message;
-    container.appendChild(toast);
-    setTimeout(() => {
-        toast.classList.add('hidden');
-        setTimeout(() => toast.remove(), 500);
-    }, 3000);
 }

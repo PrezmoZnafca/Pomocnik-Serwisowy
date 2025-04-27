@@ -120,15 +120,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-function showToast(message) {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    toast.classList.add('toast');
-    toast.innerText = message;
-    container.appendChild(toast);
-    setTimeout(() => {
-        toast.classList.add('hidden');
-        setTimeout(() => toast.remove(), 500);
-    }, 3000);
-}
