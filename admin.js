@@ -17,7 +17,6 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Tylko dla admina
     onAuthStateChanged(auth, (user) => {
         if (user) {
             const username = user.email.split('@')[0];
@@ -32,9 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Wyloguj
-    if (document.getElementById('logout-btn')) {
-        document.getElementById('logout-btn').addEventListener('click', () => {
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
             signOut(auth).then(() => {
                 showToast('Wylogowano pomyślnie!');
                 setTimeout(() => {
@@ -46,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Wróć na główną
     document.getElementById('back-to-main').addEventListener('click', () => {
         window.location.href = "index.html";
     });
@@ -65,7 +63,7 @@ function loadUsers() {
                 const tr = document.createElement('tr');
 
                 const usernameTd = document.createElement('td');
-                usernameTd.innerText = user.username;
+                usernameTd.innerText = user.username || 'Brak danych';
 
                 const createdAtTd = document.createElement('td');
                 createdAtTd.innerText = user.createdAt ? formatTimestamp(user.createdAt) : 'Brak danych';
@@ -74,7 +72,10 @@ function loadUsers() {
                 lastActiveTd.innerText = user.lastActive ? formatTimestamp(user.lastActive) : 'Brak aktywności';
 
                 const copiesTd = document.createElement('td');
-                copiesTd.innerText = user.copies || 0;
+                copiesTd.innerText = user.copies ?? 0;
+
+                const loginsTd = document.createElement('td');
+                loginsTd.innerText = user.logins ?? 0;
 
                 const actionTd = document.createElement('td');
                 const deleteBtn = document.createElement('button');
@@ -91,12 +92,11 @@ function loadUsers() {
                     }
                 });
 
-                actionTd.appendChild(deleteBtn);
-
                 tr.appendChild(usernameTd);
                 tr.appendChild(createdAtTd);
                 tr.appendChild(lastActiveTd);
                 tr.appendChild(copiesTd);
+                tr.appendChild(loginsTd);
                 tr.appendChild(actionTd);
 
                 tbody.appendChild(tr);

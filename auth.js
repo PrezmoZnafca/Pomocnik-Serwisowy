@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-import { getDatabase, ref, set, update, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+import { getDatabase, ref, set, update, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
@@ -17,7 +17,6 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Przełączanie widoku
     document.getElementById('show-register').addEventListener('click', () => {
         document.getElementById('login-form').classList.add('hidden');
         document.getElementById('register-form').classList.remove('hidden');
@@ -28,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('login-form').classList.remove('hidden');
     });
 
-    // Rejestracja użytkownika
     document.getElementById('register-btn').addEventListener('click', () => {
         const username = document.getElementById('register-username').value.trim();
         const password = document.getElementById('register-password').value;
@@ -51,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     username: username,
                     createdAt: serverTimestamp(),
                     lastActive: serverTimestamp(),
-                    role: 'user',
-                    copies: 0
+                    copies: 0,
+                    logins: 1
                 });
                 location.reload();
             })
@@ -61,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     });
 
-    // Logowanie użytkownika
     document.getElementById('login-btn').addEventListener('click', () => {
         const username = document.getElementById('login-username').value.trim();
         const password = document.getElementById('login-password').value;
@@ -75,8 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         signInWithEmailAndPassword(auth, fakeEmail, password)
             .then((userCredential) => {
-                update(ref(db, 'users/' + userCredential.user.uid), {
-                    lastActive: serverTimestamp()
+                const userRef = ref(db, 'users/' + userCredential.user.uid);
+                update(userRef, {
+                    lastActive: serverTimestamp(),
+                    logins: increment(1)
                 });
             })
             .catch((error) => {
@@ -84,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     });
 
-    // Zarządzanie sesją użytkownika
     onAuthStateChanged(auth, (user) => {
         if (user) {
             document.getElementById('auth-section').classList.add('hidden');
@@ -122,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Toast
 function showToast(message) {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
