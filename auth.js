@@ -11,6 +11,7 @@ import {
   ref,
   set,
   update,
+  get,
   serverTimestamp,
   increment
 } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
@@ -25,12 +26,12 @@ const firebaseConfig = {
   appId: "1:683654368007:web:d90e76b516275a847153a2"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
+initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getDatabase();
 
 document.addEventListener('DOMContentLoaded', () => {
-  // przełączanie form
+  // przełączanie formularzy
   document.getElementById('show-register').addEventListener('click', () => {
     document.getElementById('login-form').classList.add('hidden');
     document.getElementById('register-form').classList.remove('hidden');
@@ -44,16 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('register-btn').addEventListener('click', () => {
     const username = document.getElementById('register-username').value.trim();
     const password = document.getElementById('register-password').value;
-    if (!username || !password) {
-      alert('Proszę wypełnić wszystkie pola!'); return;
-    }
-    if (password.length < 6) {
-      alert('Hasło musi mieć minimum 6 znaków!'); return;
-    }
+    if (!username || !password) { alert('Wypełnij wszystkie pola!'); return; }
+    if (password.length < 6) { alert('Hasło min. 6 znaków!'); return; }
     const email = `${username}@pomocnik.local`;
     createUserWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
-        // zapis do bazy
         return set(ref(db, 'users/' + user.uid), {
           username,
           createdAt: serverTimestamp(),
@@ -72,9 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('login-btn').addEventListener('click', () => {
     const username = document.getElementById('login-username').value.trim();
     const password = document.getElementById('login-password').value;
-    if (!username || !password) {
-      alert('Proszę wypełnić wszystkie pola!'); return;
-    }
+    if (!username || !password) { alert('Wypełnij wszystkie pola!'); return; }
     const email = `${username}@pomocnik.local`;
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
@@ -86,24 +80,32 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(err => alert('Błąd logowania: ' + err.message));
   });
 
-  // stan auth
+  // obsługa stanu auth + pokazanie przycisków
   onAuthStateChanged(auth, user => {
     const aSec = document.getElementById('auth-section');
     const mSec = document.getElementById('main-section');
     const logoutBtn = document.getElementById('logout-btn');
-    const adminBtn = document.getElementById('admin-panel-btn');
+    const adminBtn  = document.getElementById('admin-panel-btn');
+
     if (user) {
       aSec.classList.add('hidden');
       mSec.classList.remove('hidden');
-      // wyloguj
+
+      // pokaż przycisk wylogowania
       logoutBtn.classList.remove('hidden');
-      logoutBtn.onclick = () => signOut(auth).then(()=>window.location.reload());
-      // admin
-      const uname = user.email.split('@')[0];
-      if (uname === "PPZ") {
-        adminBtn.classList.remove('hidden');
-        adminBtn.onclick = () => window.location.href = "admin.html";
-      }
+      logoutBtn.onclick = () =>
+        signOut(auth).then(() => window.location.reload());
+
+      // pobierz rolę i pokaż admina tylko gdy "admin"
+      get(ref(db, 'users/' + user.uid + '/role'))
+        .then(snap => {
+          if (snap.exists() && snap.val() === 'admin') {
+            adminBtn.classList.remove('hidden');
+            adminBtn.onclick = () => window.location.href = 'admin.html';
+          }
+        })
+        .catch(() => { /* można dodać log */ });
+
     } else {
       aSec.classList.remove('hidden');
       mSec.classList.add('hidden');
