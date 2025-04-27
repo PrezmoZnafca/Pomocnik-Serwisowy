@@ -1,27 +1,26 @@
 /* Header */
 .header {
-    background-color: #ffcb00; /* Żółte tło */
-    color: #000000 !important; /* Czarny tekst */
-    text-align: center; /* Wyśrodkowanie tekstu */
-    padding: 20px 0; /* Odstępy wokół tekstu */
-    font-size: 24px; /* Rozmiar czcionki */
-    font-weight: bold; /* Pogrubiona czcionka */
-    width: 100%; /* Szerokość na całą stronę */
-    position: fixed; /* Pozycja stała */
+    background-color: #ffcb00;
+    color: #000000 !important;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 24px;
+    font-weight: bold;
+    width: 100%;
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 1001; /* Ustawienie nad innymi elementami */
+    z-index: 1001;
 }
 
 .header h1 {
-    margin: 0; /* Usunięcie marginesów z nagłówka */
-    font-size: 30px; /* Dostosowanie rozmiaru czcionki w nagłówku */
-    color: #000000; /* Ustalenie koloru tekstu w nagłówku */
+    margin: 0;
+    font-size: 30px;
 }
 
 /* Body */
 body {
-    background-color: #121212;
+    background-color: #181818;
     color: #f5f5f5;
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -30,7 +29,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    position: relative; /* Kontener do pozycjonowania boxa */
+    position: relative;
 }
 
 /* Kontener */
@@ -43,7 +42,7 @@ body {
     height: 80%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     border-radius: 12px;
-    overflow: hidden; /* Unikamy wystających elementów */
+    overflow: hidden;
 }
 
 /* Main content */
@@ -79,23 +78,25 @@ body {
     font-size: 18px;
     border-radius: 8px;
     width: 100%;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
 .devices-container button:hover {
     background-color: #666;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
 
 /* Smar Grafitowy */
 .smar-container {
-    position: fixed; /* Zmienione z absolute na fixed */
+    position: fixed;
     bottom: 30px;
     left: 30px;
     background-color: #333;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    width: 180px; /* Mniejszy rozmiar */
+    width: 180px;
     text-align: center;
     z-index: 1001;
 }
@@ -105,14 +106,16 @@ body {
     color: #fff;
     margin: 10px 0;
     padding: 10px;
-    font-size: 14px; /* Mniejszy tekst */
+    font-size: 14px;
     border-radius: 8px;
     width: 100%;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
 .smar-container button:hover {
     background-color: #666;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
 
 /* Zegar */
@@ -123,10 +126,11 @@ body {
     top: 20px;
     right: 40px;
     font-weight: bold;
-    z-index: 1002; /* Wyższy priorytet niż inne elementy */
+    z-index: 1002;
+    transition: transform 0.2s ease;
 }
 
-/* Animacja */
+/* Animacja fade-in */
 .fade-in {
     animation: fadeIn 1s ease-out;
 }
@@ -142,27 +146,28 @@ body {
     }
 }
 
-/* Powiadomienia */
-#notifications-container {
+/* Toast powiadomienia */
+#toast-container {
     position: fixed;
-    top: 80px;
+    bottom: 80px;
     right: 20px;
-    z-index: 1000;
+    z-index: 1003;
 }
 
-.notification {
+.toast {
     background-color: #4CAF50;
     color: white;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     opacity: 1;
-    transition: opacity 1s ease, transform 0.3s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.notification.hidden {
+.toast.hidden {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(20px);
 }
 
 /* Input i button */
@@ -175,6 +180,7 @@ input[type="time"] {
     border-radius: 8px;
     width: 100%;
     margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
 button {
@@ -185,12 +191,14 @@ button {
     color: #121212;
     cursor: pointer;
     border-radius: 8px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
 button:hover {
     background-color: #e0a700;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
 
 /* Przydatne linki */
@@ -210,11 +218,13 @@ button:hover {
     margin: 10px;
     border-radius: 8px;
     font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
 .links-section a:hover {
     background-color: #666;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
 
 .links-section a:active {
@@ -246,4 +256,21 @@ button:hover {
     }
 }
 
+/* Nowy wygląd licznika wejść */
+.visit-counter {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #333;
+    color: #ffcb00;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
 
+.visit-counter:hover {
+    transform: scale(1.05);
+}
