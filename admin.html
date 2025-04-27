@@ -10,47 +10,45 @@
 </head>
 <body>
 
-<header class="header">
-  <div class="header-left"><h1>Panel Administratora</h1></div>
-  <div class="header-right">
-    <button id="back-to-main" class="header-btn">Strona Główna</button>
-    <button id="logout-btn" class="header-btn">Wyloguj się</button>
+  <header class="header">
+    <h1>Panel Administratora</h1>
     <div id="clock" class="clock"></div>
+  </header>
+
+  <div id="toast-container"></div>
+
+  <div class="container admin-container">
+    <h2>Lista użytkowników</h2>
+    <table id="user-table">
+      <thead>
+        <tr>
+          <th>Nazwa</th>
+          <th>Rola</th>
+          <th>Rejestracja</th>
+          <th>Ostatnia aktywność</th>
+          <th>Kopiowań</th>
+          <th>Obliczeń</th>
+          <th>Logowań</th>
+          <th>Akcje</th>
+        </tr>
+      </thead>
+      <tbody id="user-table-body"></tbody>
+    </table>
+    <button id="back-to-main" class="admin-btn">Strona Główna</button>
+    <button id="logout-btn"     class="admin-btn">Wyloguj się</button>
   </div>
-</header>
 
-<div id="toast-container"></div>
-
-<div class="container admin-container">
-  <h2>Lista użytkowników</h2>
-  <table id="user-table">
-    <thead>
-      <tr>
-        <th>Nazwa</th>
-        <th>Rola</th>
-        <th>Rejestracja</th>
-        <th>Ostatnia aktywność</th>
-        <th>Kopiowań</th>
-        <th>Obliczeń</th>
-        <th>Logowań</th>
-        <th>Akcje</th>
-      </tr>
-    </thead>
-    <tbody id="user-table-body"></tbody>
-  </table>
-</div>
-
-<script>
-  function updateClock() {
-    const d=new Date();
-    const h=String(d.getHours()).padStart(2,'0');
-    const m=String(d.getMinutes()).padStart(2,'0');
-    const s=String(d.getSeconds()).padStart(2,'0');
-    document.getElementById('clock').innerText=`${h}:${m}:${s}`;
-  }
-  setInterval(updateClock,1000);
-  window.onload=updateClock;
-</script>
+  <script>
+    function updateClock() {
+      const d = new Date();
+      document.getElementById('clock').innerText =
+        `${String(d.getHours()).padStart(2,'0')}:` +
+        `${String(d.getMinutes()).padStart(2,'0')}:` +
+        `${String(d.getSeconds()).padStart(2,'0')}`;
+    }
+    setInterval(updateClock,1000);
+    window.onload = updateClock;
+  </script>
 
 </body>
 </html>

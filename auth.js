@@ -16,7 +16,7 @@ import {
   increment
 } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-const firebaseConfig = {
+initializeApp({
   apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
   authDomain: "pomocnik-serwisowy.firebaseapp.com",
   databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
@@ -24,93 +24,84 @@ const firebaseConfig = {
   storageBucket: "pomocnik-serwisowy.appspot.com",
   messagingSenderId: "683654368007",
   appId: "1:683654368007:web:d90e76b516275a847153a2"
-};
+});
 
-initializeApp(firebaseConfig);
 const auth = getAuth();
-const db = getDatabase();
+const db   = getDatabase();
 
 document.addEventListener('DOMContentLoaded', () => {
-  // przełączanie formularzy
-  document.getElementById('show-register').addEventListener('click', () => {
+  // przełączanie form
+  document.getElementById('show-register').onclick = () => {
     document.getElementById('login-form').classList.add('hidden');
     document.getElementById('register-form').classList.remove('hidden');
-  });
-  document.getElementById('show-login').addEventListener('click', () => {
+  };
+  document.getElementById('show-login').onclick = () => {
     document.getElementById('register-form').classList.add('hidden');
     document.getElementById('login-form').classList.remove('hidden');
-  });
+  };
 
   // rejestracja
-  document.getElementById('register-btn').addEventListener('click', () => {
-    const username = document.getElementById('register-username').value.trim();
-    const password = document.getElementById('register-password').value;
-    if (!username || !password) { alert('Wypełnij wszystkie pola!'); return; }
-    if (password.length < 6) { alert('Hasło min. 6 znaków!'); return; }
-    const email = `${username}@pomocnik.local`;
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(({ user }) => {
-        return set(ref(db, 'users/' + user.uid), {
-          username,
-          createdAt: serverTimestamp(),
-          lastActive: serverTimestamp(),
-          copies: 0,
-          calculations: 0,
-          logins: 1,
-          role: 'user'
-        });
-      })
-      .then(() => window.location.reload())
-      .catch(err => alert('Błąd rejestracji: ' + err.message));
-  });
+  document.getElementById('register-btn').onclick = () => {
+    const u = document.getElementById('register-username').value.trim();
+    const p = document.getElementById('register-password').value;
+    if (!u||!p) { alert('Wypełnij wszystkie pola!'); return; }
+    if (p.length<6) { alert('Hasło min. 6 znaków!'); return; }
+    createUserWithEmailAndPassword(auth, `${u}@pomocnik.local`, p)
+      .then(({ user }) => set(ref(db, 'users/' + user.uid), {
+        username: u,
+        createdAt:   serverTimestamp(),
+        lastActive:  serverTimestamp(),
+        copies:      0,
+        calculations:0,
+        logins:      1,
+        role:        'user'
+      }))
+      .then(()=>window.location.reload())
+      .catch(e=>alert('Błąd rejestracji: '+e.message));
+  };
 
   // logowanie
-  document.getElementById('login-btn').addEventListener('click', () => {
-    const username = document.getElementById('login-username').value.trim();
-    const password = document.getElementById('login-password').value;
-    if (!username || !password) { alert('Wypełnij wszystkie pola!'); return; }
-    const email = `${username}@pomocnik.local`;
-    signInWithEmailAndPassword(auth, email, password)
-      .then(({ user }) => {
-        return update(ref(db, 'users/' + user.uid), {
-          lastActive: serverTimestamp(),
-          logins: increment(1)
-        });
-      })
-      .catch(err => alert('Błąd logowania: ' + err.message));
-  });
+  document.getElementById('login-btn').onclick = () => {
+    const u = document.getElementById('login-username').value.trim();
+    const p = document.getElementById('login-password').value;
+    if (!u||!p) { alert('Wypełnij wszystkie pola!'); return; }
+    signInWithEmailAndPassword(auth, `${u}@pomocnik.local`, p)
+      .then(({ user }) => update(ref(db, 'users/' + user.uid), {
+        lastActive: serverTimestamp(),
+        logins:     increment(1)
+      }))
+      .catch(e=>alert('Błąd logowania: '+e.message));
+  };
 
-  // obsługa stanu auth + pokazanie przycisków
+  // stan auth
   onAuthStateChanged(auth, user => {
-    const aSec = document.getElementById('auth-section');
-    const mSec = document.getElementById('main-section');
-    const logoutBtn = document.getElementById('logout-btn');
-    const adminBtn  = document.getElementById('admin-panel-btn');
+    const loBtn = document.getElementById('logout-btn');
+    const adBtn = document.getElementById('admin-panel-btn');
+    const aSec  = document.getElementById('auth-section');
+    const mSec  = document.getElementById('main-section');
 
     if (user) {
       aSec.classList.add('hidden');
       mSec.classList.remove('hidden');
 
-      // pokaż przycisk wylogowania
-      logoutBtn.classList.remove('hidden');
-      logoutBtn.onclick = () =>
-        signOut(auth).then(() => window.location.reload());
+      // wyloguj
+      loBtn.classList.remove('hidden');
+      loBtn.onclick = () => signOut(auth).then(()=>window.location.reload());
 
-      // pobierz rolę i pokaż admina tylko gdy "admin"
-      get(ref(db, 'users/' + user.uid + '/role'))
+      // pokaż admin jeśli rola === 'admin'
+      get(ref(db, `users/${user.uid}/role`))
         .then(snap => {
-          if (snap.exists() && snap.val() === 'admin') {
-            adminBtn.classList.remove('hidden');
-            adminBtn.onclick = () => window.location.href = 'admin.html';
+          if (snap.val() === 'admin') {
+            adBtn.classList.remove('hidden');
+            adBtn.onclick = () => window.location.href = 'admin.html';
           }
         })
-        .catch(() => { /* można dodać log */ });
-
+        .catch(()=>{/* ignore */});
     } else {
       aSec.classList.remove('hidden');
       mSec.classList.add('hidden');
-      logoutBtn.classList.add('hidden');
-      adminBtn.classList.add('hidden');
+      loBtn.classList.add('hidden');
+      adBtn.classList.add('hidden');
     }
   });
 });
