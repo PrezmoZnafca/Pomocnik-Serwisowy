@@ -159,3 +159,16 @@ button:hover {
   transition:background 0.3s;
 }
 .admin-btn:hover { background:#c9302c; }
+
+
+/* Styl klikanych linków logowania/rejestracji jako zwykły tekst */
+.switch-auth {
+  color: #2196f3;       /* niebieski tekst */
+  cursor: pointer;      /* wskaźnik „ręka” */
+  font-weight: normal;  /* lub bold, jeśli wolisz */
+  text-decoration: none;
+}
+
+.switch-auth:hover {
+  text-decoration: underline; /* podkreślenie przy najechaniu */
+}
