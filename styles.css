@@ -38,6 +38,7 @@ body, html {
   border-radius:6px; margin-right:10px;
   font-size:14px; cursor:pointer;
   transition:background 0.3s, color 0.3s, transform 0.1s;
+  white-space: nowrap;
 }
 .header-btn:hover {
   background:#000; color:var(--primary); transform:scale(1.05);
