@@ -32,7 +32,9 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .devices-container button:hover { background: var(--hover); }
+    .devices-container button:hover {
+      background: var(--hover);
+    }
   </style>
   <script type="module" src="auth.js" defer></script>
   <script type="module" src="counter.js" defer></script>
@@ -79,7 +81,6 @@
         <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN611681, 1\nN424032, 1\nN437890, 1\nN019351, 1\nN612522, 1\nN453417, 1\nN421245, 1')">DCF809</button>
         <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>
         <button onclick="copyData('N430442, 1\nN329079, 1\nNA293294, 1')">Oscylacyjna DWE6423</button>
-        <div id="custom-buttons"></div>
       </div>
 
       <!-- Dodaj własne zakładki -->
@@ -90,7 +91,13 @@
         <button id="add-custom-btn">Dodaj zakładkę</button>
       </div>
 
-      <!-- Obliczanie czasu -->
+      <!-- Własne zakładki -->
+      <div class="devices-container">
+        <h3>Własne zakładki</h3>
+        <div id="custom-buttons"></div>
+      </div>
+
+      <!-- Oblicz czas wyjścia -->
       <div class="main-content">
         <h3>Oblicz czas wyjścia</h3>
         <div class="time-picker">
@@ -124,12 +131,13 @@
 
     </div>
 
+    <!-- Linki zewnętrzne -->
     <div class="links-section">
       <h3>Linki:</h3>
-      <a href="https://erpatech.com/"           target="_blank">ErpaTech</a>
-      <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-      <a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/" target="_blank">DeWalt</a>
-      <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
+      <a href="https://erpatech.com/"                        target="_blank">ErpaTech</a>
+      <a href="https://panel.rcponline.pl/app/"              target="_blank">RCP Online</a>
+      <a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/"    target="_blank">DeWalt</a>
+      <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/"      target="_blank">Stanley</a>
       <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black &amp; Decker</a>
     </div>
   </div>
@@ -206,7 +214,7 @@
         const { label, data } = child.val();
         const btn = document.createElement('button');
         btn.innerText = label;
-        btn.onclick = () => copyData(data);
+        btn.onclick   = () => copyData(data);
         customContainer.appendChild(btn);
       });
     });
