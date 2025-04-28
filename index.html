@@ -49,11 +49,15 @@
 
   <div id="main-section" class="hidden">
     <div class="container">
+      <!-- Główna tabela przycisków kopiowania -->
       <div class="devices-container">
         <h3>Zakładki Kopiowania</h3>
-        <button onclick="copyData('Kod1, 1\nKod2, 1')">DCF850</button>
-        <button onclick="copyData('Kod3, 1\nKod4, 1')">DCF887</button>
-        <button onclick="copyData('Kod5, 1\nKod6, 1')">DCF860N</button>
+        <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nBC-N019351\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1\nN919242, 1')">DCF850</button>
+        <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1\nN075339, 1')">DCF887</button>
+        <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
+        <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN611681, 1\nN424032, 1\nN437890, 1\nN019351, 1\nN612522, 1\nN453417, 1\nN421245, 1')">DCF809</button>
+        <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>
+        <button onclick="copyData('N430442, 1\nN329079, 1\nNA293294, 1')">Oscylacyjna DWE6423</button>
       </div>
 
       <div class="main-content">
@@ -87,17 +91,23 @@
         </div>
       </div>
 
+      <!-- Sekcja „Inne” bez przycisku Aligator -->
       <div class="devices-container">
         <h3>Inne</h3>
-        <button onclick="copyData('Kod7, 1\nKod8, 1')">Aligator</button>
+        <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
+        <button onclick="copyData('583534-00, 1')">Smar Grafitowy Mały</button>
+        <button onclick="window.open('Akumulatory.pdf', '_blank')">Otwórz plik PDF</button>
+        <button onclick="window.location.href='npr.ahk'" download>Pobierz plik npr.ahk</button>
       </div>
     </div>
 
     <div class="links-section">
       <h3>Linki:</h3>
-      <a href="https://erpatech.com/"           target="_blank">ERPATECH</a>
-      <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-      <a href="https://service.dewalt.pl/"      target="_blank">DeWalt Service</a>
+      <a href="https://erpatech.com/"                        target="_blank">ErpaTech</a>
+      <a href="https://panel.rcponline.pl/app/"              target="_blank">RCP Online</a>
+      <a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/"    target="_blank">DeWalt</a>
+      <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/"      target="_blank">Stanley</a>
+      <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black &amp; Decker</a>
     </div>
   </div>
 
