@@ -49,41 +49,47 @@
 
   <div id="main-section" class="hidden">
     <div class="container">
-      <!-- Główna tabela przycisków kopiowania -->
-      <div class="devices-container">
+
+      <!-- Główna sekcja przycisków kopiowania -->
+      <div class="devices-container" id="copy-bookmarks">
         <h3>Zakładki Kopiowania</h3>
+
+        <!-- Formularz dodawania własnej (globalnej) zakładki -->
+        <div class="add-custom">
+          <h4>Dodaj własną zakładkę</h4>
+          <input type="text" id="custom-btn-label" placeholder="Nazwa przycisku">
+          <textarea id="custom-btn-data" rows="4" placeholder="Numery, każdy w nowej linii"></textarea>
+          <button id="add-custom-btn">Dodaj zakładkę</button>
+        </div>
+
+        <!-- Domyślne przyciski -->
         <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nBC-N019351\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1\nN919242, 1')">DCF850</button>
         <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1\nN075339, 1')">DCF887</button>
         <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
         <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN611681, 1\nN424032, 1\nN437890, 1\nN019351, 1\nN612522, 1\nN453417, 1\nN421245, 1')">DCF809</button>
         <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>
         <button onclick="copyData('N430442, 1\nN329079, 1\nNA293294, 1')">Oscylacyjna DWE6423</button>
+
+        <!-- Tutaj wczytywane będą globalne zakładki -->
+        <div id="custom-buttons"></div>
       </div>
 
+      <!-- Sekcja obliczeń czasu -->
       <div class="main-content">
         <h3>Oblicz czas wyjścia</h3>
-
         <div class="time-picker">
           <span class="time-picker-icon">🕒</span>
-          <input
-            type="time"
-            id="arrivalTime"
-            class="time-picker-input"
-            placeholder="hh:mm"
-          >
+          <input type="time" id="arrivalTime" class="time-picker-input" placeholder="hh:mm">
         </div>
         <button onclick="calculateTime()">Oblicz</button>
-
         <div class="time-result">
           <h4>Nowy czas wyjścia:</h4>
           <p id="outputTime">--:--</p>
         </div>
-
         <div class="work-stats">
           <p id="workedTime">Przepracowano: --:--</p>
           <p id="remainingTime">Pozostało: --:--</p>
         </div>
-
         <div class="stats-section">
           <h3>Twoje statystyki:</h3>
           <p id="copy-count">Skopiowano: 0 razy</p>
@@ -91,7 +97,7 @@
         </div>
       </div>
 
-      <!-- Sekcja „Inne” bez przycisku Aligator -->
+      <!-- Sekcja Inne -->
       <div class="devices-container">
         <h3>Inne</h3>
         <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
@@ -99,8 +105,10 @@
         <button onclick="window.open('Akumulatory.pdf', '_blank')">Otwórz plik PDF</button>
         <button onclick="window.location.href='npr.ahk'" download>Pobierz plik npr.ahk</button>
       </div>
+
     </div>
 
+    <!-- Linki zewnętrzne -->
     <div class="links-section">
       <h3>Linki:</h3>
       <a href="https://erpatech.com/"                        target="_blank">ErpaTech</a>
@@ -111,8 +119,8 @@
     </div>
   </div>
 
+  <!-- Istniejący skrypt: zegar, copyData(), calculateTime(), showToast() -->
   <script>
-    // zegar
     function updateClock() {
       const d = new Date();
       document.getElementById('clock').innerText =
@@ -123,14 +131,12 @@
     setInterval(updateClock, 1000);
     window.onload = updateClock;
 
-    // kopiowanie
     function copyData(text) {
       navigator.clipboard.writeText(text)
         .then(() => { showToast('Skopiowano numery części!'); window.incrementCopy(); })
         .catch(() => showToast('Błąd kopiowania!'));
     }
 
-    // obliczanie czasu, czas przepracowany i pozostały
     function calculateTime() {
       const v = document.getElementById('arrivalTime').value;
       if (!v) { showToast('Podaj czas przyjścia!'); return; }
@@ -142,14 +148,12 @@
       const workMs = (8 * 60 + 15) * 60 * 1000;
       const exitTime = new Date(arrival.getTime() + workMs);
 
-      // wyświetl nowy czas wyjścia
-      const fmt = t => `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+      const fmt = t => 
+        `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
       document.getElementById('outputTime').innerText = fmt(exitTime);
 
-      // oblicz czas przepracowany
       let workedMs = now - arrival;
       if (workedMs < 0) workedMs = 0;
-      // oblicz czas pozostały
       let remainingMs = exitTime - now;
       if (remainingMs < 0) remainingMs = 0;
       const formatDur = ms => {
@@ -164,7 +168,6 @@
       window.incrementCalc();
     }
 
-    // toast
     function showToast(msg) {
       const c = document.getElementById('toast-container');
       const t = document.createElement('div');
@@ -175,6 +178,45 @@
         setTimeout(() => t.remove(), 500);
       }, 3000);
     }
+  </script>
+
+  <!-- Globalne zapisywanie i wczytywanie zakładek -->
+  <script type="module">
+    import { getDatabase, ref, push, onValue } 
+      from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+    const db = getDatabase();
+    const bookmarksRef = ref(db, 'bookmarks');
+    const customContainer = document.getElementById('custom-buttons');
+
+    // Wczytaj wszystkie globalne zakładki przy starcie i przy każdej zmianie
+    onValue(bookmarksRef, snapshot => {
+      customContainer.innerHTML = '';
+      snapshot.forEach(child => {
+        const { label, data } = child.val();
+        const btn = document.createElement('button');
+        btn.innerText = label;
+        btn.onclick   = () => copyData(data);
+        customContainer.appendChild(btn);
+      });
+    });
+
+    // Zamiast lokalnego append, push do Firebase
+    document.getElementById('add-custom-btn').addEventListener('click', () => {
+      const label = document.getElementById('custom-btn-label').value.trim();
+      const data  = document.getElementById('custom-btn-data').value.trim();
+      if (!label || !data) {
+        showToast('Podaj nazwę i numery części!');
+        return;
+      }
+      push(bookmarksRef, { label, data })
+        .then(() => {
+          document.getElementById('custom-btn-label').value = '';
+          document.getElementById('custom-btn-data').value  = '';
+          showToast('Dodano zakładkę globalną!');
+        })
+        .catch(() => showToast('Błąd dodawania!'));
+    });
   </script>
 
 </body>
