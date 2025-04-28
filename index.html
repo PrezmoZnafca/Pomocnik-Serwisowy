@@ -4,12 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pomocnik Serwisowy</title>
-
-  <!-- Import fontów -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <script type="module" src="auth.js" defer></script>
@@ -28,84 +22,84 @@
     </div>
   </header>
 
-  <main>
-    <div id="toast-container"></div>
+  <div id="toast-container"></div>
 
-    <section id="auth-section" class="auth-container">
-      <form id="login-form" class="auth-form">
-        <h2>Logowanie</h2>
-        <input type="text"     id="login-username" placeholder="Nazwa użytkownika">
-        <input type="password" id="login-password" placeholder="Hasło">
-        <button id="login-btn" class="btn-primary">Zaloguj się</button>
-        <p class="switch-line">
-          Nie masz konta?
-          <span id="show-register" class="switch-auth">Zarejestruj się</span>
-        </p>
-      </form>
-      <form id="register-form" class="auth-form hidden">
-        <h2>Rejestracja</h2>
-        <input type="text"     id="register-username" placeholder="Nazwa użytkownika">
-        <input type="password" id="register-password" placeholder="Hasło">
-        <button id="register-btn" class="btn-primary">Zarejestruj się</button>
-        <p class="switch-line">
-          Masz już konto?
-          <span id="show-login" class="switch-auth">Zaloguj się</span>
-        </p>
-      </form>
-    </section>
+  <div id="auth-section" class="auth-container">
+    <div id="login-form" class="auth-form">
+      <h2>Logowanie</h2>
+      <input type="text"     id="login-username" placeholder="Nazwa użytkownika">
+      <input type="password" id="login-password" placeholder="Hasło">
+      <button id="login-btn">Zaloguj się</button>
+      <p>
+        Nie masz konta?
+        <span id="show-register" class="switch-auth">Zarejestruj się</span>
+      </p>
+    </div>
+    <div id="register-form" class="auth-form hidden">
+      <h2>Rejestracja</h2>
+      <input type="text"     id="register-username" placeholder="Nazwa użytkownika">
+      <input type="password" id="register-password" placeholder="Hasło">
+      <button id="register-btn">Zarejestruj się</button>
+      <p>
+        Masz już konto?
+        <span id="show-login" class="switch-auth">Zaloguj się</span>
+      </p>
+    </div>
+  </div>
 
-    <section id="main-section" class="hidden">
-      <div class="container">
-        <div class="devices-container">
-          <h3>Zakładki Kopiowania</h3>
-          <button onclick="copyData('Kod1, 1\nKod2, 1')" class="btn-secondary">DCF850</button>
-          <button onclick="copyData('Kod3, 1\nKod4, 1')" class="btn-secondary">DCF887</button>
-          <button onclick="copyData('Kod5, 1\nKod6, 1')" class="btn-secondary">DCF860N</button>
+  <div id="main-section" class="hidden">
+    <div class="container">
+      <div class="devices-container">
+        <h3>Zakładki Kopiowania</h3>
+        <button onclick="copyData('Kod1, 1\nKod2, 1')">DCF850</button>
+        <button onclick="copyData('Kod3, 1\nKod4, 1')">DCF887</button>
+        <button onclick="copyData('Kod5, 1\nKod6, 1')">DCF860N</button>
+      </div>
+
+      <div class="main-content">
+        <h3>Oblicz czas wyjścia</h3>
+
+        <div class="time-picker">
+          <span class="time-picker-icon">🕒</span>
+          <input
+            type="time"
+            id="arrivalTime"
+            class="time-picker-input"
+            placeholder="hh:mm"
+          >
+        </div>
+        <button onclick="calculateTime()">Oblicz</button>
+
+        <div class="time-result">
+          <h4>Nowy czas wyjścia:</h4>
+          <p id="outputTime">--:--</p>
         </div>
 
-        <div class="main-content">
-          <h3>Oblicz czas wyjścia</h3>
-
-          <div class="time-picker">
-            <span class="time-picker-icon">🕒</span>
-            <input type="time" id="arrivalTime" class="time-picker-input">
-          </div>
-          <button onclick="calculateTime()" class="btn-primary">Oblicz</button>
-
-          <div class="time-result">
-            <h4>Nowy czas wyjścia:</h4>
-            <p id="outputTime">--:--</p>
-          </div>
-
-          <div class="work-stats">
-            <p id="workedTime">Przepracowano: --:--</p>
-            <p id="remainingTime">Pozostało: --:--</p>
-          </div>
-          <div class="progress-container">
-            <div id="work-progress" class="progress-bar"></div>
-          </div>
-
-          <div class="stats-section">
-            <h3>Twoje statystyki</h3>
-            <p id="copy-count">Skopiowano: 0 razy</p>
-            <p id="calc-count">Obliczeń: 0 razy</p>
-          </div>
+        <div class="work-stats">
+          <p id="workedTime">Przepracowano: --:--</p>
+          <p id="remainingTime">Pozostało: --:--</p>
         </div>
 
-        <div class="devices-container">
-          <h3>Inne</h3>
-          <button onclick="copyData('Kod7, 1\nKod8, 1')" class="btn-secondary">Aligator</button>
+        <div class="stats-section">
+          <h3>Twoje statystyki:</h3>
+          <p id="copy-count">Skopiowano: 0 razy</p>
+          <p id="calc-count">Obliczeń: 0 razy</p>
         </div>
       </div>
 
-      <div class="links-section">
-        <h3>Linki</h3>
-        <a href="https://erpatech.com/"           target="_blank">ERPATECH</a>
-        <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-        <a href="https://service.dewalt.pl/"      target="_blank">DeWalt Service</a>
+      <div class="devices-container">
+        <h3>Inne</h3>
+        <button onclick="copyData('Kod7, 1\nKod8, 1')">Aligator</button>
       </div>
-    </section>
-  </main>
+    </div>
+
+    <div class="links-section">
+      <h3>Linki:</h3>
+      <a href="https://erpatech.com/"           target="_blank">ERPATECH</a>
+      <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
+      <a href="https://service.dewalt.pl/"      target="_blank">DeWalt Service</a>
+    </div>
+  </div>
 
   <script>
     // zegar
@@ -126,7 +120,7 @@
         .catch(() => showToast('Błąd kopiowania!'));
     }
 
-    // obliczanie czasu, czas przepracowany i pozostały + pasek
+    // obliczanie czasu, czas przepracowany i pozostały
     function calculateTime() {
       const v = document.getElementById('arrivalTime').value;
       if (!v) { showToast('Podaj czas przyjścia!'); return; }
@@ -138,14 +132,16 @@
       const workMs = (8 * 60 + 15) * 60 * 1000;
       const exitTime = new Date(arrival.getTime() + workMs);
 
+      // wyświetl nowy czas wyjścia
       const fmt = t => `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
       document.getElementById('outputTime').innerText = fmt(exitTime);
 
+      // oblicz czas przepracowany
       let workedMs = now - arrival;
       if (workedMs < 0) workedMs = 0;
+      // oblicz czas pozostały
       let remainingMs = exitTime - now;
       if (remainingMs < 0) remainingMs = 0;
-
       const formatDur = ms => {
         const mins = Math.floor(ms / 60000);
         const hh = Math.floor(mins / 60);
@@ -155,9 +151,6 @@
       document.getElementById('workedTime').innerText    = `Przepracowano: ${formatDur(workedMs)}`;
       document.getElementById('remainingTime').innerText = `Pozostało: ${formatDur(remainingMs)}`;
 
-      const percent = Math.min(100, Math.round((workedMs / workMs) * 100));
-      document.getElementById('work-progress').style.width = percent + '%';
-
       window.incrementCalc();
     }
 
@@ -165,8 +158,7 @@
     function showToast(msg) {
       const c = document.getElementById('toast-container');
       const t = document.createElement('div');
-      t.classList.add('toast');
-      t.innerText = msg;
+      t.classList.add('toast'); t.innerText = msg;
       c.appendChild(t);
       setTimeout(() => {
         t.classList.add('hidden');
