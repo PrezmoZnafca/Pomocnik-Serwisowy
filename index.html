@@ -74,6 +74,12 @@
           <h4>Nowy czas wyjścia:</h4>
           <p id="outputTime">--:--</p>
         </div>
+
+        <div class="work-stats">
+          <p id="workedTime">Przepracowano: --:--</p>
+          <p id="remainingTime">Pozostało: --:--</p>
+        </div>
+
         <div class="stats-section">
           <h3>Twoje statystyki:</h3>
           <p id="copy-count">Skopiowano: 0 razy</p>
@@ -114,14 +120,37 @@
         .catch(() => showToast('Błąd kopiowania!'));
     }
 
-    // obliczanie czasu + increment
+    // obliczanie czasu, czas przepracowany i pozostały
     function calculateTime() {
       const v = document.getElementById('arrivalTime').value;
       if (!v) { showToast('Podaj czas przyjścia!'); return; }
-      let [h,m] = v.split(':').map(Number);
-      m += 15; h += 8 + Math.floor(m/60); m %= 60;
-      document.getElementById('outputTime').innerText =
-        `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      const [h, m] = v.split(':').map(Number);
+      const now = new Date();
+      const arrival = new Date(now.getTime());
+      arrival.setHours(h, m, 0, 0);
+
+      const workMs = (8 * 60 + 15) * 60 * 1000;
+      const exitTime = new Date(arrival.getTime() + workMs);
+
+      // wyświetl nowy czas wyjścia
+      const fmt = t => `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+      document.getElementById('outputTime').innerText = fmt(exitTime);
+
+      // oblicz czas przepracowany
+      let workedMs = now - arrival;
+      if (workedMs < 0) workedMs = 0;
+      // oblicz czas pozostały
+      let remainingMs = exitTime - now;
+      if (remainingMs < 0) remainingMs = 0;
+      const formatDur = ms => {
+        const mins = Math.floor(ms / 60000);
+        const hh = Math.floor(mins / 60);
+        const mm = mins % 60;
+        return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
+      };
+      document.getElementById('workedTime').innerText    = `Przepracowano: ${formatDur(workedMs)}`;
+      document.getElementById('remainingTime').innerText = `Pozostało: ${formatDur(remainingMs)}`;
+
       window.incrementCalc();
     }
 
