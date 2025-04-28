@@ -6,15 +6,57 @@
   <title>Pomocnik Serwisowy</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    /* Style dla zakładek i formularza */
+    .tabs { display: flex; margin-bottom: 20px; }
+    .tabs button {
+      flex: 1;
+      background: var(--card-bg);
+      color: var(--primary);
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .tabs button.active {
+      background: var(--primary);
+      color: #000;
+    }
+    .section { display: none; }
+    .section.active { display: block; }
+    .form-field {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid var(--primary);
+      border-radius: 6px;
+      background: #3a3a3a;
+      color: #fff;
+      margin-bottom: 10px;
+      font-size: 14px;
+      resize: vertical;
+    }
+    .add-custom button {
+      background: var(--primary);
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .add-custom button:hover {
+      background: var(--hover);
+    }
+  </style>
   <script type="module" src="auth.js" defer></script>
   <script type="module" src="counter.js" defer></script>
 </head>
 <body>
 
   <header class="header">
-    <div class="header-left">
-      <h1>Pomocnik Serwisowy</h1>
-    </div>
+    <div class="header-left"><h1>Pomocnik Serwisowy</h1></div>
     <div class="header-right">
       <button id="admin-panel-btn" class="header-btn hidden">Panel Admina</button>
       <button id="logout-btn"       class="header-btn hidden">Wyloguj się</button>
@@ -30,48 +72,45 @@
       <input type="text"     id="login-username" placeholder="Nazwa użytkownika">
       <input type="password" id="login-password" placeholder="Hasło">
       <button id="login-btn">Zaloguj się</button>
-      <p>
-        Nie masz konta?
-        <span id="show-register" class="switch-auth">Zarejestruj się</span>
-      </p>
+      <p>Nie masz konta? <span id="show-register" class="switch-auth">Zarejestruj się</span></p>
     </div>
     <div id="register-form" class="auth-form hidden">
       <h2>Rejestracja</h2>
       <input type="text"     id="register-username" placeholder="Nazwa użytkownika">
       <input type="password" id="register-password" placeholder="Hasło">
       <button id="register-btn">Zarejestruj się</button>
-      <p>
-        Masz już konto?
-        <span id="show-login" class="switch-auth">Zaloguj się</span>
-      </p>
+      <p>Masz już konto? <span id="show-login" class="switch-auth">Zaloguj się</span></p>
     </div>
   </div>
 
   <div id="main-section" class="hidden">
     <div class="container">
 
-      <!-- Główna sekcja przycisków kopiowania -->
+      <!-- Zakładki Kopiowania z dwoma sekcjami -->
       <div class="devices-container" id="copy-bookmarks">
         <h3>Zakładki Kopiowania</h3>
-
-        <!-- Formularz dodawania własnej (globalnej) zakładki -->
-        <div class="add-custom">
-          <h4>Dodaj własną zakładkę</h4>
-          <input type="text" id="custom-btn-label" placeholder="Nazwa przycisku">
-          <textarea id="custom-btn-data" rows="4" placeholder="Numery, każdy w nowej linii"></textarea>
-          <button id="add-custom-btn">Dodaj zakładkę</button>
+        <div class="tabs">
+          <button id="tab-bookmarks" class="active">Zakładki</button>
+          <button id="tab-add">Dodaj Zakładkę</button>
         </div>
-
-        <!-- Domyślne przyciski -->
-        <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nBC-N019351\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1\nN919242, 1')">DCF850</button>
-        <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1\nN075339, 1')">DCF887</button>
-        <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
-        <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN611681, 1\nN424032, 1\nN437890, 1\nN019351, 1\nN612522, 1\nN453417, 1\nN421245, 1')">DCF809</button>
-        <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>
-        <button onclick="copyData('N430442, 1\nN329079, 1\nNA293294, 1')">Oscylacyjna DWE6423</button>
-
-        <!-- Tutaj wczytywane będą globalne zakładki -->
-        <div id="custom-buttons"></div>
+        <div id="section-bookmarks" class="section active">
+          <!-- Domyślne przyciski -->
+          <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nBC-N019351\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1\nN919242, 1')">DCF850</button>
+          <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1\nN075339, 1')">DCF887</button>
+          <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
+          <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN611681, 1\nN424032, 1\nN437890, 1\nN019351, 1\nN612522, 1\nN453417, 1\nN421245, 1')">DCF809</button>
+          <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>
+          <button onclick="copyData('N430442, 1\nN329079, 1\nNA293294, 1')">Oscylacyjna DWE6423</button>
+          <!-- Globalnie dodane zakładki -->
+          <div id="custom-buttons"></div>
+        </div>
+        <div id="section-add" class="section">
+          <div class="add-custom">
+            <input type="text" id="custom-btn-label" class="form-field" placeholder="Nazwa przycisku">
+            <textarea id="custom-btn-data" class="form-field" rows="4" placeholder="Numery, każdy w nowej linii"></textarea>
+            <button id="add-custom-btn">Dodaj zakładkę</button>
+          </div>
+        </div>
       </div>
 
       <!-- Sekcja obliczeń czasu -->
@@ -97,7 +136,7 @@
         </div>
       </div>
 
-      <!-- Sekcja Inne -->
+      <!-- Sekcja „Inne” -->
       <div class="devices-container">
         <h3>Inne</h3>
         <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
@@ -119,8 +158,8 @@
     </div>
   </div>
 
-  <!-- Istniejący skrypt: zegar, copyData(), calculateTime(), showToast() -->
   <script>
+    // zegar, copyData(), calculateTime(), showToast() jak wcześniej...
     function updateClock() {
       const d = new Date();
       document.getElementById('clock').innerText =
@@ -128,7 +167,7 @@
         `${String(d.getMinutes()).padStart(2,'0')}:` +
         `${String(d.getSeconds()).padStart(2,'0')}`;
     }
-    setInterval(updateClock, 1000);
+    setInterval(updateClock,1000);
     window.onload = updateClock;
 
     function copyData(text) {
@@ -140,82 +179,64 @@
     function calculateTime() {
       const v = document.getElementById('arrivalTime').value;
       if (!v) { showToast('Podaj czas przyjścia!'); return; }
-      const [h, m] = v.split(':').map(Number);
+      const [h,m] = v.split(':').map(Number);
       const now = new Date();
       const arrival = new Date(now.getTime());
-      arrival.setHours(h, m, 0, 0);
-
-      const workMs = (8 * 60 + 15) * 60 * 1000;
-      const exitTime = new Date(arrival.getTime() + workMs);
-
-      const fmt = t => 
-        `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+      arrival.setHours(h,m,0,0);
+      const workMs = (8*60+15)*60*1000;
+      const exitTime = new Date(arrival.getTime()+workMs);
+      const fmt = t=>`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
       document.getElementById('outputTime').innerText = fmt(exitTime);
-
-      let workedMs = now - arrival;
-      if (workedMs < 0) workedMs = 0;
-      let remainingMs = exitTime - now;
-      if (remainingMs < 0) remainingMs = 0;
-      const formatDur = ms => {
-        const mins = Math.floor(ms / 60000);
-        const hh = Math.floor(mins / 60);
-        const mm = mins % 60;
-        return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
-      };
+      let workedMs = now - arrival; if(workedMs<0) workedMs=0;
+      let remainingMs = exitTime - now; if(remainingMs<0) remainingMs=0;
+      const formatDur = ms=>{const mins=Math.floor(ms/60000),hh=Math.floor(mins/60),mm=mins%60;return`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;};
       document.getElementById('workedTime').innerText    = `Przepracowano: ${formatDur(workedMs)}`;
       document.getElementById('remainingTime').innerText = `Pozostało: ${formatDur(remainingMs)}`;
-
       window.incrementCalc();
     }
 
     function showToast(msg) {
-      const c = document.getElementById('toast-container');
-      const t = document.createElement('div');
-      t.classList.add('toast'); t.innerText = msg;
-      c.appendChild(t);
-      setTimeout(() => {
-        t.classList.add('hidden');
-        setTimeout(() => t.remove(), 500);
-      }, 3000);
+      const c=document.getElementById('toast-container'),t=document.createElement('div');
+      t.classList.add('toast');t.innerText=msg;c.appendChild(t);
+      setTimeout(()=>{t.classList.add('hidden');setTimeout(()=>t.remove(),500);},3000);
     }
-  </script>
 
-  <!-- Globalne zapisywanie i wczytywanie zakładek -->
-  <script type="module">
-    import { getDatabase, ref, push, onValue } 
-      from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
-
-    const db = getDatabase();
-    const bookmarksRef = ref(db, 'bookmarks');
+    // obsługa zakładek globalnych
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+    const db = getDatabase(), bookmarksRef = ref(db,'bookmarks');
     const customContainer = document.getElementById('custom-buttons');
 
-    // Wczytaj wszystkie globalne zakładki przy starcie i przy każdej zmianie
-    onValue(bookmarksRef, snapshot => {
-      customContainer.innerHTML = '';
-      snapshot.forEach(child => {
-        const { label, data } = child.val();
-        const btn = document.createElement('button');
-        btn.innerText = label;
-        btn.onclick   = () => copyData(data);
+    onValue(bookmarksRef, snap=>{
+      customContainer.innerHTML='';
+      snap.forEach(child=>{
+        const {label,data}=child.val();
+        const btn=document.createElement('button');
+        btn.innerText=label; btn.onclick=()=>copyData(data);
         customContainer.appendChild(btn);
       });
     });
 
-    // Zamiast lokalnego append, push do Firebase
-    document.getElementById('add-custom-btn').addEventListener('click', () => {
-      const label = document.getElementById('custom-btn-label').value.trim();
-      const data  = document.getElementById('custom-btn-data').value.trim();
-      if (!label || !data) {
-        showToast('Podaj nazwę i numery części!');
-        return;
-      }
-      push(bookmarksRef, { label, data })
-        .then(() => {
-          document.getElementById('custom-btn-label').value = '';
-          document.getElementById('custom-btn-data').value  = '';
-          showToast('Dodano zakładkę globalną!');
-        })
-        .catch(() => showToast('Błąd dodawania!'));
+    document.getElementById('add-custom-btn').addEventListener('click', ()=>{
+      const label=document.getElementById('custom-btn-label').value.trim();
+      const data=document.getElementById('custom-btn-data').value.trim();
+      if(!label||!data){ showToast('Podaj nazwę i numery części!'); return; }
+      push(bookmarksRef,{label,data})
+        .then(()=>{ document.getElementById('custom-btn-label').value=''; document.getElementById('custom-btn-data').value=''; showToast('Dodano zakładkę globalną!'); })
+        .catch(()=>showToast('Błąd dodawania!'));
+    });
+
+    // przełączanie zakładek
+    const tabB=document.getElementById('tab-bookmarks'),
+          tabA=document.getElementById('tab-add'),
+          secB=document.getElementById('section-bookmarks'),
+          secA=document.getElementById('section-add');
+    tabB.addEventListener('click',()=>{
+      tabB.classList.add('active'); tabA.classList.remove('active');
+      secB.classList.add('active'); secA.classList.remove('active');
+    });
+    tabA.addEventListener('click',()=>{
+      tabA.classList.add('active'); tabB.classList.remove('active');
+      secA.classList.add('active'); secB.classList.remove('active');
     });
   </script>
 
