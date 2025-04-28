@@ -8,9 +8,7 @@
   <!-- Import fontów -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?
-    family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -110,7 +108,72 @@
   </main>
 
   <script>
-    /* ... pozostały JS bez zmian ... */
+    // zegar
+    function updateClock() {
+      const d = new Date();
+      document.getElementById('clock').innerText =
+        `${String(d.getHours()).padStart(2,'0')}:` +
+        `${String(d.getMinutes()).padStart(2,'0')}:` +
+        `${String(d.getSeconds()).padStart(2,'0')}`;
+    }
+    setInterval(updateClock, 1000);
+    window.onload = updateClock;
+
+    // kopiowanie
+    function copyData(text) {
+      navigator.clipboard.writeText(text)
+        .then(() => { showToast('Skopiowano numery części!'); window.incrementCopy(); })
+        .catch(() => showToast('Błąd kopiowania!'));
+    }
+
+    // obliczanie czasu, czas przepracowany i pozostały + pasek
+    function calculateTime() {
+      const v = document.getElementById('arrivalTime').value;
+      if (!v) { showToast('Podaj czas przyjścia!'); return; }
+      const [h, m] = v.split(':').map(Number);
+      const now = new Date();
+      const arrival = new Date(now.getTime());
+      arrival.setHours(h, m, 0, 0);
+
+      const workMs = (8 * 60 + 15) * 60 * 1000;
+      const exitTime = new Date(arrival.getTime() + workMs);
+
+      const fmt = t => `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+      document.getElementById('outputTime').innerText = fmt(exitTime);
+
+      let workedMs = now - arrival;
+      if (workedMs < 0) workedMs = 0;
+      let remainingMs = exitTime - now;
+      if (remainingMs < 0) remainingMs = 0;
+
+      const formatDur = ms => {
+        const mins = Math.floor(ms / 60000);
+        const hh = Math.floor(mins / 60);
+        const mm = mins % 60;
+        return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
+      };
+      document.getElementById('workedTime').innerText    = `Przepracowano: ${formatDur(workedMs)}`;
+      document.getElementById('remainingTime').innerText = `Pozostało: ${formatDur(remainingMs)}`;
+
+      const percent = Math.min(100, Math.round((workedMs / workMs) * 100));
+      document.getElementById('work-progress').style.width = percent + '%';
+
+      window.incrementCalc();
+    }
+
+    // toast
+    function showToast(msg) {
+      const c = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.classList.add('toast');
+      t.innerText = msg;
+      c.appendChild(t);
+      setTimeout(() => {
+        t.classList.add('hidden');
+        setTimeout(() => t.remove(), 500);
+      }, 3000);
+    }
   </script>
+
 </body>
 </html>
