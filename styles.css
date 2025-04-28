@@ -64,20 +64,11 @@ body, html {
   transform:scale(1.05);
 }
 
-/* wydłużony Panel Admina */
-#admin-panel-btn {
-  /* większy padding po bokach */
-  padding:6px 12px;
-  white-space: nowrap;
-  min-width:140px;
-}
-
-/* główne sekcje */
+/* sekcje niżej */
 #auth-section, #main-section { padding-top:70px; }
 .container {
   max-width:1200px;
-  margin:0 auto;
-  padding:20px;
+  margin:0 auto; padding:20px;
   display:flex; flex-wrap:wrap; gap:20px; justify-content:center;
 }
 .devices-container, .main-content {
@@ -135,6 +126,15 @@ button:hover {
 }
 .auth-form button:hover { background: var(--hover); }
 
+/* styl przełączników */
+.switch-auth {
+  color: #2196f3;
+  cursor: pointer;
+}
+.switch-auth:hover {
+  text-decoration: underline;
+}
+
 /* toast */
 #toast-container { position:fixed; bottom:20px; right:20px; z-index:2000; }
 .toast {
@@ -143,6 +143,56 @@ button:hover {
   transition:opacity 0.4s, transform 0.4s;
 }
 .toast.hidden { opacity:0; transform:translateY(20px); }
+
+/* -- time-picker styles -- */
+.time-picker {
+  position: relative;
+  display: inline-block;
+  width: 180px;
+  margin-bottom: 10px;
+}
+.time-picker-input {
+  width: 100%;
+  padding: 8px 10px 8px 36px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  color: #000;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+.time-picker-input::placeholder {
+  color: #888;
+}
+.time-picker-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255,203,0,0.3);
+}
+.time-picker-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  pointer-events: none;
+  color: #555;
+}
+/* ukrycie domyślnej strzałki */
+.time-picker-input::-webkit-clear-button,
+.time-picker-input::-webkit-inner-spin-button {
+  display: none;
+}
+.time-picker-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: block;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 /* tabela admina */
 #user-table {
@@ -159,16 +209,3 @@ button:hover {
   transition:background 0.3s;
 }
 .admin-btn:hover { background:#c9302c; }
-
-
-/* Styl klikanych linków logowania/rejestracji jako zwykły tekst */
-.switch-auth {
-  color: #2196f3;       /* niebieski tekst */
-  cursor: pointer;      /* wskaźnik „ręka” */
-  font-weight: normal;  /* lub bold, jeśli wolisz */
-  text-decoration: none;
-}
-
-.switch-auth:hover {
-  text-decoration: underline; /* podkreślenie przy najechaniu */
-}

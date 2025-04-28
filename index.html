@@ -30,14 +30,20 @@
       <input type="text"     id="login-username" placeholder="Nazwa użytkownika">
       <input type="password" id="login-password" placeholder="Hasło">
       <button id="login-btn">Zaloguj się</button>
-      <p>Nie masz konta? <span id="show-register" class="switch-auth">Zarejestruj się</span></p>
+      <p>
+        Nie masz konta?
+        <span id="show-register" class="switch-auth">Zarejestruj się</span>
+      </p>
     </div>
     <div id="register-form" class="auth-form hidden">
       <h2>Rejestracja</h2>
       <input type="text"     id="register-username" placeholder="Nazwa użytkownika">
       <input type="password" id="register-password" placeholder="Hasło">
       <button id="register-btn">Zarejestruj się</button>
-      <p>Masz już konto? <span id="show-login" class="switch-auth">Zaloguj się</span></p>
+      <p>
+        Masz już konto?
+        <span id="show-login" class="switch-auth">Zaloguj się</span>
+      </p>
     </div>
   </div>
 
@@ -52,8 +58,18 @@
 
       <div class="main-content">
         <h3>Oblicz czas wyjścia</h3>
-        <input type="time" id="arrivalTime">
+
+        <div class="time-picker">
+          <span class="time-picker-icon">🕒</span>
+          <input
+            type="time"
+            id="arrivalTime"
+            class="time-picker-input"
+            placeholder="hh:mm"
+          >
+        </div>
         <button onclick="calculateTime()">Oblicz</button>
+
         <div class="time-result">
           <h4>Nowy czas wyjścia:</h4>
           <p id="outputTime">--:--</p>
@@ -80,6 +96,7 @@
   </div>
 
   <script>
+    // zegar
     function updateClock() {
       const d = new Date();
       document.getElementById('clock').innerText =
@@ -90,12 +107,14 @@
     setInterval(updateClock, 1000);
     window.onload = updateClock;
 
+    // kopiowanie
     function copyData(text) {
       navigator.clipboard.writeText(text)
-        .then(()=>{ showToast('Skopiowano numery części!'); window.incrementCopy(); })
-        .catch(()=> showToast('Błąd kopiowania!'));
+        .then(() => { showToast('Skopiowano numery części!'); window.incrementCopy(); })
+        .catch(() => showToast('Błąd kopiowania!'));
     }
 
+    // obliczanie czasu + increment
     function calculateTime() {
       const v = document.getElementById('arrivalTime').value;
       if (!v) { showToast('Podaj czas przyjścia!'); return; }
@@ -106,14 +125,15 @@
       window.incrementCalc();
     }
 
+    // toast
     function showToast(msg) {
       const c = document.getElementById('toast-container');
       const t = document.createElement('div');
       t.classList.add('toast'); t.innerText = msg;
       c.appendChild(t);
-      setTimeout(()=>{
+      setTimeout(() => {
         t.classList.add('hidden');
-        setTimeout(()=>t.remove(), 500);
+        setTimeout(() => t.remove(), 500);
       }, 3000);
     }
   </script>
