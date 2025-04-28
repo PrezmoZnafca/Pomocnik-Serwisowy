@@ -1,3 +1,4 @@
+// admin.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
 import {
   getAuth,
@@ -27,21 +28,23 @@ const db   = getDatabase();
 document.addEventListener('DOMContentLoaded', () => {
   onAuthStateChanged(auth, user => {
     if (!user) {
-      alert('Brak dostępu!'); return window.location.href = 'index.html';
+      alert('Brak dostępu!');
+      return window.location.href = 'index.html';
     }
-    // sprawdź rolę
     get(ref(db, `users/${user.uid}/role`))
       .then(snap => {
         if (snap.val() === 'admin') {
           loadUsers();
+          loadBookmarks();
         } else {
-          alert('Brak dostępu!'); window.location.href = 'index.html';
+          alert('Brak dostępu!');
+          window.location.href = 'index.html';
         }
       });
   });
 
   document.getElementById('logout-btn').onclick = () =>
-    signOut(auth).then(()=>window.location.href='index.html');
+    signOut(auth).then(() => window.location.href = 'index.html');
 
   document.getElementById('back-to-main').onclick = () =>
     window.location.href = 'index.html';
@@ -74,5 +77,28 @@ function loadUsers() {
 window.deleteUser = uid => {
   if (!confirm('Na pewno usunąć?')) return;
   remove(ref(db, 'users/' + uid)).then(loadUsers)
-    .catch(e=>alert('Błąd usuwania: '+e.message));
+    .catch(e => alert('Błąd usuwania: ' + e.message));
+};
+
+function loadBookmarks() {
+  get(ref(db, 'bookmarks')).then(snap => {
+    const tbody = document.getElementById('bookmark-table-body');
+    tbody.innerHTML = '';
+    if (!snap.exists()) return;
+    Object.entries(snap.val()).forEach(([key, b]) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${b.label}</td>
+        <td><pre style="white-space: pre-wrap;">${b.data}</pre></td>
+        <td><button class="admin-btn" onclick="deleteBookmark('${key}')">Usuń</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+window.deleteBookmark = key => {
+  if (!confirm('Na pewno usunąć tę zakładkę?')) return;
+  remove(ref(db, 'bookmarks/' + key)).then(loadBookmarks)
+    .catch(e => alert('Błąd usuwania: ' + e.message));
 };
