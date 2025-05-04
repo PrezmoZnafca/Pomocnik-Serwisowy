@@ -104,6 +104,17 @@
           <span class="time-picker-icon">🕒</span>
           <input type="time" id="arrivalTime" class="time-picker-input" placeholder="hh:mm">
         </div>
+
+        <!-- RCPOnline integration -->
+        <div class="devices-container">
+          <h3>RCPOnline</h3>
+          <input type="text"     id="rcp-login"    class="form-field" placeholder="Login RCPOnline">
+          <input type="password" id="rcp-password" class="form-field" placeholder="Hasło RCPOnline">
+          <button id="rcp-fetch-btn">Pobierz z RCP</button>
+          <p id="rcp-status">Ostatnia aktywność: –</p>
+        </div>
+        <!-- koniec RCPOnline -->
+
         <button onclick="calculateTime()">Oblicz</button>
         <div class="time-result">
           <h4>Nowy czas wyjścia:</h4>
@@ -200,6 +211,7 @@
     }
   </script>
 
+  <!-- Firebase + custom buttons (niezmienione) -->
   <script type="module">
     import { getDatabase, ref, push, onValue }
       from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
