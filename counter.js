@@ -15,9 +15,11 @@ import {
 const db        = getDatabase();
 const auth      = getAuth();
 const functions = getFunctions();
+
+// 🔥 Tu powinna być nazwa Twojej funkcji onCall
 const fetchRcpTime = httpsCallable(functions, 'fetchRcpTime');
 
-// ———————————————— Stats (jak było) ————————————————
+// —————— Stats (bez zmian) ——————
 function incrementCopy() {
   onAuthStateChanged(auth, user => {
     if (!user) return;
@@ -53,7 +55,7 @@ onAuthStateChanged(auth, user => {
 window.incrementCopy = incrementCopy;
 window.incrementCalc  = incrementCalc;
 
-// ———————————————— RCPOnline + zapisz do RealtimeDB ————————————————
+// —————— Integracja z RCP ——————
 document.addEventListener('DOMContentLoaded', () => {
   const btn    = document.getElementById('rcp-fetch-btn');
   const status = document.getElementById('rcp-status');
@@ -70,29 +72,22 @@ document.addEventListener('DOMContentLoaded', () => {
     status.innerText = 'Ładowanie z RCP…';
 
     try {
-      // 1) Pobierz z Function
+      // bezpośrednio wywołujemy jedną funkcję onCall
       const result = await fetchRcpTime({ login, password: pwd });
-      const time   = result.data.time;   // np. "15:09"
+      const time   = result.data.time;  // oczekujemy formatu "HH:mm"
 
-      // 2) Wstaw od razu do pola w UI
+      // Aktualizujemy UI
       document.getElementById('arrivalTime').value = time;
+      status.innerText = `Godzina przyjścia ustawiona: ${time}`;
 
-      // 3) Zapisz w Realtime Database
+      // Zapisujemy w RealtimeDB
       onAuthStateChanged(auth, user => {
-        if (!user) {
-          console.warn('Użytkownik niezalogowany – nie zapisuję do DB.');
-          return;
-        }
+        if (!user) return;
         const rcpRef = ref(db, `rcpTimes/${user.uid}`);
-        update(rcpRef, {
-          time,
-          updatedAt: serverTimestamp()
-        });
+        update(rcpRef, { time, updatedAt: serverTimestamp() });
       });
-
-      status.innerText = `Godzina przyjścia ustawiona i zapisana: ${time}`;
     } catch (e) {
-      console.error(e);
+      console.error('fetchRcpTime error:', e);
       status.innerText = 'Błąd: ' + (e.message || e.details || 'Nieznany');
     }
   });
