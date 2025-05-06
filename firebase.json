@@ -1,7 +1,10 @@
 {
   "functions": [
     {
-      "source": "functions",
+    "source": "functions",
+	"runtime": "nodejs18",
+    "platform": "gcfv1",
+	  "source": "functions",
       "codebase": "default",
       "ignore": [
         "node_modules",
