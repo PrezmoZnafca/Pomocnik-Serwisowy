@@ -107,15 +107,24 @@
           <input type="time" id="arrivalTime" class="time-picker-input" placeholder="hh:mm">
         </div>
 
-        <!-- RCPOnline integration -->
-        <div class="devices-container">
-          <h3>RCPOnline</h3>
-          <input type="text"     id="rcp-login"    class="form-field" placeholder="Login RCPOnline">
-          <input type="password" id="rcp-password" class="form-field" placeholder="Hasło RCPOnline">
-          <button id="rcp-fetch-btn">Pobierz z RCP</button>
-          <p id="rcp-status">Ostatnia aktywność: –</p>
-        </div>
-        <!-- koniec RCPOnline -->
+        <section id="rcp-section">
+  <h2>RCPOnline</h2>
+  <div>
+    <label for="rcp-login">Login RCP:</label>
+    <input id="rcp-login" placeholder="Twój login">
+  </div>
+  <div>
+    <label for="rcp-password">Hasło RCP:</label>
+    <input id="rcp-password" type="password" placeholder="Twoje hasło">
+  </div>
+  <button id="rcp-fetch-btn">Pobierz z RCP</button>
+  <p id="rcp-status">Ostatnia aktywność: –</p>
+  <div>
+    <label for="arrivalTime">Czas wejścia:</label>
+    <input type="time" id="arrivalTime">
+  </div>
+</section>
+
 
         <button onclick="calculateTime()">Oblicz</button>
         <div class="time-result">
@@ -213,23 +222,7 @@
     }
   </script>
   
-  <section id="rcp-section">
-  <h2>RCPOnline</h2>
-  <div>
-    <label for="rcp-login">Login RCP:</label>
-    <input id="rcp-login" placeholder="Twój login">
-  </div>
-  <div>
-    <label for="rcp-password">Hasło RCP:</label>
-    <input id="rcp-password" type="password" placeholder="Twoje hasło">
-  </div>
-  <button id="rcp-fetch-btn">Pobierz z RCP</button>
-  <p id="rcp-status">Ostatnia aktywność: –</p>
-  <div>
-    <label for="arrivalTime">Czas wejścia:</label>
-    <input type="time" id="arrivalTime">
-  </div>
-</section>
+
 
 
   <!-- Firebase + custom buttons (niezmienione) -->
