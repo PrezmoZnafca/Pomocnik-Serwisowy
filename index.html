@@ -36,7 +36,8 @@
       background: var(--hover);
     }
   </style>
-  <script type="module" src="auth.js" defer></script>
+   <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js" defer></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js" defer></script>
   <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-functions.js" defer></script>
   <script type="module" src="counter.js" defer></script>
 </head>
@@ -211,6 +212,25 @@
       }, 3000);
     }
   </script>
+  
+  <section id="rcp-section">
+  <h2>RCPOnline</h2>
+  <div>
+    <label for="rcp-login">Login RCP:</label>
+    <input id="rcp-login" placeholder="Twój login">
+  </div>
+  <div>
+    <label for="rcp-password">Hasło RCP:</label>
+    <input id="rcp-password" type="password" placeholder="Twoje hasło">
+  </div>
+  <button id="rcp-fetch-btn">Pobierz z RCP</button>
+  <p id="rcp-status">Ostatnia aktywność: –</p>
+  <div>
+    <label for="arrivalTime">Czas wejścia:</label>
+    <input type="time" id="arrivalTime">
+  </div>
+</section>
+
 
   <!-- Firebase + custom buttons (niezmienione) -->
   <script type="module">

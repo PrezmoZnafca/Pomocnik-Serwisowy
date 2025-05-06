@@ -1,26 +1,23 @@
+// counter.js
 import {
-  getDatabase,
-  ref,
-  update,
-  increment,
-  serverTimestamp,
-  get
+  getDatabase, ref, update, increment,
+  serverTimestamp, get
 } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-// Import klienta Functions
+
 import {
-  getFunctions,
-  httpsCallable
+  getAuth, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+import {
+  getFunctions, httpsCallable
 } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-functions.js";
 
 const db        = getDatabase();
 const auth      = getAuth();
 const functions = getFunctions();
-const registerCreds = httpsCallable(functions, 'registerCreds');
-const getRcpCheckin  = httpsCallable(functions, 'getRcpCheckin');
+const fetchRcpTime = httpsCallable(functions, 'fetchRcpTime');
 
-// Zliczanie kopiowań
-typeCopy();
+// ———————————————— Stats (jak było) ————————————————
 function incrementCopy() {
   onAuthStateChanged(auth, user => {
     if (!user) return;
@@ -29,7 +26,6 @@ function incrementCopy() {
   });
 }
 
-// Zliczanie obliczeń
 function incrementCalc() {
   onAuthStateChanged(auth, user => {
     if (!user) return;
@@ -38,7 +34,6 @@ function incrementCalc() {
   });
 }
 
-// Pobranie statystyk (kopiowań, obliczeń)
 function fetchStats(uid) {
   const statsRef = ref(db, `stats/${uid}`);
   get(statsRef).then(snap => {
@@ -51,20 +46,18 @@ function fetchStats(uid) {
   });
 }
 
-// Gdy użytkownik się zaloguje, pobierz statystyki
 onAuthStateChanged(auth, user => {
   if (user) fetchStats(user.uid);
 });
 
-// Upublicznij funkcje do globalnego użytku
 window.incrementCopy = incrementCopy;
 window.incrementCalc  = incrementCalc;
 
-// ---- RCPOnline integration ----
+// ———————————————— RCPOnline + zapisz do RealtimeDB ————————————————
 document.addEventListener('DOMContentLoaded', () => {
   const btn    = document.getElementById('rcp-fetch-btn');
   const status = document.getElementById('rcp-status');
-  if (!btn) return;
+  if (!btn || !status) return;
 
   btn.addEventListener('click', async () => {
     const login = document.getElementById('rcp-login').value.trim();
@@ -74,21 +67,33 @@ document.addEventListener('DOMContentLoaded', () => {
       status.innerText = 'Podaj login i hasło RCP!';
       return;
     }
-    status.innerText = 'Ładowanie…';
+    status.innerText = 'Ładowanie z RCP…';
 
     try {
-      // Zapisz poświadczenia do Firestore i zaszyfruj w Functions
-      await registerCreds({ login, password: pwd });
-      // Pobierz godzinę przyjścia
-      const result = await getRcpCheckin();
-      const checkin = result.data.checkin;
-      // Wypełnij pole time-picker
-      document.getElementById('arrivalTime').value = checkin;
-      status.innerText = `Godzina przyjścia ustawiona: ${checkin}`;
+      // 1) Pobierz z Function
+      const result = await fetchRcpTime({ login, password: pwd });
+      const time   = result.data.time;   // np. "15:09"
+
+      // 2) Wstaw od razu do pola w UI
+      document.getElementById('arrivalTime').value = time;
+
+      // 3) Zapisz w Realtime Database
+      onAuthStateChanged(auth, user => {
+        if (!user) {
+          console.warn('Użytkownik niezalogowany – nie zapisuję do DB.');
+          return;
+        }
+        const rcpRef = ref(db, `rcpTimes/${user.uid}`);
+        update(rcpRef, {
+          time,
+          updatedAt: serverTimestamp()
+        });
+      });
+
+      status.innerText = `Godzina przyjścia ustawiona i zapisana: ${time}`;
     } catch (e) {
       console.error(e);
-      status.innerText = 'Błąd: ' + e.message;
+      status.innerText = 'Błąd: ' + (e.message || e.details || 'Nieznany');
     }
   });
 });
-// ---- koniec RCPOnline integration ----
