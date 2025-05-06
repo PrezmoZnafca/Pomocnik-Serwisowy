@@ -7,11 +7,20 @@ import {
   get
 } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+// Import klienta Functions
+import {
+  getFunctions,
+  httpsCallable
+} from "https://www.gstatic.com/firebasejs/10.9.0/firebase-functions.js";
 
-const db   = getDatabase();
-const auth = getAuth();
+const db        = getDatabase();
+const auth      = getAuth();
+const functions = getFunctions();
+const registerCreds = httpsCallable(functions, 'registerCreds');
+const getRcpCheckin  = httpsCallable(functions, 'getRcpCheckin');
 
 // Zliczanie kopiowań
+typeCopy();
 function incrementCopy() {
   onAuthStateChanged(auth, user => {
     if (!user) return;
@@ -52,8 +61,6 @@ window.incrementCopy = incrementCopy;
 window.incrementCalc  = incrementCalc;
 
 // ---- RCPOnline integration ----
-const RCP_WORKER_URL = 'https://rcpworker.prmzke.workers.dev/';
-
 document.addEventListener('DOMContentLoaded', () => {
   const btn    = document.getElementById('rcp-fetch-btn');
   const status = document.getElementById('rcp-status');
@@ -70,20 +77,14 @@ document.addEventListener('DOMContentLoaded', () => {
     status.innerText = 'Ładowanie…';
 
     try {
-      const res = await fetch(RCP_WORKER_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ login, password: pwd })
-      });
-      if (!res.ok) {
-        const msg = await res.text();
-        throw new Error(msg || res.statusText);
-      }
-      const { lastActivity } = await res.json();
-      const d = new Date(lastActivity);
-      const date = d.toLocaleDateString('pl-PL', { day:'2-digit', month:'2-digit' });
-      const time = d.toLocaleTimeString('pl-PL', { hour:'2-digit', minute:'2-digit' });
-      status.innerText = `Ostatnia aktywność: ${date}, ${time}`;
+      // Zapisz poświadczenia do Firestore i zaszyfruj w Functions
+      await registerCreds({ login, password: pwd });
+      // Pobierz godzinę przyjścia
+      const result = await getRcpCheckin();
+      const checkin = result.data.checkin;
+      // Wypełnij pole time-picker
+      document.getElementById('arrivalTime').value = checkin;
+      status.innerText = `Godzina przyjścia ustawiona: ${checkin}`;
     } catch (e) {
       console.error(e);
       status.innerText = 'Błąd: ' + e.message;
