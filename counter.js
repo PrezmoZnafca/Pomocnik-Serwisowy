@@ -12,14 +12,14 @@ import {
   getFunctions, httpsCallable
 } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-functions.js";
 
+console.log("counter.js załadowany");
+
 const db        = getDatabase();
 const auth      = getAuth();
 const functions = getFunctions();
-
-// 🔥 Tu powinna być nazwa Twojej funkcji onCall
 const fetchRcpTime = httpsCallable(functions, 'fetchRcpTime');
 
-// —————— Stats (bez zmian) ——————
+// — stats ——
 function incrementCopy() {
   onAuthStateChanged(auth, user => {
     if (!user) return;
@@ -55,10 +55,11 @@ onAuthStateChanged(auth, user => {
 window.incrementCopy = incrementCopy;
 window.incrementCalc  = incrementCalc;
 
-// —————— Integracja z RCP ——————
+// — RCPOnline ——
 document.addEventListener('DOMContentLoaded', () => {
   const btn    = document.getElementById('rcp-fetch-btn');
   const status = document.getElementById('rcp-status');
+  console.log("Znalazłem przycisk RCP:", btn);
   if (!btn || !status) return;
 
   btn.addEventListener('click', async () => {
@@ -72,15 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
     status.innerText = 'Ładowanie z RCP…';
 
     try {
-      // bezpośrednio wywołujemy jedną funkcję onCall
       const result = await fetchRcpTime({ login, password: pwd });
-      const time   = result.data.time;  // oczekujemy formatu "HH:mm"
+      const time   = result.data.time;  // "HH:mm"
 
-      // Aktualizujemy UI
       document.getElementById('arrivalTime').value = time;
       status.innerText = `Godzina przyjścia ustawiona: ${time}`;
 
-      // Zapisujemy w RealtimeDB
+      // zapis do RealtimeDB
       onAuthStateChanged(auth, user => {
         if (!user) return;
         const rcpRef = ref(db, `rcpTimes/${user.uid}`);
