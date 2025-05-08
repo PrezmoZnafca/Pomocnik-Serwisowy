@@ -1,18 +1,16 @@
 import { getAuth, onAuthStateChanged, signOut }
   from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import {
-  getDatabase, ref, get, update, push, remove
+  getDatabase, ref, get, push, remove
 } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
 const auth = getAuth(), db = getDatabase();
-let rolesList = ['user','admin'];
 
 document.addEventListener('DOMContentLoaded', () => {
   onAuthStateChanged(auth, user => {
     if (!user) return redirectToLogin();
     get(ref(db, `users/${user.uid}/role`)).then(snap => {
       if (snap.val() !== 'admin') return redirectToLogin();
-      loadRoles();
       loadUsers();
       loadProposals();
       loadGlobalBookmarks();
@@ -23,32 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('logout-btn').onclick    = () => signOut(auth).then(redirectToLogin);
   document.getElementById('back-to-main').onclick = () => window.location.href = 'index.html';
-  document.getElementById('add-role-btn').onclick = addRole;
 });
 
 function redirectToLogin() {
   window.location.href = 'index.html';
 }
 
-// Zarządzaj rolami
-function loadRoles() {
-  get(ref(db,'roles')).then(snap => {
-    rolesList = snap.exists() ? Object.keys(snap.val()) : ['user','admin'];
-    loadUsers();
-  });
-}
-function addRole() {
-  const name = document.getElementById('new-role-name').value.trim();
-  if (!name) { alert('Podaj nazwę roli!'); return; }
-  update(ref(db,'roles'), { [name]: true })
-    .then(() => {
-      document.getElementById('new-role-name').value = '';
-      loadRoles();
-    })
-    .catch(e => alert('Błąd dodawania roli: ' + e.message));
-}
-
-// Użytkownicy i role
+// — Użytkownicy (z prostym wyświetleniem roli) —
 function loadUsers() {
   get(ref(db, 'users')).then(snap => {
     const tbody = document.getElementById('user-table-body');
@@ -56,12 +35,9 @@ function loadUsers() {
     if (!snap.exists()) return;
     Object.entries(snap.val()).forEach(([uid,u]) => {
       const tr = document.createElement('tr');
-      const opts = rolesList.map(r =>
-        `<option value="${r}"${u.role===r?' selected':''}>${r}</option>`
-      ).join('');
       tr.innerHTML = `
         <td>${u.username}</td>
-        <td><select data-uid="${uid}" class="role-select">${opts}</select></td>
+        <td>${u.role}</td>
         <td>${u.createdAt?new Date(u.createdAt).toLocaleString('pl-PL'):'—'}</td>
         <td>${u.lastActive?new Date(u.lastActive).toLocaleString('pl-PL'):'—'}</td>
         <td>${u.copies||0}</td>
@@ -72,9 +48,6 @@ function loadUsers() {
       `;
       tbody.appendChild(tr);
     });
-    tbody.querySelectorAll('.role-select').forEach(sel => {
-      sel.onchange = () => changeRole(sel.dataset.uid, sel.value);
-    });
     tbody.querySelectorAll('[data-impersonate]').forEach(btn => {
       btn.onclick = () => alert('Impersonacja wymaga backendu z Custom Tokenami.');
     });
@@ -83,11 +56,6 @@ function loadUsers() {
     });
   });
 }
-function changeRole(uid, newRole) {
-  update(ref(db, `users/${uid}`), { role: newRole })
-    .then(loadUsers)
-    .catch(e => alert('Błąd zmiany roli: ' + e.message));
-}
 function deleteUser(uid) {
   if (!confirm('Usuń użytkownika?')) return;
   remove(ref(db, `users/${uid}`))
@@ -95,7 +63,7 @@ function deleteUser(uid) {
     .catch(e => alert('Błąd: ' + e.message));
 }
 
-// Propozycje globalnych zakładek
+// — Propozycje globalnych zakładek —
 function loadProposals() {
   get(ref(db, 'proposedBookmarks')).then(snap => {
     const tbody = document.getElementById('proposal-table-body');
@@ -133,7 +101,7 @@ function rejectProposal(key) {
   remove(ref(db, `proposedBookmarks/${key}`)).then(loadProposals);
 }
 
-// Globalne zakładki
+// — Globalne zakładki —
 function loadGlobalBookmarks() {
   get(ref(db, 'bookmarks')).then(snap => {
     const tbody = document.getElementById('bookmark-table-body');
@@ -156,7 +124,7 @@ function deleteGlobalBookmark(key) {
   remove(ref(db, `bookmarks/${key}`)).then(loadGlobalBookmarks);
 }
 
-// Prywatne zakładki użytkowników
+// — Prywatne zakładki użytkowników —
 function loadPersonalBookmarks() {
   get(ref(db, 'users')).then(snap => {
     const tbody = document.getElementById('personal-bookmark-table-body');
@@ -189,7 +157,7 @@ function deletePersonalBookmark(uid,k) {
   remove(ref(db, `users/${uid}/bookmarks/${k}`)).then(loadPersonalBookmarks);
 }
 
-// Wiadomości od użytkowników
+// — Wiadomości od użytkowników —
 function loadMessages() {
   get(ref(db, 'messages')).then(snap => {
     const tbody = document.getElementById('messages-table-body');

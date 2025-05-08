@@ -41,7 +41,7 @@ body, html {
   background:#000; color:var(--primary); transform:scale(1.05);
 }
 
-/* sections */
+/* main layout */
 #auth-section, #main-section { padding-top:70px; }
 .container {
   max-width:1200px; margin:0 auto; padding:20px;
@@ -65,23 +65,36 @@ body, html {
 
 /* buttons */
 .action-btn, button {
-  width:100%; margin-top:10px; padding:10px;
+  /* Remove full-width for bookmark-item children */
+  width:auto;
+  margin-top:10px; padding:10px;
   background: var(--primary); color:#000;
   border:none; border-radius:6px; font-size:15px;
   cursor:pointer; transition:background 0.3s, transform 0.1s;
 }
 .action-btn:hover, button:hover { background: var(--hover); transform:scale(1.03); }
 
-/* custom bookmark item */
+/* bookmark-item: copy + delete */
 .bookmark-item {
-  display:flex; gap:8px; margin-bottom:8px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
 }
-.delete-btn {
-  background:#d9534f; color:#fff; border:none;
-  padding:6px 10px; border-radius:6px; cursor:pointer;
-  transition:background 0.3s; flex-shrink:0;
+.bookmark-item .copy-btn {
+  flex: 1;
+  width: auto;  /* override button {width:auto;} */
 }
-.delete-btn:hover { background:#c9302c; }
+.bookmark-item .delete-btn {
+  flex: none;
+  width: auto;
+  background: #d9534f;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+.bookmark-item .delete-btn:hover {
+  background: #c9302c;
+}
 
 /* time-picker */
 .time-picker {
@@ -113,7 +126,8 @@ body, html {
 .links-section a {
   display:inline-block; padding:8px 14px; margin:5px;
   background: var(--card-bg); color: var(--primary);
-  text-decoration:none; border-radius:6px; transition:background 0.3s;
+  text-decoration:none; border-radius:6px;
+  transition:background 0.3s;
 }
 .links-section a:hover { background:#3a3a3a; }
 
