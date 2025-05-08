@@ -136,6 +136,7 @@
     </section>
   </main>
 
+  <!-- skrypty główne -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       updateClock(); setInterval(updateClock, 1000);
@@ -143,8 +144,6 @@
         .forEach(btn => btn.addEventListener('click', () => window.copyData(btn.dataset.copy)));
       document.getElementById('calc-btn')
         .addEventListener('click', calculateTime);
-
-      // Enter = submit
       ['login-username','login-password'].forEach(id =>
         document.getElementById(id)
           .addEventListener('keypress', e => { if (e.key==='Enter') document.getElementById('login-btn').click(); })
@@ -153,7 +152,6 @@
         document.getElementById(id)
           .addEventListener('keypress', e => { if (e.key==='Enter') document.getElementById('register-btn').click(); })
       );
-
       document.getElementById('show-register').addEventListener('click', toggleAuthForms);
       document.getElementById('show-login').addEventListener('click', toggleAuthForms);
     });
@@ -180,34 +178,60 @@
     }
   </script>
 
+  <!-- obsługa dodawania zakładek -->
   <script type="module">
     import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
-    const db = getDatabase(),
-          bookmarksRef = ref(db,'bookmarks'),
-          customContainer = document.getElementById('custom-buttons');
-    onValue(bookmarksRef, snap => {
-      customContainer.innerHTML = '';
-      snap.forEach(child => {
-        const {label,data} = child.val(),
-              btn = document.createElement('button');
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+    const db        = getDatabase();
+    const auth      = getAuth();
+    const container = document.getElementById('custom-buttons');
+    let globalRef, personalRef;
+
+    onAuthStateChanged(auth, user => {
+      if (!user) return;
+      globalRef   = ref(db, 'bookmarks');
+      personalRef = ref(db, `users/${user.uid}/bookmarks`);
+
+      onValue(globalRef, snap => render(snap, false));
+      onValue(personalRef, snap => render(snap, true));
+
+      document.getElementById('add-custom-btn')
+        .addEventListener('click', () => {
+          const label = document.getElementById('custom-btn-label').value.trim();
+          const data  = document.getElementById('custom-btn-data').value.trim();
+          if (!label || !data) {
+            showToast('Podaj nazwę i numery części!');
+            return;
+          }
+          const isGlobal = confirm(
+            'Czy dodać tę zakładkę globalnie dla wszystkich użytkowników?\n' +
+            'OK – globalnie, Anuluj – tylko dla mnie.'
+          );
+          const target = isGlobal ? globalRef : personalRef;
+          push(target, { label, data })
+            .then(() => {
+              document.getElementById('custom-btn-label').value = '';
+              document.getElementById('custom-btn-data').value  = '';
+              showToast(isGlobal ? 'Dodano globalnie!' : 'Dodano prywatnie!');
+            })
+            .catch(() => showToast('Błąd dodawania!'));
+        });
+    });
+
+    function render(snap, personal) {
+      if (!snap.exists()) return;
+      container.innerHTML = '';
+      snap.forEach(ch => {
+        const { label, data } = ch.val();
+        const btn = document.createElement('button');
         btn.className = 'copy-btn';
-        btn.innerText = label;
+        btn.textContent = personal ? `${label} (tylko Ty)` : label;
+        btn.dataset.copy = data;
         btn.onclick = () => window.copyData(data);
-        customContainer.appendChild(btn);
+        container.appendChild(btn);
       });
-    });
-    document.getElementById('add-custom-btn').addEventListener('click', () => {
-      const label = document.getElementById('custom-btn-label').value.trim(),
-            data  = document.getElementById('custom-btn-data').value.trim();
-      if (!label || !data) { showToast('Podaj nazwę i numery części!'); return; }
-      push(bookmarksRef, {label,data})
-        .then(() => {
-          document.getElementById('custom-btn-label').value = '';
-          document.getElementById('custom-btn-data').value  = '';
-          showToast('Dodano zakładkę globalną!');
-        })
-        .catch(() => showToast('Błąd dodawania!'));
-    });
+    }
   </script>
 </body>
 </html>
