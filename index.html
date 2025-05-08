@@ -28,10 +28,13 @@
 </head>
 <body>
   <header class="header">
-    <div class="header-left"><h1>Pomocnik Serwisowy</h1></div>
+    <div class="header-left">
+      <h1>Pomocnik Serwisowy</h1>
+    </div>
     <div class="header-right">
       <button id="admin-panel-btn" class="header-btn hidden">Panel Admina</button>
-      <button id="logout-btn"       class="header-btn hidden">Wyloguj się</button>
+      <button id="contact-btn" class="header-btn">Pomoc/Kontakt</button>
+      <button id="logout-btn" class="header-btn hidden">Wyloguj się</button>
       <div id="clock" class="clock"></div>
     </div>
   </header>
@@ -39,7 +42,7 @@
   <div id="toast-container"></div>
 
   <main>
-    <!-- Logowanie / Rejestracja -->
+    <!-- Sekcja logowania/rejestracji -->
     <section id="auth-section" class="auth-container">
       <div id="login-form" class="auth-form">
         <h2>Logowanie</h2>
@@ -61,15 +64,14 @@
       </div>
     </section>
 
-    <!-- Główna sekcja -->
+    <!-- Główna sekcja strony -->
     <section id="main-section" class="hidden">
       <div class="container">
 
         <!-- Zakładki Kopiowania -->
         <div class="devices-container">
           <h3>Zakładki Kopiowania</h3>
-          <button class="copy-btn" data-copy="
-NA073630, 1
+          <button class="copy-btn" data-copy="NA073630, 1
 604107-00, 1
 642883-00C, 1
 N866541, 1
@@ -81,9 +83,7 @@ N811325, 1
 N864740, 1
 N864736, 1
 N919242, 1">DCF850</button>
-
-<button class="copy-btn" data-copy="
-N439275, 1
+          <button class="copy-btn" data-copy="N439275, 1
 N089668, 1
 642883-00C, 1
 N439271, 1
@@ -94,9 +94,7 @@ N019351, 1
 N016823, 1
 N421245, 1
 N075339, 1">DCF887</button>
-
-<button class="copy-btn" data-copy="
-NA472056, 1
+          <button class="copy-btn" data-copy="NA472056, 1
 NA163453, 1
 NA472064, 1
 NA562707, 1
@@ -108,9 +106,7 @@ N864736, 1
 NA166862, 1
 NA162532, 1
 NA549696, 1">DCF860N</button>
-
-<button class="copy-btn" data-copy="
-N439275, 1
+          <button class="copy-btn" data-copy="N439275, 1
 N089668, 1
 642883-00C, 1
 N611681, 1
@@ -120,9 +116,7 @@ N019351, 1
 N612522, 1
 N453417, 1
 N421245, 1">DCF809</button>
-
-<button class="copy-btn" data-copy="
-N233871, 1
+          <button class="copy-btn" data-copy="N233871, 1
 330003-60, 1
 N233867, 1
 330003-64, 1
@@ -139,9 +133,7 @@ N093430, 2
 N233865, 1
 N233859, 1
 870889-02, 1">Aligator Zestaw</button>
-
-<button class="copy-btn" data-copy="
-N430442, 1
+          <button class="copy-btn" data-copy="N430442, 1
 N329079, 1
 NA293294, 1">Oscylacyjna DWE6423</button>
         </div>
@@ -160,7 +152,7 @@ NA293294, 1">Oscylacyjna DWE6423</button>
           <div id="custom-buttons"></div>
         </div>
 
-        <!-- Oblicz czas wyjścia -->
+        <!-- Kalkulator czasu wyjścia -->
         <div class="main-content">
           <h3>Oblicz czas wyjścia</h3>
           <div class="time-picker">
@@ -183,14 +175,7 @@ NA293294, 1">Oscylacyjna DWE6423</button>
           </div>
         </div>
 
-        <!-- Kontakt z administratorem -->
-        <div class="devices-container">
-          <h3>Kontakt z administratorem</h3>
-          <textarea id="message-text" class="form-field" rows="3" placeholder="Twoja wiadomość..."></textarea>
-          <button id="send-message-btn" class="action-btn">Wyślij wiadomość</button>
-        </div>
-
-        <!-- Inne -->
+        <!-- Inne akcje -->
         <div class="devices-container">
           <h3>Inne</h3>
           <button class="copy-btn" data-copy="286436-00, 1">Smar Grafitowy Duży</button>
@@ -199,21 +184,21 @@ NA293294, 1">Oscylacyjna DWE6423</button>
           <button id="download-ahk" class="action-btn">Pobierz plik npr.ahk</button>
         </div>
 
-      </div>
+        <!-- Linki zewnętrzne -->
+        <div class="links-section">
+          <h3>Linki:</h3>
+          <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
+          <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
+          <a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/" target="_blank">DeWalt</a>
+          <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
+          <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black &amp; Decker</a>
+        </div>
 
-      <!-- Linki zewnętrzne -->
-      <div class="links-section">
-        <h3>Linki:</h3>
-        <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
-        <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
-        <a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/" target="_blank">DeWalt</a>
-        <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
-        <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black &amp; Decker</a>
       </div>
     </section>
   </main>
 
-  <!-- Modal wyboru zakresu -->
+  <!-- Modal zakresu dodawania zakładki -->
   <div id="scope-modal" class="modal hidden">
     <div class="modal-content">
       <h3>Zakres zakładki</h3>
@@ -227,11 +212,23 @@ NA293294, 1">Oscylacyjna DWE6423</button>
     </div>
   </div>
 
+  <!-- Modal Kontakt z administratorem -->
+  <div id="contact-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Kontakt z Administratorem</h3>
+      <textarea id="modal-message-text" class="form-field" rows="4" placeholder="Twoja wiadomość..."></textarea>
+      <div class="modal-actions">
+        <button id="modal-send-btn" class="action-btn">Wyślij</button>
+        <button id="modal-close-btn" class="action-btn">Zamknij</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // global helpers
+    // Helpery globalne
     function showToast(msg) {
-      const c = document.getElementById('toast-container');
-      const t = document.createElement('div');
+      const c = document.getElementById('toast-container'),
+            t = document.createElement('div');
       t.className = 'toast';
       t.innerText = msg;
       c.appendChild(t);
@@ -249,53 +246,88 @@ NA293294, 1">Oscylacyjna DWE6423</button>
 
     function calculateTime() {
       const v = document.getElementById('arrivalTime').value;
-      if (!v) { showToast('Podaj czas przyjścia!'); return; }
-      const [h,m] = v.split(':').map(Number);
-      const now = new Date(), arr=new Date(now);
-      arr.setHours(h,m,0,0);
+      if (!v) return showToast('Podaj czas przyjścia!');
+      const [h, m] = v.split(':').map(Number);
+      const now = new Date(), arr = new Date(now);
+      arr.setHours(h, m, 0, 0);
       const workMs = (8*60+15)*60*1000;
-      const exit = new Date(arr.getTime()+workMs);
+      const exit = new Date(arr.getTime() + workMs);
       document.getElementById('outputTime').innerText =
-        `${String(exit.getHours()).padStart(2,'0')}:`+
+        `${String(exit.getHours()).padStart(2,'0')}:` +
         `${String(exit.getMinutes()).padStart(2,'0')}`;
-      let worked=now-arr; if(worked<0)worked=0;
-      let rem=exit-now; if(rem<0)rem=0;
-      const fmt=ms=>{
-        const mins=Math.floor(ms/60000);
-        return `${String(Math.floor(mins/60)).padStart(2,'0')}:`+
+      let worked = now - arr; if (worked < 0) worked = 0;
+      let rem = exit - now; if (rem < 0) rem = 0;
+      const fmt = ms => {
+        const mins = Math.floor(ms/60000);
+        return `${String(Math.floor(mins/60)).padStart(2,'0')}:` +
                `${String(mins%60).padStart(2,'0')}`;
       };
-      document.getElementById('workedTime').innerText    =`Przepracowano: ${fmt(worked)}`;
-      document.getElementById('remainingTime').innerText=`Pozostało: ${fmt(rem)}`;
+      document.getElementById('workedTime').innerText    = `Przepracowano: ${fmt(worked)}`;
+      document.getElementById('remainingTime').innerText = `Pozostało: ${fmt(rem)}`;
       window.incrementCalc();
     }
 
-    function updateClock(){
-      const d=new Date();
-      document.getElementById('clock').innerText=
-        `${String(d.getHours()).padStart(2,'0')}:`+
-        `${String(d.getMinutes()).padStart(2,'0')}:`+
+    function updateClock() {
+      const d = new Date();
+      document.getElementById('clock').innerText =
+        `${String(d.getHours()).padStart(2,'0')}:` +
+        `${String(d.getMinutes()).padStart(2,'0')}:` +
         `${String(d.getSeconds()).padStart(2,'0')}`;
     }
 
-    document.addEventListener('DOMContentLoaded',()=>{
-      // clock
-      updateClock(); setInterval(updateClock,1000);
+    document.addEventListener('DOMContentLoaded', () => {
+      // Aktualizacja zegara
+      updateClock();
+      setInterval(updateClock, 1000);
 
-      // attach copy handlers
-      document.querySelectorAll('.copy-btn').forEach(btn=>{
-        btn.addEventListener('click',()=>copyData(btn.dataset.copy));
+      // Przełączanie formularzy logowania/rejestracji
+      document.getElementById('show-register').addEventListener('click', () => {
+        document.getElementById('login-form').classList.add('hidden');
+        document.getElementById('register-form').classList.remove('hidden');
+      });
+      document.getElementById('show-login').addEventListener('click', () => {
+        document.getElementById('register-form').classList.add('hidden');
+        document.getElementById('login-form').classList.remove('hidden');
       });
 
-      // calculate
+      // Obsługa przycisków kopiowania
+      document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => copyData(btn.dataset.copy));
+      });
+
+      // Kalkulator czasu
       document.getElementById('calc-btn').addEventListener('click', calculateTime);
 
-      // open PDF & download AHK
-      document.getElementById('open-pdf').addEventListener('click',()=>{
-        window.open('Akumulatory.pdf','_blank');
+      // Obsługa PDF i AHK
+      document.getElementById('open-pdf').addEventListener('click', () => {
+        window.open('Akumulatory.pdf', '_blank');
       });
-      document.getElementById('download-ahk').addEventListener('click',()=>{
-        window.location.href='npr.ahk';
+      document.getElementById('download-ahk').addEventListener('click', () => {
+        window.location.href = 'npr.ahk';
+      });
+
+      // Modal Kontakt
+      document.getElementById('contact-btn').addEventListener('click', () => {
+        document.getElementById('contact-modal').classList.remove('hidden');
+      });
+      document.getElementById('modal-close-btn').addEventListener('click', () => {
+        document.getElementById('contact-modal').classList.add('hidden');
+      });
+      document.getElementById('modal-send-btn').addEventListener('click', async () => {
+        const txt = document.getElementById('modal-message-text').value.trim();
+        if (!txt) return showToast('Wpisz wiadomość!');
+        const { getDatabase, ref, push } = await import("https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js");
+        const { getAuth } = await import("https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js");
+        const db   = getDatabase();
+        const auth = getAuth();
+        const uid  = auth.currentUser?.uid;
+        push(ref(db, 'messages'), { uid, text: txt, ts: Date.now() })
+          .then(() => {
+            document.getElementById('modal-message-text').value = '';
+            showToast('Wiadomość wysłana!');
+            document.getElementById('contact-modal').classList.add('hidden');
+          })
+          .catch(() => showToast('Błąd wysyłania!'));
       });
     });
   </script>
@@ -304,87 +336,81 @@ NA293294, 1">Oscylacyjna DWE6423</button>
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
     import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-    const auth = getAuth(), db = getDatabase();
+    const auth = getAuth();
+    const db   = getDatabase();
     const container = document.getElementById('custom-buttons');
-    let globalSnap=null, personalSnap=null;
-    let pendingLabel='', pendingData='';
+    let globalSnap = null, personalSnap = null;
+    let pendingLabel = '', pendingData = '';
 
-    onAuthStateChanged(auth,user=>{
-      if(!user) return;
+    onAuthStateChanged(auth, user => {
+      if (!user) return;
       const uid = user.uid;
-      const globalRef   = ref(db,'bookmarks');
-      const personalRef = ref(db,`users/${uid}/bookmarks`);
-      const propRef     = ref(db,'proposedBookmarks');
+      const globalRef   = ref(db, 'bookmarks');
+      const personalRef = ref(db, `users/${uid}/bookmarks`);
+      const propRef     = ref(db, 'proposedBookmarks');
 
-      onValue(globalRef, snap=>{ globalSnap=snap; renderAll(); });
-      onValue(personalRef, snap=>{ personalSnap=snap; renderAll(); });
+      onValue(globalRef, snap => { globalSnap = snap; renderAll(); });
+      onValue(personalRef, snap => { personalSnap = snap; renderAll(); });
 
-      document.getElementById('add-custom-btn').addEventListener('click',()=>{
-        pendingLabel=document.getElementById('custom-btn-label').value.trim();
-        pendingData =document.getElementById('custom-btn-data').value.trim();
-        if(!pendingLabel||!pendingData){
+      document.getElementById('add-custom-btn').addEventListener('click', () => {
+        pendingLabel = document.getElementById('custom-btn-label').value.trim();
+        pendingData  = document.getElementById('custom-btn-data').value.trim();
+        if (!pendingLabel || !pendingData) {
           showToast('Podaj nazwę i numery części!');
           return;
         }
         document.getElementById('scope-modal').classList.remove('hidden');
       });
-      document.getElementById('confirm-add-btn').addEventListener('click',()=>{
-        const scope=document.querySelector('input[name="scope"]:checked').value;
-        const tgt = scope==='proposal'? propRef: personalRef;
-        push(tgt,{uid,label:pendingLabel,data:pendingData})
-          .then(()=>{
-            document.getElementById('custom-btn-label').value='';
-            document.getElementById('custom-btn-data').value='';
-            showToast(scope==='proposal'?'Zaproponowano globalnie!':'Dodano prywatnie!');
+      document.getElementById('confirm-add-btn').addEventListener('click', () => {
+        const scope = document.querySelector('input[name="scope"]:checked').value;
+        const tgt   = scope === 'proposal' ? propRef : personalRef;
+        push(tgt, { uid, label: pendingLabel, data: pendingData })
+          .then(() => {
+            document.getElementById('custom-btn-label').value = '';
+            document.getElementById('custom-btn-data').value  = '';
+            showToast(scope === 'proposal' ? 'Zaproponowano globalnie!' : 'Dodano prywatnie!');
           })
-          .catch(()=>showToast('Błąd dodawania!'))
-          .finally(()=>document.getElementById('scope-modal').classList.add('hidden'));
+          .catch(() => showToast('Błąd dodawania!'))
+          .finally(() => document.getElementById('scope-modal').classList.add('hidden'));
       });
-      document.getElementById('cancel-add-btn').addEventListener('click',()=>{
+      document.getElementById('cancel-add-btn').addEventListener('click', () => {
         document.getElementById('scope-modal').classList.add('hidden');
-      });
-
-      document.getElementById('send-message-btn').addEventListener('click',()=>{
-        const txt=document.getElementById('message-text').value.trim();
-        if(!txt) return showToast('Wpisz wiadomość!');
-        push(ref(db,'messages'),{uid,text:txt,ts:Date.now()})
-          .then(()=>{
-            document.getElementById('message-text').value='';
-            showToast('Wiadomość wysłana!');
-          })
-          .catch(()=>showToast('Błąd wysyłania!'));
       });
     });
 
-    function renderAll(){
-      container.innerHTML='';
-      if(globalSnap && globalSnap.exists()){
-        globalSnap.forEach(ch=>{
-          const b=ch.val();
-          const btn=document.createElement('button');
-          btn.className='copy-btn'; btn.innerText=b.label;
-          btn.dataset.copy=b.data;
-          btn.addEventListener('click',()=>copyData(b.data));
+    function renderAll() {
+      container.innerHTML = '';
+      if (globalSnap?.exists()) {
+        globalSnap.forEach(ch => {
+          const b = ch.val();
+          const btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.innerText = b.label;
+          btn.dataset.copy = b.data;
+          btn.addEventListener('click', () => copyData(b.data));
           container.appendChild(btn);
         });
       }
-      if(personalSnap && personalSnap.exists()){
-        personalSnap.forEach(ch=>{
-          const b=ch.val(), key=ch.key;
-          const wrap=document.createElement('div');
-          wrap.className='bookmark-item';
-          const btn=document.createElement('button');
-          btn.className='copy-btn'; btn.innerText=b.label;
-          btn.addEventListener('click',()=>copyData(b.data));
-          const del=document.createElement('button');
-          del.className='delete-pvt-btn'; del.innerText='✖';
-          del.title='Usuń zakładkę';
-          del.addEventListener('click',()=>{
-            remove(ref(db,`users/${auth.currentUser.uid}/bookmarks/${key}`))
-              .then(()=>showToast('Usunięto zakładkę'))
-              .catch(()=>showToast('Błąd usuwania!'));
+      if (personalSnap?.exists()) {
+        personalSnap.forEach(ch => {
+          const b   = ch.val(), key = ch.key;
+          const wrap = document.createElement('div');
+          wrap.className = 'bookmark-item';
+          const btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.innerText = b.label;
+          btn.addEventListener('click', () => copyData(b.data));
+          const del = document.createElement('button');
+          del.className = 'delete-pvt-btn';
+          del.innerText = '✖';
+          del.title     = 'Usuń zakładkę';
+          del.addEventListener('click', () => {
+            remove(ref(db, `users/${auth.currentUser.uid}/bookmarks/${key}`))
+              .then(() => showToast('Usunięto zakładkę'))
+              .catch(() => showToast('Błąd usuwania!'));
           });
-          wrap.appendChild(btn); wrap.appendChild(del);
+          wrap.appendChild(btn);
+          wrap.appendChild(del);
           container.appendChild(wrap);
         });
       }
