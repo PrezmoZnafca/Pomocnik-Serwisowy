@@ -42,13 +42,15 @@ function fetchStats(uid) {
   });
 }
 
-// Globalne funkcje dla UI
+
 window.copyData = text => {
+ 
+  const formatted = text.replace(/\|\s*/g, '\n');
   if (!navigator.clipboard) {
     alert('Clipboard API niedostępne!');
     return;
   }
-  navigator.clipboard.writeText(text)
+  navigator.clipboard.writeText(formatted)
     .then(() => { window.showToast('Skopiowano numery części!'); incrementCopy(); })
     .catch(() => window.showToast('Błąd kopiowania!'));
 };
