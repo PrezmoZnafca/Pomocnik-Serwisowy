@@ -196,10 +196,7 @@
       document.getElementById('clock').innerText =
         `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
     }
-    function toggleAuthForms() {
-      document.getElementById('login-form').classList.toggle('hidden');
-      document.getElementById('register-form').classList.toggle('hidden');
-    }
+
 
     document.addEventListener('DOMContentLoaded', () => {
       updateClock(); setInterval(updateClock, 1000);
