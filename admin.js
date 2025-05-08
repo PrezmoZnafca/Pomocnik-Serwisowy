@@ -11,7 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!user) return redirectToLogin();
     get(ref(db, `users/${user.uid}/role`)).then(snap => {
       if (snap.val() !== 'admin') return redirectToLogin();
-      loadUsers(); loadBookmarks();
+      loadUsers();
+      loadGlobalBookmarks();
+      loadPersonalBookmarks();
     });
   });
 
@@ -30,7 +32,7 @@ function loadUsers() {
     const tbody = document.getElementById('user-table-body');
     tbody.innerHTML = '';
     if (!snap.exists()) return;
-    Object.entries(snap.val()).forEach(([uid, u]) => {
+    Object.entries(snap.val()).forEach(([uid,u]) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${escapeHTML(u.username)}</td>
@@ -50,39 +52,69 @@ function loadUsers() {
   });
 }
 
-function loadBookmarks() {
+function loadGlobalBookmarks() {
   get(ref(db, 'bookmarks')).then(snap => {
     const tbody = document.getElementById('bookmark-table-body');
     tbody.innerHTML = '';
     if (!snap.exists()) return;
-    Object.entries(snap.val()).forEach(([key, b]) => {
+    Object.entries(snap.val()).forEach(([key,b]) => {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${escapeHTML(b.label)}</td>`;
-      const tdData = document.createElement('td');
-      tdData.textContent = b.data;
-      tr.appendChild(tdData);
-      const tdAct = document.createElement('td');
-      const btn = document.createElement('button');
-      btn.className = 'admin-btn'; btn.textContent = 'Usuń';
-      btn.addEventListener('click', () => deleteBookmark(key));
-      tdAct.appendChild(btn);
-      tr.appendChild(tdAct);
+      tr.innerHTML = `
+        <td>${escapeHTML(b.label)}</td>
+        <td><pre>${escapeHTML(b.data)}</pre></td>
+        <td><button class="admin-btn" data-delete-bm="${key}">Usuń</button></td>
+      `;
       tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll('[data-delete-bm]').forEach(btn =>
+      btn.addEventListener('click', () => deleteGlobalBookmark(btn.dataset.deleteBm))
+    );
+  });
+}
+
+function loadPersonalBookmarks() {
+  get(ref(db, 'users')).then(snap => {
+    const tbody = document.getElementById('personal-bookmark-table-body');
+    tbody.innerHTML = '';
+    if (!snap.exists()) return;
+    Object.entries(snap.val()).forEach(([uid,u]) => {
+      if (!u.bookmarks) return;
+      Object.entries(u.bookmarks).forEach(([key,b]) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHTML(u.username)}</td>
+          <td>${escapeHTML(b.label)}</td>
+          <td><pre>${escapeHTML(b.data)}</pre></td>
+          <td><button class="admin-btn" data-delete-pbm="${uid}|${key}">Usuń</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    });
+    tbody.querySelectorAll('[data-delete-pbm]').forEach(btn => {
+      const [uid, key] = btn.dataset.deletePbm.split('|');
+      btn.addEventListener('click', () => deletePersonalBookmark(uid, key));
     });
   });
 }
 
 function deleteUser(uid) {
-  if (!confirm('Na pewno usunąć?')) return;
+  if (!confirm('Na pewno usunąć użytkownika?')) return;
   remove(ref(db, 'users/' + uid))
     .then(loadUsers)
     .catch(e => alert('Błąd: ' + e.message));
 }
 
-function deleteBookmark(key) {
-  if (!confirm('Na pewno usunąć tę zakładkę?')) return;
+function deleteGlobalBookmark(key) {
+  if (!confirm('Na pewno usunąć zakładkę globalną?')) return;
   remove(ref(db, 'bookmarks/' + key))
-    .then(loadBookmarks)
+    .then(loadGlobalBookmarks)
+    .catch(e => alert('Błąd: ' + e.message));
+}
+
+function deletePersonalBookmark(uid, key) {
+  if (!confirm('Na pewno usunąć tę zakładkę prywatną?')) return;
+  remove(ref(db, `users/${uid}/bookmarks/${key}`))
+    .then(loadPersonalBookmarks)
     .catch(e => alert('Błąd: ' + e.message));
 }
 
