@@ -201,9 +201,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       updateClock(); setInterval(updateClock, 1000);
 
-      // toggle log/register
-      document.getElementById('show-register').addEventListener('click', toggleAuthForms);
-      document.getElementById('show-login').addEventListener('click', toggleAuthForms);
+
 
       // copy handlers
       document.querySelectorAll('.copy-btn').forEach(btn =>
