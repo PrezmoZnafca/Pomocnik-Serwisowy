@@ -52,9 +52,15 @@
         <input id="login-password" type="password" class="form-field" placeholder="Hasło">
         <button id="login-btn" class="action-btn">Zaloguj się</button>
         <p>Nie masz konta?
-          <button id="show-register" type="button" class="switch-auth">
-            Zarejestruj się
-          </button>
+          <button
+            id="show-register"
+            type="button"
+            class="switch-auth"
+            onclick="
+              document.getElementById('login-form').classList.add('hidden');
+              document.getElementById('register-form').classList.remove('hidden');
+            "
+          >Zarejestruj się</button>
         </p>
       </div>
       <div id="register-form" class="auth-form hidden">
@@ -65,9 +71,15 @@
         <input id="register-password" type="password" class="form-field" placeholder="Hasło">
         <button id="register-btn" class="action-btn">Zarejestruj się</button>
         <p>Masz już konto?
-          <button id="show-login" type="button" class="switch-auth">
-            Zaloguj się
-          </button>
+          <button
+            id="show-login"
+            type="button"
+            class="switch-auth"
+            onclick="
+              document.getElementById('register-form').classList.add('hidden');
+              document.getElementById('login-form').classList.remove('hidden');
+            "
+          >Zaloguj się</button>
         </p>
       </div>
     </section>
@@ -83,7 +95,6 @@
                   data-copy="NA073630, 1|604107-00, 1|642883-00C, 1|N866541, 1|N921819, 1||N864736, 1|N919242, 1">
             DCF850
           </button>
-          <!-- Analogicznie dla pozostałych przycisków: -->
           <button class="copy-btn"
                   data-copy="N439275, 1|N089668, 1|642883-00C, 1|N439271, 1|N424032, 1|N437890, 1|N612522, 1|N019351, 1|N016823, 1|N421245, 1|N075339, 1">
             DCF887
@@ -191,7 +202,7 @@
   </div>
 
   <script>
-    // Helpery globalne
+    // Global helpers
     function showToast(msg) {
       const c = document.getElementById('toast-container'),
             t = document.createElement('div');
@@ -204,7 +215,6 @@
     }
 
     function copyData(text) {
-      // zamień '|' na nowe linie
       const formatted = text.replace(/\|/g, '\n');
       navigator.clipboard.writeText(formatted)
         .then(() => { showToast('Skopiowano numery części!'); window.incrementCopy(); })
@@ -244,33 +254,19 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       updateClock(); setInterval(updateClock, 1000);
-
-      // toggle log/register
-      document.getElementById('show-register').addEventListener('click', () => {
-        document.getElementById('login-form').classList.add('hidden');
-        document.getElementById('register-form').classList.remove('hidden');
-      });
-      document.getElementById('show-login').addEventListener('click', () => {
-        document.getElementById('register-form').classList.add('hidden');
-        document.getElementById('login-form').classList.remove('hidden');
-      });
-
       // copy buttons
       document.querySelectorAll('.copy-btn').forEach(btn =>
         btn.addEventListener('click', () => copyData(btn.dataset.copy))
       );
-
       // calculate
       document.getElementById('calc-btn').addEventListener('click', calculateTime);
-
-      // pdf / ahk
+      // pdf/ahk
       document.getElementById('open-pdf').addEventListener('click', () =>
         window.open('Akumulatory.pdf', '_blank')
       );
       document.getElementById('download-ahk').addEventListener('click', () =>
         window.location.href = 'npr.ahk'
       );
-
       // contact modal
       document.getElementById('contact-btn').addEventListener('click', () =>
         document.getElementById('contact-modal').classList.remove('hidden')
