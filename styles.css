@@ -16,7 +16,7 @@ body, html {
 }
 .hidden { display:none !important; }
 
-/* nagłówek */
+/* header */
 .header {
   position:fixed; top:0; left:0; width:100%;
   background: var(--primary);
@@ -31,7 +31,7 @@ body, html {
   padding:6px 10px; border-radius:6px; margin-left:12px;
 }
 
-/* przyciski w headerze */
+/* header buttons */
 .header-btn {
   background:transparent; border:2px solid #000;
   color:#000; padding:6px 12px;
@@ -40,12 +40,25 @@ body, html {
   transition:background 0.3s, color 0.3s, transform 0.1s;
   white-space: nowrap;
 }
-.header-btn:hover {
-  background:#000; color:var(--primary); transform:scale(1.05);
+.header-btn:hover { background:#000; color:var(--primary); transform:scale(1.05); }
+
+/* auth */
+.auth-container {
+  display:flex; flex-direction:column; align-items:center; margin-top:80px;
+  padding-top:10px;
+}
+.auth-form {
+  background: var(--card-bg); padding:30px;
+  border-radius:8px; width:320px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.6); margin-bottom:20px;
+}
+.switch-auth {
+  background:none; border:none; color:var(--primary);
+  cursor:pointer; text-decoration:underline; padding:0; font-size:inherit;
 }
 
-/* sekcje niżej */
-#auth-section, #main-section { padding-top:70px; }
+/* main sections */
+#main-section { padding-top:70px; }
 .container {
   max-width:1200px; margin:0 auto; padding:20px;
   display:flex; flex-wrap:wrap; gap:20px; justify-content:center;
@@ -59,14 +72,14 @@ body, html {
   color: var(--primary); margin-bottom:10px;
 }
 
-/* pola formularza */
+/* form fields */
 .form-field {
   width:100%; padding:10px; margin-bottom:10px;
   border:2px solid var(--primary); border-radius:6px;
   background:#3a3a3a; color:#fff; font-size:14px;
 }
 
-/* przyciski akcji */
+/* buttons */
 .action-btn, button {
   width:100%; margin-top:10px; padding:10px;
   background: var(--primary); color:#000;
@@ -90,8 +103,7 @@ body, html {
   transition:border-color 0.2s; cursor:pointer;
 }
 .time-picker-input:focus {
-  outline:none;
-  border-color: var(--primary);
+  outline:none; border-color: var(--primary);
   box-shadow:0 0 0 3px rgba(255,203,0,0.3);
 }
 
@@ -99,7 +111,7 @@ body, html {
 .work-stats { margin-top:10px; }
 .work-stats p { font-size:16px; margin:4px 0; color: var(--text); }
 
-/* linki */
+/* links */
 .links-section {
   width:100%; text-align:center; margin-top:30px;
 }
@@ -120,3 +132,24 @@ body, html {
   transition:opacity 0.4s, transform 0.4s;
 }
 .toast.hidden { opacity:0; transform:translateY(20px); }
+
+/* admin tables */
+#user-table, #bookmark-table {
+  width:100%; border-collapse:collapse; margin-top:20px;
+}
+#user-table th, #bookmark-table th,
+#user-table td, #bookmark-table td {
+  padding:10px; border-bottom:1px solid #444; text-align:center;
+}
+#user-table th, #bookmark-table th {
+  background: var(--card-bg); color: var(--primary);
+}
+#user-table td, #bookmark-table td {
+  background:#252525;
+}
+.admin-btn {
+  background:#d9534f; color:#fff; padding:6px 10px;
+  border:none; border-radius:6px; cursor:pointer;
+  transition:background 0.3s;
+}
+.admin-btn:hover { background:#c9302c; }

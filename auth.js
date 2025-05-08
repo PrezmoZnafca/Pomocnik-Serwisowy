@@ -1,17 +1,18 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-         onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-import { getDatabase, ref, set, update, serverTimestamp, increment, get } from
-       "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import {
+  getDatabase, ref, set, update, serverTimestamp, increment, get
+} from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
 const auth = getAuth();
 const db   = getDatabase();
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Przełączanie form
   document.getElementById('show-register').addEventListener('click', toggleAuthForms);
   document.getElementById('show-login').addEventListener('click', toggleAuthForms);
 
-  // Rejestracja
   document.getElementById('register-btn').addEventListener('click', () => {
     const u = document.getElementById('register-username').value.trim();
     const p = document.getElementById('register-password').value;
@@ -31,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(e => showToast('Błąd rejestracji: ' + e.message));
   });
 
-  // Logowanie
   document.getElementById('login-btn').addEventListener('click', () => {
     const u = document.getElementById('login-username').value.trim();
     const p = document.getElementById('login-password').value;
@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(e => showToast('Błąd logowania: ' + e.message));
   });
 
-  // Stan auth
   onAuthStateChanged(auth, user => {
     const loBtn = document.getElementById('logout-btn');
     const adBtn = document.getElementById('admin-panel-btn');
@@ -72,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-function toggleAuthForms() {
+function toggleAuthForms(){
   document.getElementById('login-form').classList.toggle('hidden');
   document.getElementById('register-form').classList.toggle('hidden');
 }

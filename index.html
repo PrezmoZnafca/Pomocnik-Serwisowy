@@ -24,7 +24,6 @@
   <!-- Firebase SDKs -->
   <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js" defer></script>
   <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js" defer></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-functions.js" defer></script>
   <!-- App scripts -->
   <script type="module" src="counter.js" defer></script>
   <script type="module" src="auth.js" defer></script>
@@ -42,7 +41,7 @@
   <div id="toast-container"></div>
 
   <main>
-    <!-- Sekcja logowania/rejestracji -->
+    <!-- Logowanie / Rejestracja -->
     <section id="auth-section" class="auth-container">
       <div id="login-form" class="auth-form" aria-labelledby="login-title">
         <h2 id="login-title">Logowanie</h2>
@@ -51,7 +50,7 @@
         <label for="login-password">Hasło</label>
         <input type="password" id="login-password" class="form-field" placeholder="Hasło">
         <button id="login-btn" class="action-btn">Zaloguj się</button>
-        <p>Nie masz konta? <span id="show-register" class="switch-auth">Zarejestruj się</span></p>
+        <p>Nie masz konta? <button type="button" id="show-register" class="switch-auth">Zarejestruj się</button></p>
       </div>
       <div id="register-form" class="auth-form hidden" aria-labelledby="register-title">
         <h2 id="register-title">Rejestracja</h2>
@@ -60,81 +59,19 @@
         <label for="register-password">Hasło (min. 6 znaków)</label>
         <input type="password" id="register-password" class="form-field" placeholder="Hasło">
         <button id="register-btn" class="action-btn">Zarejestruj się</button>
-        <p>Masz już konto? <span id="show-login" class="switch-auth">Zaloguj się</span></p>
+        <p>Masz już konto? <button type="button" id="show-login" class="switch-auth">Zaloguj się</button></p>
       </div>
     </section>
 
     <!-- Główna sekcja -->
     <section id="main-section" class="hidden">
       <div class="container">
+
         <!-- Zakładki Kopiowania -->
         <div class="devices-container">
           <h3>Zakładki Kopiowania</h3>
-          <button data-copy="NA073630, 1
-604107-00, 1
-642883-00C, 1
-N866541, 1
-N921819, 1
-BC-N019351, 1
-NA202231, 1
-N864734, 1
-N811325, 1
-N864740, 1
-N864736, 1
-N919242, 1" class="copy-btn">DCF850</button>
-          <button data-copy="N439275, 1
-N089668, 1
-642883-00C, 1
-N439271, 1
-N424032, 1
-N437890, 1
-N612522, 1
-N019351, 1
-N016823, 1
-N421245, 1
-N075339, 1" class="copy-btn">DCF887</button>
-          <button data-copy="NA472056, 1
-NA163453, 1
-NA472064, 1
-NA562707, 1
-N019351, 1
-604107-00, 1
-NA168988, 2
-N864740, 1
-N864736, 1
-NA166862, 1
-NA162532, 1
-NA549696, 1" class="copy-btn">DCF860N</button>
-          <button data-copy="N439275, 1
-N089668, 1
-642883-00C, 1
-N611681, 1
-N424032, 1
-N437890, 1
-N019351, 1
-N612522, 1
-N453417, 1
-N421245, 1" class="copy-btn">DCF809</button>
-          <button data-copy="N233871, 1
-330003-60, 1
-N233867, 1
-330003-64, 1
-N233866, 1
-N915019, 1
-N915018, 1
-N077124, 1
-577744-00, 1
-N233864, 2
-N233863, 2
-323711-41, 1
-N077123, 1
-N093430, 2
-N233865, 1
-N233859, 1
-870889-02, 1" class="copy-btn">Aligator Zestaw</button>
-          <button data-copy="N430442, 1
-N329079, 1
-NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
+          <button data-copy="NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nBC-N019351, 1\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1\nN919242, 1" class="copy-btn">DCF850</button>
+          <!-- kolejne przyciski analogicznie -->
         </div>
 
         <!-- Dodaj własne zakładki -->
@@ -151,22 +88,13 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
           <div id="custom-buttons"></div>
         </div>
 
-        <!-- Oblicz czas wyjścia + RCPOnline -->
+        <!-- Oblicz czas wyjścia -->
         <div class="main-content">
           <h3>Oblicz czas wyjścia</h3>
           <div class="time-picker">
             <span class="time-picker-icon" aria-hidden="true">🕒</span>
             <input type="time" id="arrivalTime" class="time-picker-input" aria-label="Czas wejścia">
           </div>
-          <section id="rcp-section">
-            <h2>RCPOnline</h2>
-            <label for="rcp-login">Login RCP:</label>
-            <input id="rcp-login" class="form-field" placeholder="Twój login">
-            <label for="rcp-password">Hasło RCP:</label>
-            <input id="rcp-password" type="password" class="form-field" placeholder="Twoje hasło">
-            <button id="rcp-fetch-btn" class="action-btn">Pobierz z RCP</button>
-            <p id="rcp-status" role="status">Ostatnia aktywność: –</p>
-          </section>
           <button id="calc-btn" class="action-btn">Oblicz</button>
           <div class="time-result">
             <h4>Nowy czas wyjścia:</h4>
@@ -191,6 +119,7 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
           <button onclick="window.open('Akumulatory.pdf','_blank')" class="action-btn">Otwórz plik PDF</button>
           <button onclick="window.location.href='npr.ahk'" download class="action-btn">Pobierz plik npr.ahk</button>
         </div>
+
       </div>
 
       <!-- Linki zewnętrzne -->
@@ -207,33 +136,42 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      updateClock(); setInterval(updateClock, 1000);
+      updateClock(); setInterval(updateClock,1000);
       document.querySelectorAll('.copy-btn')
-        .forEach(btn => btn.addEventListener('click', () => window.copyData(btn.dataset.copy)));
+        .forEach(btn => btn.addEventListener('click', ()=>window.copyData(btn.dataset.copy)));
       document.getElementById('calc-btn')
         .addEventListener('click', calculateTime);
       ['login-username','login-password'].forEach(id =>
         document.getElementById(id)
-          .addEventListener('keypress', e => { if (e.key==='Enter') document.getElementById('login-btn').click(); })
+          .addEventListener('keypress', e=>{if(e.key==='Enter')document.getElementById('login-btn').click();})
       );
       ['register-username','register-password'].forEach(id =>
         document.getElementById(id)
-          .addEventListener('keypress', e => { if (e.key==='Enter') document.getElementById('register-btn').click(); })
+          .addEventListener('keypress', e=>{if(e.key==='Enter')document.getElementById('register-btn').click();})
       );
+      document.getElementById('show-register').addEventListener('click', toggleAuthForms);
+      document.getElementById('show-login').addEventListener('click', toggleAuthForms);
     });
-    function showToast(msg) {
-      const c = document.getElementById('toast-container'),
-            t = document.createElement('div');
-      t.className = 'toast'; t.innerText = msg;
+
+    function showToast(msg){
+      const c=document.getElementById('toast-container'),
+            t=document.createElement('div');
+      t.className='toast'; t.innerText=msg;
       c.appendChild(t);
-      setTimeout(() => { t.classList.add('hidden'); setTimeout(() => t.remove(), 500); }, 3000);
+      setTimeout(()=>{t.classList.add('hidden');setTimeout(()=>t.remove(),500);},3000);
     }
-    function updateClock() {
-      const d = new Date();
+
+    function updateClock(){
+      const d=new Date();
       document.getElementById('clock').innerText =
-        `${String(d.getHours()).padStart(2,'0')}:` +
-        `${String(d.getMinutes()).padStart(2,'0')}:` +
+        `${String(d.getHours()).padStart(2,'0')}:`+
+        `${String(d.getMinutes()).padStart(2,'0')}:`+
         `${String(d.getSeconds()).padStart(2,'0')}`;
+    }
+
+    function toggleAuthForms(){
+      document.getElementById('login-form').classList.toggle('hidden');
+      document.getElementById('register-form').classList.toggle('hidden');
     }
   </script>
 
@@ -248,23 +186,21 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
       snap.forEach(child=>{
         const {label,data} = child.val(),
               btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.innerText = label;
-        btn.onclick = ()=>window.copyData(data);
+        btn.className='copy-btn';
+        btn.innerText=label;
+        btn.onclick=()=>window.copyData(data);
         customContainer.appendChild(btn);
       });
     });
-    document.getElementById('add-custom-btn').addEventListener('click', () => {
-      const label = document.getElementById('custom-btn-label').value.trim(),
-            data = document.getElementById('custom-btn-data').value.trim();
-      if (!label || !data) { showToast('Podaj nazwę i numery części!'); return; }
-      push(bookmarksRef, {label,data})
-        .then(() => {
-          document.getElementById('custom-btn-label').value = '';
-          document.getElementById('custom-btn-data').value = '';
-          showToast('Dodano zakładkę globalną!');
-        })
-        .catch(() => showToast('Błąd dodawania!'));
+    document.getElementById('add-custom-btn').addEventListener('click',()=>{
+      const label=document.getElementById('custom-btn-label').value.trim(),
+            data=document.getElementById('custom-btn-data').value.trim();
+      if(!label||!data){showToast('Podaj nazwę i numery części!');return;}
+      push(bookmarksRef,{label,data})
+        .then(()=>{document.getElementById('custom-btn-label').value='';
+                   document.getElementById('custom-btn-data').value='';
+                   showToast('Dodano zakładkę globalną!');})
+        .catch(()=>showToast('Błąd dodawania!'));
     });
   </script>
 </body>

@@ -1,95 +1,56 @@
-import { getAuth, onAuthStateChanged, signOut } from
-  "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-import { getDatabase, ref, get, remove } from
-  "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel Administratora - Pomocnik Serwisowy</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script type="module" defer>
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
+      authDomain: "pomocnik-serwisowy.firebaseapp.com",
+      databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "pomocnik-serwisowy",
+      storageBucket: "pomocnik-serwisowy.appspot.com",
+      messagingSenderId: "683654368007",
+      appId: "1:683654368007:web:d90e76b516275a847153a2"
+    };
+    initializeApp(firebaseConfig);
+  </script>
+  <script type="module" src="admin.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <h1>Panel Administratora</h1>
+    <div id="clock" class="clock" aria-live="polite"></div>
+  </header>
 
-const auth = getAuth();
-const db   = getDatabase();
+  <div id="toast-container"></div>
 
-document.addEventListener('DOMContentLoaded', () => {
-  onAuthStateChanged(auth, user => {
-    if (!user) return redirectToLogin();
-    get(ref(db, `users/${user.uid}/role`)).then(snap => {
-      if (snap.val() !== 'admin') return redirectToLogin();
-      loadUsers();
-      loadBookmarks();
-    });
-  });
+  <main class="container admin-container">
+    <h2>Lista użytkowników</h2>
+    <table id="user-table">
+      <thead>
+        <tr>
+          <th>Nazwa</th><th>Rola</th><th>Rejestracja</th><th>Ostatnia aktywność</th>
+          <th>Kopiowań</th><th>Obliczeń</th><th>Logowań</th><th>Akcje</th>
+        </tr>
+      </thead>
+      <tbody id="user-table-body"></tbody>
+    </table>
 
-  document.getElementById('logout-btn')
-    .addEventListener('click', () => signOut(auth).then(redirectToLogin));
-  document.getElementById('back-to-main')
-    .addEventListener('click', () => window.location.href = 'index.html');
-});
+    <h2>Zakładki globalne</h2>
+    <table id="bookmark-table">
+      <thead>
+        <tr><th>Nazwa</th><th>Numery</th><th>Akcje</th></tr>
+      </thead>
+      <tbody id="bookmark-table-body"></tbody>
+    </table>
 
-function redirectToLogin() {
-  window.location.href = 'index.html';
-}
-
-function loadUsers() {
-  get(ref(db, 'users')).then(snap => {
-    const tbody = document.getElementById('user-table-body');
-    tbody.innerHTML = '';
-    if (!snap.exists()) return;
-    Object.entries(snap.val()).forEach(([uid, u]) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${escapeHTML(u.username)}</td>
-        <td>${escapeHTML(u.role)}</td>
-        <td>${u.createdAt ? new Date(u.createdAt).toLocaleString('pl-PL') : '—'}</td>
-        <td>${u.lastActive ? new Date(u.lastActive).toLocaleString('pl-PL') : '—'}</td>
-        <td>${u.copies ?? 0}</td>
-        <td>${u.calculations ?? 0}</td>
-        <td>${u.logins ?? 0}</td>
-        <td><button class="admin-btn" data-delete-user="${uid}">Usuń</button></td>
-      `;
-      tbody.appendChild(tr);
-    });
-    tbody.querySelectorAll('[data-delete-user]').forEach(btn => {
-      btn.addEventListener('click', () => deleteUser(btn.dataset.deleteUser));
-    });
-  });
-}
-
-function loadBookmarks() {
-  get(ref(db, 'bookmarks')).then(snap => {
-    const tbody = document.getElementById('bookmark-table-body');
-    tbody.innerHTML = '';
-    if (!snap.exists()) return;
-    Object.entries(snap.val()).forEach(([key, b]) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${escapeHTML(b.label)}</td>`;
-      const tdData = document.createElement('td');
-      tdData.textContent = b.data;
-      tr.appendChild(tdData);
-      const tdAct = document.createElement('td');
-      const btn = document.createElement('button');
-      btn.className = 'admin-btn';
-      btn.textContent = 'Usuń';
-      btn.addEventListener('click', () => deleteBookmark(key));
-      tdAct.appendChild(btn);
-      tr.appendChild(tdAct);
-      tbody.appendChild(tr);
-    });
-  });
-}
-
-function deleteUser(uid) {
-  if (!confirm('Na pewno usunąć?')) return;
-  remove(ref(db, 'users/' + uid))
-    .then(loadUsers)
-    .catch(e => alert('Błąd: ' + e.message));
-}
-
-function deleteBookmark(key) {
-  if (!confirm('Na pewno usunąć tę zakładkę?')) return;
-  remove(ref(db, 'bookmarks/' + key))
-    .then(loadBookmarks)
-    .catch(e => alert('Błąd: ' + e.message));
-}
-
-function escapeHTML(str) {
-  return str.replace(/[&<>"']/g, c =>
-    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]
-  );
-}
+    <button id="back-to-main" class="admin-btn">Strona Główna</button>
+    <button id="logout-btn" class="admin-btn">Wyloguj się</button>
+  </main>
+</body>
+</html>
