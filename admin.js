@@ -48,16 +48,12 @@ function loadUsers() {
         <td>${u.copies||0}</td>
         <td>${u.calculations||0}</td>
         <td>${u.logins||0}</td>
-        <td><button data-impersonate="${uid}" class="admin-btn">Impersonuj</button></td>
         <td><button data-delete-user="${uid}" class="admin-btn">Usuń</button></td>
       `;
       tbody.appendChild(tr);
     });
     tbody.querySelectorAll('.role-select').forEach(sel => {
       sel.onchange = () => changeRole(sel.dataset.uid, sel.value);
-    });
-    tbody.querySelectorAll('[data-impersonate]').forEach(btn => {
-      btn.onclick = () => alert('Impersonacja wymaga backendu z Custom Tokenami.');
     });
     tbody.querySelectorAll('[data-delete-user]').forEach(btn => {
       btn.onclick = () => deleteUser(btn.dataset.deleteUser);
@@ -86,7 +82,7 @@ function loadProposals() {
     if (!snap.exists()) return;
     Object.entries(snap.val()).forEach(([key,b]) => {
       get(ref(db, `users/${b.uid}/username`)).then(uSnap => {
-        const uname = uSnap.val() || b.uid;
+        const uname = uSnap.val()||b.uid;
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${uname}</td>
@@ -108,9 +104,9 @@ function loadProposals() {
 function acceptProposal(key) {
   get(ref(db, `proposedBookmarks/${key}`)).then(snap => {
     const b = snap.val();
-    push(ref(db, 'bookmarks'), { label: b.label, data: b.data })
-      .then(() => remove(ref(db, `proposedBookmarks/${key}`)))
-      .then(() => { loadProposals(); loadGlobalBookmarks(); });
+    push(ref(db, 'bookmarks'), { label:b.label, data:b.data })
+      .then(()=>remove(ref(db, `proposedBookmarks/${key}`)))
+      .then(()=>{loadProposals(); loadGlobalBookmarks();});
   });
 }
 
@@ -142,21 +138,21 @@ function deleteGlobalBookmark(key) {
   remove(ref(db, `bookmarks/${key}`)).then(loadGlobalBookmarks);
 }
 
-// — Prywatne zakładki użytkowników —
+// — Prywatne zakładki użytkowników —  
 function loadPersonalBookmarks() {
-  get(ref(db, 'users')).then(snap => {
-    const tbody = document.getElementById('personal-bookmark-table-body');
-    tbody.innerHTML = '';
-    if (!snap.exists()) return;
-    Object.entries(snap.val()).forEach(([uid,u]) => {
-      if (!u.bookmarks) return;
-      const header = document.createElement('tr');
-      header.className = 'group-header';
-      header.innerHTML = `<td colspan="3">${u.username}</td>`;
+  get(ref(db,'users')).then(snap=>{
+    const tbody=document.getElementById('personal-bookmark-table-body');
+    tbody.innerHTML='';
+    if(!snap.exists())return;
+    Object.entries(snap.val()).forEach(([uid,u])=>{
+      if(!u.bookmarks)return;
+      const header=document.createElement('tr');
+      header.className='group-header';
+      header.innerHTML=`<td colspan="3">${u.username}</td>`;
       tbody.appendChild(header);
-      Object.entries(u.bookmarks).forEach(([k,b]) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+      Object.entries(u.bookmarks).forEach(([k,b])=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`
           <td>${b.label}</td>
           <td><pre>${b.data}</pre></td>
           <td><button data-delete-pbm="${uid}|${k}" class="admin-btn">Usuń</button></td>
@@ -164,36 +160,36 @@ function loadPersonalBookmarks() {
         tbody.appendChild(tr);
       });
     });
-    tbody.querySelectorAll('[data-delete-pbm]').forEach(btn => {
-      const [uid,k] = btn.dataset.deletePbm.split('|');
-      btn.onclick = () => deletePersonalBookmark(uid,k);
+    tbody.querySelectorAll('[data-delete-pbm]').forEach(btn=>{
+      const [uid,k]=btn.dataset.deletePbm.split('|');
+      btn.onclick=()=>deletePersonalBookmark(uid,k);
     });
   });
 }
 
 function deletePersonalBookmark(uid,k) {
-  if (!confirm('Usuń prywatną zakładkę?')) return;
+  if(!confirm('Usuń prywatną zakładkę?'))return;
   remove(ref(db, `users/${uid}/bookmarks/${k}`)).then(loadPersonalBookmarks);
 }
 
-// — Wiadomości od użytkowników —
+// — Wiadomości od użytkowników —  
 function loadMessages() {
-  get(ref(db, 'messages')).then(snap => {
-    const tbody = document.getElementById('messages-table-body');
-    tbody.innerHTML = '';
-    if (!snap.exists()) return;
-    Object.entries(snap.val()).forEach(([key,m]) => {
-      get(ref(db, `users/${m.uid}/username`)).then(uSnap => {
-        const uname = uSnap.val() || m.uid;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+  get(ref(db,'messages')).then(snap=>{
+    const tbody=document.getElementById('messages-table-body');
+    tbody.innerHTML='';
+    if(!snap.exists())return;
+    Object.entries(snap.val()).forEach(([key,m])=>{
+      get(ref(db, `users/${m.uid}/username`)).then(uSnap=>{
+        const uname=uSnap.val()||m.uid;
+        const tr=document.createElement('tr');
+        tr.innerHTML=`
           <td>${uname}</td>
           <td>${m.text}</td>
           <td>${new Date(m.ts).toLocaleString('pl-PL')}</td>
           <td><button data-del-msg="${key}" class="admin-btn">Usuń</button></td>
         `;
         tbody.appendChild(tr);
-        tr.querySelector('[data-del-msg]').onclick = () => {
+        tr.querySelector('[data-del-msg]').onclick=()=>{
           remove(ref(db, `messages/${key}`)).then(loadMessages);
         };
       });
