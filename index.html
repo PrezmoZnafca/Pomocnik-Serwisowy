@@ -202,7 +202,7 @@
   </div>
 
   <script>
-    // Global helpers
+    // global helpers
     function showToast(msg) {
       const c = document.getElementById('toast-container'),
             t = document.createElement('div');
@@ -253,20 +253,25 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      updateClock(); setInterval(updateClock, 1000);
-      // copy buttons
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      // copy handlers
       document.querySelectorAll('.copy-btn').forEach(btn =>
         btn.addEventListener('click', () => copyData(btn.dataset.copy))
       );
+
       // calculate
       document.getElementById('calc-btn').addEventListener('click', calculateTime);
-      // pdf/ahk
+
+      // PDF / AHK
       document.getElementById('open-pdf').addEventListener('click', () =>
         window.open('Akumulatory.pdf', '_blank')
       );
       document.getElementById('download-ahk').addEventListener('click', () =>
         window.location.href = 'npr.ahk'
       );
+
       // contact modal
       document.getElementById('contact-btn').addEventListener('click', () =>
         document.getElementById('contact-modal').classList.remove('hidden')
