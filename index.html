@@ -6,171 +6,228 @@
   <title>Pomocnik Serwisowy</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <style>
-    .devices-container { margin-bottom: 20px; }
-    .devices-container h3 { color: var(--primary); margin-bottom: 10px; }
-    .form-field {
-      width: 100%;
-      padding: 10px;
-      border: 2px solid var(--primary);
-      border-radius: 6px;
-      background: #3a3a3a;
-      color: #fff;
-      margin-bottom: 10px;
-      font-size: 14px;
-      resize: vertical;
-    }
-    .devices-container button {
-      width: 100%;
-      margin-top: 5px;
-      padding: 10px;
-      background: var(--primary);
-      color: #000;
-      border: none;
-      border-radius: 6px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .devices-container button:hover {
-      background: var(--hover);
-    }
-  </style>
-    <!-- 1) Core SDK -->
-  <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js" defer></script>
-  <!-- 2) Auth SDK -->
+
+  <!-- Firebase config & init -->
+  <script type="module" defer>
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
+      authDomain: "pomocnik-serwisowy.firebaseapp.com",
+      databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "pomocnik-serwisowy",
+      storageBucket: "pomocnik-serwisowy.appspot.com",
+      messagingSenderId: "683654368007",
+      appId: "1:683654368007:web:d90e76b516275a847153a2"
+    };
+    initializeApp(firebaseConfig);
+  </script>
+  <!-- Firebase SDKs -->
   <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js" defer></script>
-  <!-- 3) Realtime Database SDK -->
   <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js" defer></script>
-  <!-- 4) Functions SDK -->
   <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-functions.js" defer></script>
+  <!-- App scripts -->
   <script type="module" src="counter.js" defer></script>
-    <script type="module" src="auth.js" defer></script>
+  <script type="module" src="auth.js" defer></script>
 </head>
 <body>
-
-  <header class="header">
+  <header class="header" role="banner">
     <div class="header-left"><h1>Pomocnik Serwisowy</h1></div>
     <div class="header-right">
       <button id="admin-panel-btn" class="header-btn hidden">Panel Admina</button>
-      <button id="logout-btn"       class="header-btn hidden">Wyloguj się</button>
-      <div id="clock" class="clock"></div>
+      <button id="logout-btn" class="header-btn hidden">Wyloguj się</button>
+      <div id="clock" class="clock" aria-live="polite"></div>
     </div>
   </header>
 
   <div id="toast-container"></div>
 
-  <div id="auth-section" class="auth-container">
-    <div id="login-form" class="auth-form">
-      <h2>Logowanie</h2>
-      <input type="text"     id="login-username" placeholder="Nazwa użytkownika">
-      <input type="password" id="login-password" placeholder="Hasło">
-      <button id="login-btn">Zaloguj się</button>
-      <p>Nie masz konta? <span id="show-register" class="switch-auth">Zarejestruj się</span></p>
-    </div>
-    <div id="register-form" class="auth-form hidden">
-      <h2>Rejestracja</h2>
-      <input type="text"     id="register-username" placeholder="Nazwa użytkownika">
-      <input type="password" id="register-password" placeholder="Hasło">
-      <button id="register-btn">Zarejestruj się</button>
-      <p>Masz już konto? <span id="show-login" class="switch-auth">Zaloguj się</span></p>
-    </div>
-  </div>
-
-  <div id="main-section" class="hidden">
-    <div class="container">
-
-      <!-- Zakładki Kopiowania -->
-      <div class="devices-container">
-        <h3>Zakładki Kopiowania</h3>
-        <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nBC-N019351, 1\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1\nN919242, 1')">DCF850</button>
-        <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1\nN075339, 1')">DCF887</button>
-        <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')">DCF860N</button>
-        <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN611681, 1\nN424032, 1\nN437890, 1\nN019351, 1\nN612522, 1\nN453417, 1\nN421245, 1')">DCF809</button>
-        <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')">Aligator Zestaw</button>
-        <button onclick="copyData('N430442, 1\nN329079, 1\nNA293294, 1')">Oscylacyjna DWE6423</button>
+  <main>
+    <!-- Sekcja logowania/rejestracji -->
+    <section id="auth-section" class="auth-container">
+      <div id="login-form" class="auth-form" aria-labelledby="login-title">
+        <h2 id="login-title">Logowanie</h2>
+        <label for="login-username">Nazwa użytkownika</label>
+        <input type="text" id="login-username" class="form-field" placeholder="Nazwa użytkownika">
+        <label for="login-password">Hasło</label>
+        <input type="password" id="login-password" class="form-field" placeholder="Hasło">
+        <button id="login-btn" class="action-btn">Zaloguj się</button>
+        <p>Nie masz konta? <span id="show-register" class="switch-auth">Zarejestruj się</span></p>
       </div>
-
-      <!-- Dodaj własne zakładki -->
-      <div class="devices-container">
-        <h3>Dodaj własne zakładki</h3>
-        <input type="text" id="custom-btn-label" class="form-field" placeholder="Nazwa przycisku">
-        <textarea id="custom-btn-data" class="form-field" rows="4" placeholder="Numery, każdy w nowej linii"></textarea>
-        <button id="add-custom-btn">Dodaj zakładkę</button>
+      <div id="register-form" class="auth-form hidden" aria-labelledby="register-title">
+        <h2 id="register-title">Rejestracja</h2>
+        <label for="register-username">Nazwa użytkownika</label>
+        <input type="text" id="register-username" class="form-field" placeholder="Nazwa użytkownika">
+        <label for="register-password">Hasło (min. 6 znaków)</label>
+        <input type="password" id="register-password" class="form-field" placeholder="Hasło">
+        <button id="register-btn" class="action-btn">Zarejestruj się</button>
+        <p>Masz już konto? <span id="show-login" class="switch-auth">Zaloguj się</span></p>
       </div>
+    </section>
 
-      <!-- Własne zakładki -->
-      <div class="devices-container">
-        <h3>Własne zakładki</h3>
-        <div id="custom-buttons"></div>
-      </div>
-
-      <!-- Oblicz czas wyjścia -->
-      <div class="main-content">
-        <h3>Oblicz czas wyjścia</h3>
-        <div class="time-picker">
-          <span class="time-picker-icon">🕒</span>
-          <input type="time" id="arrivalTime" class="time-picker-input" placeholder="hh:mm">
+    <!-- Główna sekcja -->
+    <section id="main-section" class="hidden">
+      <div class="container">
+        <!-- Zakładki Kopiowania -->
+        <div class="devices-container">
+          <h3>Zakładki Kopiowania</h3>
+          <button data-copy="NA073630, 1
+604107-00, 1
+642883-00C, 1
+N866541, 1
+N921819, 1
+BC-N019351, 1
+NA202231, 1
+N864734, 1
+N811325, 1
+N864740, 1
+N864736, 1
+N919242, 1" class="copy-btn">DCF850</button>
+          <button data-copy="N439275, 1
+N089668, 1
+642883-00C, 1
+N439271, 1
+N424032, 1
+N437890, 1
+N612522, 1
+N019351, 1
+N016823, 1
+N421245, 1
+N075339, 1" class="copy-btn">DCF887</button>
+          <button data-copy="NA472056, 1
+NA163453, 1
+NA472064, 1
+NA562707, 1
+N019351, 1
+604107-00, 1
+NA168988, 2
+N864740, 1
+N864736, 1
+NA166862, 1
+NA162532, 1
+NA549696, 1" class="copy-btn">DCF860N</button>
+          <button data-copy="N439275, 1
+N089668, 1
+642883-00C, 1
+N611681, 1
+N424032, 1
+N437890, 1
+N019351, 1
+N612522, 1
+N453417, 1
+N421245, 1" class="copy-btn">DCF809</button>
+          <button data-copy="N233871, 1
+330003-60, 1
+N233867, 1
+330003-64, 1
+N233866, 1
+N915019, 1
+N915018, 1
+N077124, 1
+577744-00, 1
+N233864, 2
+N233863, 2
+323711-41, 1
+N077123, 1
+N093430, 2
+N233865, 1
+N233859, 1
+870889-02, 1" class="copy-btn">Aligator Zestaw</button>
+          <button data-copy="N430442, 1
+N329079, 1
+NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
         </div>
 
-        <section id="rcp-section">
-  <h2>RCPOnline</h2>
-  <div>
-    <label for="rcp-login">Login RCP:</label>
-    <input id="rcp-login" placeholder="Twój login">
-  </div>
-  <div>
-    <label for="rcp-password">Hasło RCP:</label>
-    <input id="rcp-password" type="password" placeholder="Twoje hasło">
-  </div>
-  <button id="rcp-fetch-btn">Pobierz z RCP</button>
-  <p id="rcp-status">Ostatnia aktywność: –</p>
-  <div>
-    <label for="arrivalTime">Czas wejścia:</label>
-    <input type="time" id="arrivalTime">
-  </div>
-</section>
-
-
-        <button onclick="calculateTime()">Oblicz</button>
-        <div class="time-result">
-          <h4>Nowy czas wyjścia:</h4>
-          <p id="outputTime">--:--</p>
+        <!-- Dodaj własne zakładki -->
+        <div class="devices-container">
+          <h3>Dodaj własne zakładki</h3>
+          <input type="text" id="custom-btn-label" class="form-field" placeholder="Nazwa przycisku">
+          <textarea id="custom-btn-data" class="form-field" rows="4" placeholder="Numery, każdy w nowej linii"></textarea>
+          <button id="add-custom-btn" class="action-btn">Dodaj zakładkę</button>
         </div>
-        <div class="work-stats">
-          <p id="workedTime">Przepracowano: --:--</p>
-          <p id="remainingTime">Pozostało: --:--</p>
+
+        <!-- Własne zakładki -->
+        <div class="devices-container">
+          <h3>Własne zakładki</h3>
+          <div id="custom-buttons"></div>
         </div>
-        <div class="stats-section">
-          <h3>Twoje statystyki:</h3>
-          <p id="copy-count">Skopiowano: 0 razy</p>
-          <p id="calc-count">Obliczeń: 0 razy</p>
+
+        <!-- Oblicz czas wyjścia + RCPOnline -->
+        <div class="main-content">
+          <h3>Oblicz czas wyjścia</h3>
+          <div class="time-picker">
+            <span class="time-picker-icon" aria-hidden="true">🕒</span>
+            <input type="time" id="arrivalTime" class="time-picker-input" aria-label="Czas wejścia">
+          </div>
+          <section id="rcp-section">
+            <h2>RCPOnline</h2>
+            <label for="rcp-login">Login RCP:</label>
+            <input id="rcp-login" class="form-field" placeholder="Twój login">
+            <label for="rcp-password">Hasło RCP:</label>
+            <input id="rcp-password" type="password" class="form-field" placeholder="Twoje hasło">
+            <button id="rcp-fetch-btn" class="action-btn">Pobierz z RCP</button>
+            <p id="rcp-status" role="status">Ostatnia aktywność: –</p>
+          </section>
+          <button id="calc-btn" class="action-btn">Oblicz</button>
+          <div class="time-result">
+            <h4>Nowy czas wyjścia:</h4>
+            <p id="outputTime">--:--</p>
+          </div>
+          <div class="work-stats">
+            <p id="workedTime">Przepracowano: --:--</p>
+            <p id="remainingTime">Pozostało: --:--</p>
+          </div>
+          <div class="stats-section">
+            <h3>Twoje statystyki:</h3>
+            <p id="copy-count">Skopiowano: 0 razy</p>
+            <p id="calc-count">Obliczeń: 0 razy</p>
+          </div>
+        </div>
+
+        <!-- Inne -->
+        <div class="devices-container">
+          <h3>Inne</h3>
+          <button data-copy="286436-00, 1" class="copy-btn">Smar Grafitowy Duży</button>
+          <button data-copy="583534-00, 1" class="copy-btn">Smar Grafitowy Mały</button>
+          <button onclick="window.open('Akumulatory.pdf','_blank')" class="action-btn">Otwórz plik PDF</button>
+          <button onclick="window.location.href='npr.ahk'" download class="action-btn">Pobierz plik npr.ahk</button>
         </div>
       </div>
 
-      <!-- Inne -->
-      <div class="devices-container">
-        <h3>Inne</h3>
-        <button onclick="copyData('286436-00, 1')">Smar Grafitowy Duży</button>
-        <button onclick="copyData('583534-00, 1')">Smar Grafitowy Mały</button>
-        <button onclick="window.open('Akumulatory.pdf', '_blank')">Otwórz plik PDF</button>
-        <button onclick="window.location.href='npr.ahk'" download>Pobierz plik npr.ahk</button>
+      <!-- Linki zewnętrzne -->
+      <div class="links-section">
+        <h3>Linki:</h3>
+        <a href="https://erpatech.com/" target="_blank" rel="noopener">ErpaTech</a>
+        <a href="https://panel.rcponline.pl/app/" target="_blank" rel="noopener">RCP Online</a>
+        <a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/" target="_blank" rel="noopener">DeWalt</a>
+        <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank" rel="noopener">Stanley</a>
+        <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank" rel="noopener">Black &amp; Decker</a>
       </div>
-
-    </div>
-
-    <!-- Linki zewnętrzne -->
-    <div class="links-section">
-      <h3>Linki:</h3>
-      <a href="https://erpatech.com/"                        target="_blank">ErpaTech</a>
-      <a href="https://panel.rcponline.pl/app/"              target="_blank">RCP Online</a>
-      <a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/"    target="_blank">DeWalt</a>
-      <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/"      target="_blank">Stanley</a>
-      <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black &amp; Decker</a>
-    </div>
-  </div>
+    </section>
+  </main>
 
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      updateClock(); setInterval(updateClock, 1000);
+      document.querySelectorAll('.copy-btn')
+        .forEach(btn => btn.addEventListener('click', () => window.copyData(btn.dataset.copy)));
+      document.getElementById('calc-btn')
+        .addEventListener('click', calculateTime);
+      ['login-username','login-password'].forEach(id =>
+        document.getElementById(id)
+          .addEventListener('keypress', e => { if (e.key==='Enter') document.getElementById('login-btn').click(); })
+      );
+      ['register-username','register-password'].forEach(id =>
+        document.getElementById(id)
+          .addEventListener('keypress', e => { if (e.key==='Enter') document.getElementById('register-btn').click(); })
+      );
+    });
+    function showToast(msg) {
+      const c = document.getElementById('toast-container'),
+            t = document.createElement('div');
+      t.className = 'toast'; t.innerText = msg;
+      c.appendChild(t);
+      setTimeout(() => { t.classList.add('hidden'); setTimeout(() => t.remove(), 500); }, 3000);
+    }
     function updateClock() {
       const d = new Date();
       document.getElementById('clock').innerText =
@@ -178,95 +235,37 @@
         `${String(d.getMinutes()).padStart(2,'0')}:` +
         `${String(d.getSeconds()).padStart(2,'0')}`;
     }
-    setInterval(updateClock, 1000);
-    window.onload = updateClock;
-
-    function copyData(text) {
-      navigator.clipboard.writeText(text)
-        .then(() => { showToast('Skopiowano numery części!'); window.incrementCopy(); })
-        .catch(() => showToast('Błąd kopiowania!'));
-    }
-
-    function calculateTime() {
-      const v = document.getElementById('arrivalTime').value;
-      if (!v) { showToast('Podaj czas przyjścia!'); return; }
-      const [h, m] = v.split(':').map(Number);
-      const now = new Date();
-      const arrival = new Date(now.getTime());
-      arrival.setHours(h, m, 0, 0);
-
-      const workMs = (8 * 60 + 15) * 60 * 1000;
-      const exitTime = new Date(arrival.getTime() + workMs);
-
-      const fmt = t =>
-        `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
-      document.getElementById('outputTime').innerText = fmt(exitTime);
-
-      let workedMs = now - arrival; if (workedMs < 0) workedMs = 0;
-      let remainingMs = exitTime - now; if (remainingMs < 0) remainingMs = 0;
-      const formatDur = ms => {
-        const mins = Math.floor(ms / 60000);
-        const hh = Math.floor(mins / 60);
-        const mm = mins % 60;
-        return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
-      };
-      document.getElementById('workedTime').innerText    = `Przepracowano: ${formatDur(workedMs)}`;
-      document.getElementById('remainingTime').innerText = `Pozostało: ${formatDur(remainingMs)}`;
-
-      window.incrementCalc();
-    }
-
-    function showToast(msg) {
-      const c = document.getElementById('toast-container');
-      const t = document.createElement('div');
-      t.classList.add('toast'); t.innerText = msg;
-      c.appendChild(t);
-      setTimeout(() => {
-        t.classList.add('hidden');
-        setTimeout(() => t.remove(), 500);
-      }, 3000);
-    }
   </script>
-  
 
-
-
-  <!-- Firebase + custom buttons (niezmienione) -->
+  <!-- Firebase + custom buttons -->
   <script type="module">
-    import { getDatabase, ref, push, onValue }
-      from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
-
-    const db = getDatabase();
-    const bookmarksRef = ref(db, 'bookmarks');
-    const customContainer = document.getElementById('custom-buttons');
-
-    onValue(bookmarksRef, snapshot => {
-      customContainer.innerHTML = '';
-      snapshot.forEach(child => {
-        const { label, data } = child.val();
-        const btn = document.createElement('button');
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+    const db = getDatabase(),
+          bookmarksRef = ref(db,'bookmarks'),
+          customContainer = document.getElementById('custom-buttons');
+    onValue(bookmarksRef,snap=>{
+      customContainer.innerHTML='';
+      snap.forEach(child=>{
+        const {label,data} = child.val(),
+              btn = document.createElement('button');
+        btn.className = 'copy-btn';
         btn.innerText = label;
-        btn.onclick   = () => copyData(data);
+        btn.onclick = ()=>window.copyData(data);
         customContainer.appendChild(btn);
       });
     });
-
     document.getElementById('add-custom-btn').addEventListener('click', () => {
-      const label = document.getElementById('custom-btn-label').value.trim();
-      const data  = document.getElementById('custom-btn-data').value.trim();
-      if (!label || !data) {
-        showToast('Podaj nazwę i numery części!');
-        return;
-      }
-      push(bookmarksRef, { label, data })
+      const label = document.getElementById('custom-btn-label').value.trim(),
+            data = document.getElementById('custom-btn-data').value.trim();
+      if (!label || !data) { showToast('Podaj nazwę i numery części!'); return; }
+      push(bookmarksRef, {label,data})
         .then(() => {
           document.getElementById('custom-btn-label').value = '';
-          document.getElementById('custom-btn-data').value  = '';
+          document.getElementById('custom-btn-data').value = '';
           showToast('Dodano zakładkę globalną!');
         })
         .catch(() => showToast('Błąd dodawania!'));
     });
   </script>
-
 </body>
 </html>
