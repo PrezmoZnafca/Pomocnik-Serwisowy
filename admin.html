@@ -6,6 +6,7 @@
   <title>Panel Administratora - Pomocnik Serwisowy</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+
   <script type="module" defer>
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
     const firebaseConfig = {
@@ -19,6 +20,7 @@
     };
     initializeApp(firebaseConfig);
   </script>
+
   <script type="module" src="admin.js" defer></script>
 </head>
 <body>
@@ -50,7 +52,7 @@
     </table>
 
     <button id="back-to-main" class="admin-btn">Strona Główna</button>
-    <button id="logout-btn" class="admin-btn">Wyloguj się</button>
+    <button id="logout-btn"     class="admin-btn">Wyloguj się</button>
   </main>
 </body>
 </html>

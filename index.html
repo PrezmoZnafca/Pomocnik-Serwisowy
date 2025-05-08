@@ -21,10 +21,8 @@
     };
     initializeApp(firebaseConfig);
   </script>
-  <!-- Firebase SDKs -->
   <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js" defer></script>
   <script type="module" src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js" defer></script>
-  <!-- App scripts -->
   <script type="module" src="counter.js" defer></script>
   <script type="module" src="auth.js" defer></script>
 </head>
@@ -33,7 +31,7 @@
     <div class="header-left"><h1>Pomocnik Serwisowy</h1></div>
     <div class="header-right">
       <button id="admin-panel-btn" class="header-btn hidden">Panel Admina</button>
-      <button id="logout-btn" class="header-btn hidden">Wyloguj się</button>
+      <button id="logout-btn"       class="header-btn hidden">Wyloguj się</button>
       <div id="clock" class="clock" aria-live="polite"></div>
     </div>
   </header>
@@ -71,7 +69,11 @@
         <div class="devices-container">
           <h3>Zakładki Kopiowania</h3>
           <button data-copy="NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nBC-N019351, 1\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1\nN919242, 1" class="copy-btn">DCF850</button>
-          <!-- kolejne przyciski analogicznie -->
+          <button data-copy="N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1\nN075339, 1" class="copy-btn">DCF887</button>
+          <button data-copy="NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1" class="copy-btn">DCF860N</button>
+          <button data-copy="N439275, 1\nN089668, 1\n642883-00C, 1\nN611681, 1\nN424032, 1\nN437890, 1\nN019351, 1\nN612522, 1\nN453417, 1\nN421245, 1" class="copy-btn">DCF809</button>
+          <button data-copy="N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1" class="copy-btn">Aligator Zestaw</button>
+          <button data-copy="N430442, 1\nN329079, 1\nNA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
         </div>
 
         <!-- Dodaj własne zakładki -->
@@ -136,71 +138,75 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      updateClock(); setInterval(updateClock,1000);
+      updateClock(); setInterval(updateClock, 1000);
       document.querySelectorAll('.copy-btn')
-        .forEach(btn => btn.addEventListener('click', ()=>window.copyData(btn.dataset.copy)));
+        .forEach(btn => btn.addEventListener('click', () => window.copyData(btn.dataset.copy)));
       document.getElementById('calc-btn')
         .addEventListener('click', calculateTime);
+
+      // Enter = submit
       ['login-username','login-password'].forEach(id =>
         document.getElementById(id)
-          .addEventListener('keypress', e=>{if(e.key==='Enter')document.getElementById('login-btn').click();})
+          .addEventListener('keypress', e => { if (e.key==='Enter') document.getElementById('login-btn').click(); })
       );
       ['register-username','register-password'].forEach(id =>
         document.getElementById(id)
-          .addEventListener('keypress', e=>{if(e.key==='Enter')document.getElementById('register-btn').click();})
+          .addEventListener('keypress', e => { if (e.key==='Enter') document.getElementById('register-btn').click(); })
       );
+
       document.getElementById('show-register').addEventListener('click', toggleAuthForms);
       document.getElementById('show-login').addEventListener('click', toggleAuthForms);
     });
 
-    function showToast(msg){
-      const c=document.getElementById('toast-container'),
-            t=document.createElement('div');
-      t.className='toast'; t.innerText=msg;
-      c.appendChild(t);
-      setTimeout(()=>{t.classList.add('hidden');setTimeout(()=>t.remove(),500);},3000);
-    }
-
-    function updateClock(){
-      const d=new Date();
-      document.getElementById('clock').innerText =
-        `${String(d.getHours()).padStart(2,'0')}:`+
-        `${String(d.getMinutes()).padStart(2,'0')}:`+
-        `${String(d.getSeconds()).padStart(2,'0')}`;
-    }
-
-    function toggleAuthForms(){
+    function toggleAuthForms() {
       document.getElementById('login-form').classList.toggle('hidden');
       document.getElementById('register-form').classList.toggle('hidden');
     }
+
+    function showToast(msg) {
+      const c = document.getElementById('toast-container'),
+            t = document.createElement('div');
+      t.className = 'toast'; t.innerText = msg;
+      c.appendChild(t);
+      setTimeout(() => { t.classList.add('hidden'); setTimeout(() => t.remove(), 500); }, 3000);
+    }
+
+    function updateClock() {
+      const d = new Date();
+      document.getElementById('clock').innerText =
+        `${String(d.getHours()).padStart(2,'0')}:` +
+        `${String(d.getMinutes()).padStart(2,'0')}:` +
+        `${String(d.getSeconds()).padStart(2,'0')}`;
+    }
   </script>
 
-  <!-- Firebase + custom buttons -->
   <script type="module">
     import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
     const db = getDatabase(),
           bookmarksRef = ref(db,'bookmarks'),
           customContainer = document.getElementById('custom-buttons');
-    onValue(bookmarksRef,snap=>{
-      customContainer.innerHTML='';
-      snap.forEach(child=>{
+    onValue(bookmarksRef, snap => {
+      customContainer.innerHTML = '';
+      snap.forEach(child => {
         const {label,data} = child.val(),
               btn = document.createElement('button');
-        btn.className='copy-btn';
-        btn.innerText=label;
-        btn.onclick=()=>window.copyData(data);
+        btn.className = 'copy-btn';
+        btn.innerText = label;
+        btn.onclick = () => window.copyData(data);
         customContainer.appendChild(btn);
       });
     });
-    document.getElementById('add-custom-btn').addEventListener('click',()=>{
-      const label=document.getElementById('custom-btn-label').value.trim(),
-            data=document.getElementById('custom-btn-data').value.trim();
-      if(!label||!data){showToast('Podaj nazwę i numery części!');return;}
-      push(bookmarksRef,{label,data})
-        .then(()=>{document.getElementById('custom-btn-label').value='';
-                   document.getElementById('custom-btn-data').value='';
-                   showToast('Dodano zakładkę globalną!');})
-        .catch(()=>showToast('Błąd dodawania!'));
+    document.getElementById('add-custom-btn').addEventListener('click', () => {
+      const label = document.getElementById('custom-btn-label').value.trim(),
+            data  = document.getElementById('custom-btn-data').value.trim();
+      if (!label || !data) { showToast('Podaj nazwę i numery części!'); return; }
+      push(bookmarksRef, {label,data})
+        .then(() => {
+          document.getElementById('custom-btn-label').value = '';
+          document.getElementById('custom-btn-data').value  = '';
+          showToast('Dodano zakładkę globalną!');
+        })
+        .catch(() => showToast('Błąd dodawania!'));
     });
   </script>
 </body>

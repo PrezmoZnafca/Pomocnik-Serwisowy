@@ -7,7 +7,7 @@
 }
 
 /* reset */
-* { box-sizing: border-box; margin:0; padding:0 }
+* { box-sizing: border-box; margin:0; padding:0; }
 body, html {
   font-family: 'Roboto', sans-serif;
   background: var(--dark-bg);
@@ -42,7 +42,7 @@ body, html {
 }
 .header-btn:hover { background:#000; color:var(--primary); transform:scale(1.05); }
 
-/* auth */
+/* auth forms */
 .auth-container {
   display:flex; flex-direction:column; align-items:center; margin-top:80px;
   padding-top:10px;
@@ -57,7 +57,7 @@ body, html {
   cursor:pointer; text-decoration:underline; padding:0; font-size:inherit;
 }
 
-/* main sections */
+/* main content */
 #main-section { padding-top:70px; }
 .container {
   max-width:1200px; margin:0 auto; padding:20px;
