@@ -42,7 +42,7 @@
   <div id="toast-container"></div>
 
   <main>
-    <!-- Sekcja logowania/rejestracji -->
+    <!-- Logowanie / Rejestracja -->
     <section id="auth-section" class="auth-container">
       <div id="login-form" class="auth-form">
         <h2>Logowanie</h2>
@@ -51,7 +51,11 @@
         <label for="login-password">Hasło</label>
         <input id="login-password" type="password" class="form-field" placeholder="Hasło">
         <button id="login-btn" class="action-btn">Zaloguj się</button>
-        <p>Nie masz konta? <button id="show-register" type="button" class="switch-auth">Zarejestruj się</button></p>
+        <p>Nie masz konta?
+          <button id="show-register" type="button" class="switch-auth">
+            Zarejestruj się
+          </button>
+        </p>
       </div>
       <div id="register-form" class="auth-form hidden">
         <h2>Rejestracja</h2>
@@ -60,82 +64,46 @@
         <label for="register-password">Hasło (min. 6 znaków)</label>
         <input id="register-password" type="password" class="form-field" placeholder="Hasło">
         <button id="register-btn" class="action-btn">Zarejestruj się</button>
-        <p>Masz już konto? <button id="show-login"    type="button" class="switch-auth">Zaloguj się</button></p>
+        <p>Masz już konto?
+          <button id="show-login" type="button" class="switch-auth">
+            Zaloguj się
+          </button>
+        </p>
       </div>
     </section>
 
-    <!-- Główna sekcja strony -->
+    <!-- Główna sekcja -->
     <section id="main-section" class="hidden">
       <div class="container">
 
         <!-- Zakładki Kopiowania -->
         <div class="devices-container">
           <h3>Zakładki Kopiowania</h3>
-          <button class="copy-btn" data-copy="NA073630, 1
-604107-00, 1
-642883-00C, 1
-N866541, 1
-N921819, 1
-BC-N019351, 1
-NA202231, 1
-N864734, 1
-N811325, 1
-N864740, 1
-N864736, 1
-N919242, 1">DCF850</button>
-          <button class="copy-btn" data-copy="N439275, 1
-N089668, 1
-642883-00C, 1
-N439271, 1
-N424032, 1
-N437890, 1
-N612522, 1
-N019351, 1
-N016823, 1
-N421245, 1
-N075339, 1">DCF887</button>
-          <button class="copy-btn" data-copy="NA472056, 1
-NA163453, 1
-NA472064, 1
-NA562707, 1
-N019351, 1
-604107-00, 1
-NA168988, 2
-N864740, 1
-N864736, 1
-NA166862, 1
-NA162532, 1
-NA549696, 1">DCF860N</button>
-          <button class="copy-btn" data-copy="N439275, 1
-N089668, 1
-642883-00C, 1
-N611681, 1
-N424032, 1
-N437890, 1
-N019351, 1
-N612522, 1
-N453417, 1
-N421245, 1">DCF809</button>
-          <button class="copy-btn" data-copy="N233871, 1
-330003-60, 1
-N233867, 1
-330003-64, 1
-N233866, 1
-N915019, 1
-N915018, 1
-N077124, 1
-577744-00, 1
-N233864, 2
-N233863, 2
-323711-41, 1
-N077123, 1
-N093430, 2
-N233865, 1
-N233859, 1
-870889-02, 1">Aligator Zestaw</button>
-          <button class="copy-btn" data-copy="N430442, 1
-N329079, 1
-NA293294, 1">Oscylacyjna DWE6423</button>
+          <button class="copy-btn"
+                  data-copy="NA073630, 1|604107-00, 1|642883-00C, 1|N866541, 1|N921819, 1||N864736, 1|N919242, 1">
+            DCF850
+          </button>
+          <!-- Analogicznie dla pozostałych przycisków: -->
+          <button class="copy-btn"
+                  data-copy="N439275, 1|N089668, 1|642883-00C, 1|N439271, 1|N424032, 1|N437890, 1|N612522, 1|N019351, 1|N016823, 1|N421245, 1|N075339, 1">
+            DCF887
+          </button>
+          <button class="copy-btn"
+                  data-copy="NA472056, 1|NA163453, 1|NA472064, 1|NA562707, 1|N019351, 1|604107-00, 1|NA168988, 2|N864740, 1|N864736, 1|NA166862, 1|NA162532, 1|NA549696, 1">
+            DCF860N
+          </button>
+          <button class="copy-btn"
+                  data-copy="N439275, 1|N089668, 1|642883-00C, 1|N611681, 1|N424032, 1|N437890, 1|N019351, 1|N612522, 1|N453417, 1|N421245, 1">
+            DCF809
+          </button>
+          <button class="copy-btn"
+                  data-copy="N233871, 1|330003-60, 1|N233867, 1|330003-64, 1|N233866, 1|N915019, 1|N915018, 1|N077124, 1|577744-00, 1|N233864, 2|N233863, 2|323711-41, 1|N077123, 1|N093430, 2|N233865, 1|N233859, 1|870889-02, 1">
+            Aligator Zestaw
+          </button>
+          <button class="copy-btn"
+                  data-copy="N430442, 1|N329079, 1|NA293294, 1">
+            Oscylacyjna DWE6423
+          </button>
         </div>
 
         <!-- Dodaj własne zakładki -->
@@ -193,7 +161,6 @@ NA293294, 1">Oscylacyjna DWE6423</button>
           <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
           <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black &amp; Decker</a>
         </div>
-
       </div>
     </section>
   </main>
@@ -202,7 +169,6 @@ NA293294, 1">Oscylacyjna DWE6423</button>
   <div id="scope-modal" class="modal hidden">
     <div class="modal-content">
       <h3>Zakres zakładki</h3>
-      <p>Wybierz, czy dodać zakładkę prywatnie, czy zaproponować globalnie:</p>
       <label><input type="radio" name="scope" value="personal" checked> Tylko dla mnie</label>
       <label><input type="radio" name="scope" value="proposal"> Zaproponuj globalnie</label>
       <div class="modal-actions">
@@ -212,7 +178,7 @@ NA293294, 1">Oscylacyjna DWE6423</button>
     </div>
   </div>
 
-  <!-- Modal Kontakt z administratorem -->
+  <!-- Modal Kontakt -->
   <div id="contact-modal" class="modal hidden">
     <div class="modal-content">
       <h3>Kontakt z Administratorem</h3>
@@ -229,8 +195,7 @@ NA293294, 1">Oscylacyjna DWE6423</button>
     function showToast(msg) {
       const c = document.getElementById('toast-container'),
             t = document.createElement('div');
-      t.className = 'toast';
-      t.innerText = msg;
+      t.className = 'toast'; t.innerText = msg;
       c.appendChild(t);
       setTimeout(() => {
         t.classList.add('hidden');
@@ -239,7 +204,9 @@ NA293294, 1">Oscylacyjna DWE6423</button>
     }
 
     function copyData(text) {
-      navigator.clipboard.writeText(text)
+      // zamień '|' na nowe linie
+      const formatted = text.replace(/\|/g, '\n');
+      navigator.clipboard.writeText(formatted)
         .then(() => { showToast('Skopiowano numery części!'); window.incrementCopy(); })
         .catch(() => showToast('Błąd kopiowania!'));
     }
@@ -276,11 +243,9 @@ NA293294, 1">Oscylacyjna DWE6423</button>
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Aktualizacja zegara
-      updateClock();
-      setInterval(updateClock, 1000);
+      updateClock(); setInterval(updateClock, 1000);
 
-      // Przełączanie formularzy logowania/rejestracji
+      // toggle log/register
       document.getElementById('show-register').addEventListener('click', () => {
         document.getElementById('login-form').classList.add('hidden');
         document.getElementById('register-form').classList.remove('hidden');
@@ -290,37 +255,35 @@ NA293294, 1">Oscylacyjna DWE6423</button>
         document.getElementById('login-form').classList.remove('hidden');
       });
 
-      // Obsługa przycisków kopiowania
-      document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', () => copyData(btn.dataset.copy));
-      });
+      // copy buttons
+      document.querySelectorAll('.copy-btn').forEach(btn =>
+        btn.addEventListener('click', () => copyData(btn.dataset.copy))
+      );
 
-      // Kalkulator czasu
+      // calculate
       document.getElementById('calc-btn').addEventListener('click', calculateTime);
 
-      // Obsługa PDF i AHK
-      document.getElementById('open-pdf').addEventListener('click', () => {
-        window.open('Akumulatory.pdf', '_blank');
-      });
-      document.getElementById('download-ahk').addEventListener('click', () => {
-        window.location.href = 'npr.ahk';
-      });
+      // pdf / ahk
+      document.getElementById('open-pdf').addEventListener('click', () =>
+        window.open('Akumulatory.pdf', '_blank')
+      );
+      document.getElementById('download-ahk').addEventListener('click', () =>
+        window.location.href = 'npr.ahk'
+      );
 
-      // Modal Kontakt
-      document.getElementById('contact-btn').addEventListener('click', () => {
-        document.getElementById('contact-modal').classList.remove('hidden');
-      });
-      document.getElementById('modal-close-btn').addEventListener('click', () => {
-        document.getElementById('contact-modal').classList.add('hidden');
-      });
+      // contact modal
+      document.getElementById('contact-btn').addEventListener('click', () =>
+        document.getElementById('contact-modal').classList.remove('hidden')
+      );
+      document.getElementById('modal-close-btn').addEventListener('click', () =>
+        document.getElementById('contact-modal').classList.add('hidden')
+      );
       document.getElementById('modal-send-btn').addEventListener('click', async () => {
         const txt = document.getElementById('modal-message-text').value.trim();
         if (!txt) return showToast('Wpisz wiadomość!');
         const { getDatabase, ref, push } = await import("https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js");
         const { getAuth } = await import("https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js");
-        const db   = getDatabase();
-        const auth = getAuth();
-        const uid  = auth.currentUser?.uid;
+        const db   = getDatabase(), auth = getAuth(), uid = auth.currentUser?.uid;
         push(ref(db, 'messages'), { uid, text: txt, ts: Date.now() })
           .then(() => {
             document.getElementById('modal-message-text').value = '';
@@ -336,18 +299,16 @@ NA293294, 1">Oscylacyjna DWE6423</button>
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
     import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-    const auth = getAuth();
-    const db   = getDatabase();
+    const auth = getAuth(), db = getDatabase();
     const container = document.getElementById('custom-buttons');
-    let globalSnap = null, personalSnap = null;
-    let pendingLabel = '', pendingData = '';
+    let globalSnap = null, personalSnap = null, pendingLabel = '', pendingData = '';
 
     onAuthStateChanged(auth, user => {
       if (!user) return;
-      const uid = user.uid;
-      const globalRef   = ref(db, 'bookmarks');
-      const personalRef = ref(db, `users/${uid}/bookmarks`);
-      const propRef     = ref(db, 'proposedBookmarks');
+      const uid        = user.uid;
+      const globalRef  = ref(db, 'bookmarks');
+      const personalRef= ref(db, `users/${uid}/bookmarks`);
+      const propRef    = ref(db, 'proposedBookmarks');
 
       onValue(globalRef, snap => { globalSnap = snap; renderAll(); });
       onValue(personalRef, snap => { personalSnap = snap; renderAll(); });
@@ -373,9 +334,9 @@ NA293294, 1">Oscylacyjna DWE6423</button>
           .catch(() => showToast('Błąd dodawania!'))
           .finally(() => document.getElementById('scope-modal').classList.add('hidden'));
       });
-      document.getElementById('cancel-add-btn').addEventListener('click', () => {
-        document.getElementById('scope-modal').classList.add('hidden');
-      });
+      document.getElementById('cancel-add-btn').addEventListener('click', () =>
+        document.getElementById('scope-modal').classList.add('hidden')
+      );
     });
 
     function renderAll() {
@@ -404,11 +365,11 @@ NA293294, 1">Oscylacyjna DWE6423</button>
           del.className = 'delete-pvt-btn';
           del.innerText = '✖';
           del.title     = 'Usuń zakładkę';
-          del.addEventListener('click', () => {
+          del.addEventListener('click', () =>
             remove(ref(db, `users/${auth.currentUser.uid}/bookmarks/${key}`))
               .then(() => showToast('Usunięto zakładkę'))
-              .catch(() => showToast('Błąd usuwania!'));
-          });
+              .catch(() => showToast('Błąd usuwania!'))
+          );
           wrap.appendChild(btn);
           wrap.appendChild(del);
           container.appendChild(wrap);
