@@ -27,7 +27,7 @@
   <script type="module" src="auth.js" defer></script>
 </head>
 <body>
-  <header class="header" role="banner">
+  <header class="header">
     <div class="header-left"><h1>Pomocnik Serwisowy</h1></div>
     <div class="header-right">
       <button id="admin-panel-btn" class="header-btn hidden">Panel Admina</button>
@@ -41,23 +41,23 @@
   <main>
     <!-- Logowanie / Rejestracja -->
     <section id="auth-section" class="auth-container">
-      <div id="login-form" class="auth-form" aria-labelledby="login-title">
-        <h2 id="login-title">Logowanie</h2>
+      <div id="login-form" class="auth-form">
+        <h2>Logowanie</h2>
         <label for="login-username">Nazwa użytkownika</label>
-        <input type="text" id="login-username" class="form-field" placeholder="Nazwa użytkownika">
+        <input id="login-username" class="form-field" placeholder="Nazwa użytkownika">
         <label for="login-password">Hasło</label>
-        <input type="password" id="login-password" class="form-field" placeholder="Hasło">
+        <input id="login-password" type="password" class="form-field" placeholder="Hasło">
         <button id="login-btn" class="action-btn">Zaloguj się</button>
-        <p>Nie masz konta? <button type="button" id="show-register" class="switch-auth">Zarejestruj się</button></p>
+        <p>Nie masz konta? <button id="show-register" class="switch-auth">Zarejestruj się</button></p>
       </div>
-      <div id="register-form" class="auth-form hidden" aria-labelledby="register-title">
-        <h2 id="register-title">Rejestracja</h2>
+      <div id="register-form" class="auth-form hidden">
+        <h2>Rejestracja</h2>
         <label for="register-username">Nazwa użytkownika</label>
-        <input type="text" id="register-username" class="form-field" placeholder="Nazwa użytkownika">
+        <input id="register-username" class="form-field" placeholder="Nazwa użytkownika">
         <label for="register-password">Hasło (min. 6 znaków)</label>
-        <input type="password" id="register-password" class="form-field" placeholder="Hasło">
+        <input id="register-password" type="password" class="form-field" placeholder="Hasło">
         <button id="register-btn" class="action-btn">Zarejestruj się</button>
-        <p>Masz już konto? <button type="button" id="show-login" class="switch-auth">Zaloguj się</button></p>
+        <p>Masz już konto? <button id="show-login" class="switch-auth">Zaloguj się</button></p>
       </div>
     </section>
 
@@ -138,7 +138,7 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
         <!-- Dodaj własne zakładki -->
         <div class="devices-container">
           <h3>Dodaj własne zakładki</h3>
-          <input type="text" id="custom-btn-label" class="form-field" placeholder="Nazwa przycisku">
+          <input id="custom-btn-label" class="form-field" placeholder="Nazwa przycisku">
           <textarea id="custom-btn-data" class="form-field" rows="4" placeholder="Numery, każdy w nowej linii"></textarea>
           <button id="add-custom-btn" class="action-btn">Dodaj zakładkę</button>
         </div>
@@ -153,8 +153,8 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
         <div class="main-content">
           <h3>Oblicz czas wyjścia</h3>
           <div class="time-picker">
-            <span class="time-picker-icon" aria-hidden="true">🕒</span>
-            <input type="time" id="arrivalTime" class="time-picker-input" aria-label="Czas wejścia">
+            <span class="time-picker-icon">🕒</span>
+            <input id="arrivalTime" type="time" class="time-picker-input" placeholder="hh:mm">
           </div>
           <button id="calc-btn" class="action-btn">Oblicz</button>
           <div class="time-result">
@@ -193,11 +193,11 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
       <!-- Linki zewnętrzne -->
       <div class="links-section">
         <h3>Linki:</h3>
-        <a href="https://erpatech.com/" target="_blank" rel="noopener">ErpaTech</a>
-        <a href="https://panel.rcponline.pl/app/" target="_blank" rel="noopener">RCP Online</a>
-        <a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/" target="_blank" rel="noopener">DeWalt</a>
-        <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank" rel="noopener">Stanley</a>
-        <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank" rel="noopener">Black &amp; Decker</a>
+        <a href="https://erpatech.com/" target="_blank">ErpaTech</a>
+        <a href="https://panel.rcponline.pl/app/" target="_blank">RCP Online</a>
+        <a href="https://service.dewalt.pl/DEWALT/PL/pl-PL/" target="_blank">DeWalt</a>
+        <a href="https://www.2helpu.com/STANLEY/PL/pl-PL/" target="_blank">Stanley</a>
+        <a href="https://service.blackanddecker.pl/BD/PL/pl-PL/" target="_blank">Black &amp; Decker</a>
       </div>
     </section>
   </main>
@@ -216,8 +216,8 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
     </div>
   </div>
 
-  <!-- skrypty inline -->
   <script>
+    // zegar
     function updateClock() {
       const d = new Date();
       document.getElementById('clock').innerText =
@@ -227,12 +227,14 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
     }
     setInterval(updateClock, 1000);
 
+    // kopiowanie
     function copyData(text) {
       navigator.clipboard.writeText(text)
         .then(() => { showToast('Skopiowano numery części!'); window.incrementCopy(); })
         .catch(() => showToast('Błąd kopiowania!'));
     }
 
+    // obliczanie czasu
     function calculateTime() {
       const v = document.getElementById('arrivalTime').value;
       if (!v) { showToast('Podaj czas przyjścia!'); return; }
@@ -240,46 +242,50 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
       const now = new Date();
       const arrival = new Date(now.getTime());
       arrival.setHours(h, m, 0, 0);
-
-      const workMs    = (8 * 60 + 15) * 60 * 1000;
-      const exitTime  = new Date(arrival.getTime() + workMs);
-      const fmt       = t =>
-        `${String(t.getHours()).padStart(2,'0')}:` +
-        `${String(t.getMinutes()).padStart(2,'0')}`;
+      const workMs    = (8*60+15)*60*1000;
+      const exitTime  = new Date(arrival.getTime()+workMs);
+      const fmt = t => `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
       document.getElementById('outputTime').innerText = fmt(exitTime);
-
-      let workedMs    = now - arrival; if (workedMs < 0) workedMs = 0;
-      let remainingMs = exitTime - now; if (remainingMs < 0) remainingMs = 0;
+      let workedMs = now - arrival; if (workedMs<0) workedMs = 0;
+      let remainingMs = exitTime - now; if (remainingMs<0) remainingMs = 0;
       const formatDur = ms => {
-        const mins = Math.floor(ms / 60000);
-        const hh   = Math.floor(mins / 60);
-        const mm   = mins % 60;
-        return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
+        const mins = Math.floor(ms/60000);
+        return `${String(Math.floor(mins/60)).padStart(2,'0')}:${String(mins%60).padStart(2,'0')}`;
       };
       document.getElementById('workedTime').innerText    = `Przepracowano: ${formatDur(workedMs)}`;
       document.getElementById('remainingTime').innerText = `Pozostało: ${formatDur(remainingMs)}`;
-
       window.incrementCalc();
     }
+    document.getElementById('calc-btn').addEventListener('click', calculateTime);
 
+    // toasty
     function showToast(msg) {
-      const c = document.getElementById('toast-container'),
-            t = document.createElement('div');
-      t.classList.add('toast'); t.innerText = msg;
+      const c = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.innerText = msg;
       c.appendChild(t);
       setTimeout(() => { t.classList.add('hidden'); setTimeout(() => t.remove(), 500); }, 3000);
     }
+
+    // przełączanie auth form
+    document.getElementById('show-register').onclick = () => {
+      document.getElementById('login-form').classList.add('hidden');
+      document.getElementById('register-form').classList.remove('hidden');
+    };
+    document.getElementById('show-login').onclick = () => {
+      document.getElementById('register-form').classList.add('hidden');
+      document.getElementById('login-form').classList.remove('hidden');
+    };
   </script>
 
-  <!-- custom bookmarks + proposals + messaging -->
   <script type="module">
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
     import {
       getDatabase, ref, push, onValue, remove
     } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-    const auth      = getAuth();
-    const db        = getDatabase();
+    const auth = getAuth(), db = getDatabase();
     const container = document.getElementById('custom-buttons');
     const scopeModal = document.getElementById('scope-modal');
     let globalSnap = null, personalSnap = null;
@@ -287,12 +293,12 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
 
     onAuthStateChanged(auth, user => {
       if (!user) return;
-      const uid        = user.uid;
-      const propRef    = ref(db, 'proposedBookmarks');
-      const personalRef= ref(db, `users/${uid}/bookmarks`);
-      const globalRef  = ref(db, 'bookmarks');
+      const uid = user.uid;
+      const propRef     = ref(db, 'proposedBookmarks');
+      const personalRef = ref(db, `users/${uid}/bookmarks`);
+      const globalRef   = ref(db, 'bookmarks');
 
-      onValue(globalRef,   snap => { globalSnap   = snap; renderAll(); });
+      onValue(globalRef, snap => { globalSnap = snap; renderAll(); });
       onValue(personalRef, snap => { personalSnap = snap; renderAll(); });
 
       document.getElementById('add-custom-btn').onclick = () => {
@@ -305,21 +311,30 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
         scopeModal.classList.remove('hidden');
       };
       document.getElementById('confirm-add-btn').onclick = () => {
-        const scope  = document.querySelector('input[name="scope"]:checked').value;
+        const scope = document.querySelector('input[name="scope"]:checked').value;
         const target = scope === 'proposal' ? propRef : personalRef;
         push(target, { uid, label: pendingLabel, data: pendingData })
           .then(() => {
             document.getElementById('custom-btn-label').value = '';
             document.getElementById('custom-btn-data').value  = '';
-            showToast(scope === 'proposal'
-              ? 'Zaproponowano globalnie!'
-              : 'Dodano prywatnie!');
+            showToast(scope==='proposal'?'Zaproponowano globalnie!':'Dodano prywatnie!');
           })
           .catch(() => showToast('Błąd dodawania!'))
           .finally(() => scopeModal.classList.add('hidden'));
       };
       document.getElementById('cancel-add-btn').onclick = () => {
         scopeModal.classList.add('hidden');
+      };
+
+      document.getElementById('send-message-btn').onclick = () => {
+        const txt = document.getElementById('message-text').value.trim();
+        if (!txt) { showToast('Wpisz wiadomość!'); return; }
+        push(ref(db, 'messages'), { uid, text: txt, ts: Date.now() })
+          .then(() => {
+            document.getElementById('message-text').value = '';
+            showToast('Wiadomość wysłana!');
+          })
+          .catch(() => showToast('Błąd wysyłania!'));
       };
     });
 
@@ -331,53 +346,33 @@ NA293294, 1" class="copy-btn">Oscylacyjna DWE6423</button>
           const btn = document.createElement('button');
           btn.className    = 'copy-btn';
           btn.innerText    = b.label;
-          btn.dataset.copy = b.data;
-          btn.onclick      = () => window.copyData(b.data);
+          btn.onclick      = () => copyData(b.data);
           container.appendChild(btn);
         });
       }
       if (personalSnap && personalSnap.exists()) {
         personalSnap.forEach(ch => {
-          const b   = ch.val();
-          const key = ch.key;
-          const wrapper = document.createElement('div');
-          wrapper.className = 'bookmark-item';
-          const copyBtn = document.createElement('button');
-          copyBtn.className    = 'copy-btn';
-          copyBtn.innerText    = b.label;
-          copyBtn.dataset.copy = b.data;
-          copyBtn.onclick      = () => window.copyData(b.data);
-          const delBtn = document.createElement('button');
-          delBtn.className = 'delete-btn';
-          delBtn.innerText = 'Usuń';
-          delBtn.onclick   = () => {
+          const b   = ch.val(), key = ch.key;
+          const wrap = document.createElement('div');
+          wrap.className = 'bookmark-item';
+          const cbtn = document.createElement('button');
+          cbtn.className = 'copy-btn';
+          cbtn.innerText = b.label;
+          cbtn.onclick   = () => copyData(b.data);
+          const dbtn = document.createElement('button');
+          dbtn.className = 'delete-btn';
+          dbtn.innerText = 'Usuń';
+          dbtn.onclick   = () => {
             remove(ref(db, `users/${auth.currentUser.uid}/bookmarks/${key}`))
               .then(() => showToast('Usunięto zakładkę'))
               .catch(() => showToast('Błąd usuwania!'));
           };
-          wrapper.appendChild(copyBtn);
-          wrapper.appendChild(delBtn);
-          container.appendChild(wrapper);
+          wrap.appendChild(cbtn);
+          wrap.appendChild(dbtn);
+          container.appendChild(wrap);
         });
       }
     }
-
-    window.sendMessage = function() {
-      const txt = document.getElementById('message-text').value.trim();
-      const user = auth.currentUser;
-      if (!user) { showToast('Zaloguj się!'); return; }
-      if (!txt)  { showToast('Wpisz wiadomość!'); return; }
-      push(ref(db, 'messages'), {
-        uid:  user.uid,
-        text: txt,
-        ts:   Date.now()
-      })
-        .then(() => {
-          document.getElementById('message-text').value = '';
-          showToast('Wiadomość wysłana!');
-        })
-        .catch(() => showToast('Błąd wysyłania!'));
-    };
   </script>
 </body>
 </html>
