@@ -28,9 +28,7 @@
 </head>
 <body>
   <header class="header">
-    <div class="header-left">
-      <h1>Pomocnik Serwisowy</h1>
-    </div>
+    <div class="header-left"><h1>Pomocnik Serwisowy</h1></div>
     <div class="header-right">
       <button id="admin-panel-btn" class="header-btn hidden">Panel Admina</button>
       <button id="contact-btn" class="header-btn">Pomoc/Kontakt</button>
@@ -52,15 +50,7 @@
         <input id="login-password" type="password" class="form-field" placeholder="Hasło">
         <button id="login-btn" class="action-btn">Zaloguj się</button>
         <p>Nie masz konta?
-          <button
-            id="show-register"
-            type="button"
-            class="switch-auth"
-            onclick="
-              document.getElementById('login-form').classList.add('hidden');
-              document.getElementById('register-form').classList.remove('hidden');
-            "
-          >Zarejestruj się</button>
+          <button type="button" id="show-register" class="switch-auth">Zarejestruj się</button>
         </p>
       </div>
       <div id="register-form" class="auth-form hidden">
@@ -71,15 +61,7 @@
         <input id="register-password" type="password" class="form-field" placeholder="Hasło">
         <button id="register-btn" class="action-btn">Zarejestruj się</button>
         <p>Masz już konto?
-          <button
-            id="show-login"
-            type="button"
-            class="switch-auth"
-            onclick="
-              document.getElementById('register-form').classList.add('hidden');
-              document.getElementById('login-form').classList.remove('hidden');
-            "
-          >Zaloguj się</button>
+          <button type="button" id="show-login" class="switch-auth">Zaloguj się</button>
         </p>
       </div>
     </section>
@@ -91,30 +73,12 @@
         <!-- Zakładki Kopiowania -->
         <div class="devices-container">
           <h3>Zakładki Kopiowania</h3>
-          <button class="copy-btn"
-                  data-copy="NA073630, 1|604107-00, 1|642883-00C, 1|N866541, 1|N921819, 1||N864736, 1|N919242, 1">
-            DCF850
-          </button>
-          <button class="copy-btn"
-                  data-copy="N439275, 1|N089668, 1|642883-00C, 1|N439271, 1|N424032, 1|N437890, 1|N612522, 1|N019351, 1|N016823, 1|N421245, 1|N075339, 1">
-            DCF887
-          </button>
-          <button class="copy-btn"
-                  data-copy="NA472056, 1|NA163453, 1|NA472064, 1|NA562707, 1|N019351, 1|604107-00, 1|NA168988, 2|N864740, 1|N864736, 1|NA166862, 1|NA162532, 1|NA549696, 1">
-            DCF860N
-          </button>
-          <button class="copy-btn"
-                  data-copy="N439275, 1|N089668, 1|642883-00C, 1|N611681, 1|N424032, 1|N437890, 1|N019351, 1|N612522, 1|N453417, 1|N421245, 1">
-            DCF809
-          </button>
-          <button class="copy-btn"
-                  data-copy="N233871, 1|330003-60, 1|N233867, 1|330003-64, 1|N233866, 1|N915019, 1|N915018, 1|N077124, 1|577744-00, 1|N233864, 2|N233863, 2|323711-41, 1|N077123, 1|N093430, 2|N233865, 1|N233859, 1|870889-02, 1">
-            Aligator Zestaw
-          </button>
-          <button class="copy-btn"
-                  data-copy="N430442, 1|N329079, 1|NA293294, 1">
-            Oscylacyjna DWE6423
-          </button>
+          <button class="copy-btn" data-copy="NA073630, 1|604107-00, 1|642883-00C, 1|N866541, 1|N921819, 1||N864736, 1|N919242, 1">DCF850</button>
+          <button class="copy-btn" data-copy="N439275, 1|N089668, 1|642883-00C, 1|N439271, 1|N424032, 1|N437890, 1|N612522, 1|N019351, 1|N016823, 1|N421245, 1|N075339, 1">DCF887</button>
+          <button class="copy-btn" data-copy="NA472056, 1|NA163453, 1|NA472064, 1|NA562707, 1|N019351, 1|604107-00, 1|NA168988, 2|N864740, 1|N864736, 1|NA166862, 1|NA162532, 1|NA549696, 1">DCF860N</button>
+          <button class="copy-btn" data-copy="N439275, 1|N089668, 1|642883-00C, 1|N611681, 1|N424032, 1|N437890, 1|N019351, 1|N612522, 1|N453417, 1|N421245, 1">DCF809</button>
+          <button class="copy-btn" data-copy="N233871, 1|330003-60, 1|N233867, 1|330003-64, 1|N233866, 1|N915019, 1|N915018, 1|N077124, 1|577744-00, 1|N233864, 2|N233863, 2|323711-41, 1|N077123, 1|N093430, 2|N233865, 1|N233859, 1|870889-02, 1">Aligator Zestaw</button>
+          <button class="copy-btn" data-copy="N430442, 1|N329079, 1|NA293294, 1">Oscylacyjna DWE6423</button>
         </div>
 
         <!-- Dodaj własne zakładki -->
@@ -176,7 +140,7 @@
     </section>
   </main>
 
-  <!-- Modal zakresu dodawania zakładki -->
+  <!-- Modal wyboru zasięgu -->
   <div id="scope-modal" class="modal hidden">
     <div class="modal-content">
       <h3>Zakres zakładki</h3>
@@ -204,57 +168,47 @@
   <script>
     // global helpers
     function showToast(msg) {
-      const c = document.getElementById('toast-container'),
-            t = document.createElement('div');
-      t.className = 'toast'; t.innerText = msg;
-      c.appendChild(t);
-      setTimeout(() => {
-        t.classList.add('hidden');
-        setTimeout(() => t.remove(), 500);
-      }, 3000);
+      const c = document.getElementById('toast-container'), t = document.createElement('div');
+      t.className = 'toast'; t.innerText = msg; c.appendChild(t);
+      setTimeout(() => { t.classList.add('hidden'); setTimeout(() => t.remove(), 500); }, 3000);
     }
-
     function copyData(text) {
       const formatted = text.replace(/\|/g, '\n');
       navigator.clipboard.writeText(formatted)
         .then(() => { showToast('Skopiowano numery części!'); window.incrementCopy(); })
         .catch(() => showToast('Błąd kopiowania!'));
     }
-
     function calculateTime() {
       const v = document.getElementById('arrivalTime').value;
       if (!v) return showToast('Podaj czas przyjścia!');
-      const [h, m] = v.split(':').map(Number);
-      const now = new Date(), arr = new Date(now);
-      arr.setHours(h, m, 0, 0);
-      const workMs = (8*60+15)*60*1000;
-      const exit = new Date(arr.getTime() + workMs);
+      const [h,m] = v.split(':').map(Number), now = new Date(), arr = new Date(now);
+      arr.setHours(h,m,0,0);
+      const exit = new Date(arr.getTime() + (8*60+15)*60*1000);
       document.getElementById('outputTime').innerText =
-        `${String(exit.getHours()).padStart(2,'0')}:` +
-        `${String(exit.getMinutes()).padStart(2,'0')}`;
-      let worked = now - arr; if (worked < 0) worked = 0;
-      let rem = exit - now; if (rem < 0) rem = 0;
-      const fmt = ms => {
-        const mins = Math.floor(ms/60000);
-        return `${String(Math.floor(mins/60)).padStart(2,'0')}:` +
-               `${String(mins%60).padStart(2,'0')}`;
-      };
+        `${String(exit.getHours()).padStart(2,'0')}:${String(exit.getMinutes()).padStart(2,'0')}`;
+      let worked = now - arr; if (worked<0) worked=0;
+      let rem    = exit - now; if (rem<0) rem=0;
+      const fmt = ms => { const mins = Math.floor(ms/60000); return `${String(Math.floor(mins/60)).padStart(2,'0')}:${String(mins%60).padStart(2,'0')}`; };
       document.getElementById('workedTime').innerText    = `Przepracowano: ${fmt(worked)}`;
       document.getElementById('remainingTime').innerText = `Pozostało: ${fmt(rem)}`;
       window.incrementCalc();
     }
-
     function updateClock() {
       const d = new Date();
       document.getElementById('clock').innerText =
-        `${String(d.getHours()).padStart(2,'0')}:` +
-        `${String(d.getMinutes()).padStart(2,'0')}:` +
-        `${String(d.getSeconds()).padStart(2,'0')}`;
+        `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+    }
+    function toggleAuthForms() {
+      document.getElementById('login-form').classList.toggle('hidden');
+      document.getElementById('register-form').classList.toggle('hidden');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      updateClock();
-      setInterval(updateClock, 1000);
+      updateClock(); setInterval(updateClock, 1000);
+
+      // toggle log/register
+      document.getElementById('show-register').addEventListener('click', toggleAuthForms);
+      document.getElementById('show-login').addEventListener('click', toggleAuthForms);
 
       // copy handlers
       document.querySelectorAll('.copy-btn').forEach(btn =>
@@ -296,6 +250,7 @@
     });
   </script>
 
+  <!-- bookmark handling (unchanged) -->
   <script type="module">
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
     import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
