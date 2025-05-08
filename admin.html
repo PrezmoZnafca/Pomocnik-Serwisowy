@@ -31,32 +31,73 @@
   <div id="toast-container"></div>
 
   <main class="container admin-container">
-    <h2>Lista użytkowników</h2>
+    <!-- Użytkownicy -->
+    <h2>Użytkownicy</h2>
     <table id="user-table">
       <thead>
         <tr>
-          <th>Nazwa</th><th>Rola</th><th>Rejestracja</th><th>Ostatnia aktywność</th>
-          <th>Kopiowań</th><th>Obliczeń</th><th>Logowań</th><th>Akcje</th>
+          <th>Nazwa</th>
+          <th>Rola</th>
+          <th>Rej.</th>
+          <th>Ostatnia aktywność</th>
+          <th>Cop.</th>
+          <th>Calc.</th>
+          <th>Log.</th>
+          <th>Impersonuj</th>
+          <th>Usuń</th>
         </tr>
       </thead>
       <tbody id="user-table-body"></tbody>
     </table>
 
+    <!-- Propozycje globalnych zakładek -->
+    <h2>Propozycje zakładek globalnych</h2>
+    <table id="proposal-table">
+      <thead>
+        <tr><th>Użytkownik</th><th>Nazwa</th><th>Numery</th><th>Akcje</th></tr>
+      </thead>
+      <tbody id="proposal-table-body"></tbody>
+    </table>
+
+    <!-- Globalne zakładki -->
     <h2>Zakładki globalne</h2>
     <table id="bookmark-table">
       <thead>
-        <tr><th>Nazwa</th><th>Numery</th><th>Akcje</th></tr>
+        <tr><th>Nazwa</th><th>Numery</th><th>Usuń</th></tr>
       </thead>
       <tbody id="bookmark-table-body"></tbody>
     </table>
 
+    <!-- Prywatne zakładki -->
     <h2>Zakładki prywatne użytkowników</h2>
     <table id="personal-bookmark-table">
       <thead>
-        <tr><th>Nazwa</th><th>Numery</th><th>Akcje</th></tr>
+        <tr><th>Nazwa</th><th>Numery</th><th>Usuń</th></tr>
       </thead>
       <tbody id="personal-bookmark-table-body"></tbody>
     </table>
+
+    <!-- Wiadomości od użytkowników -->
+    <h2>Wiadomości od użytkowników</h2>
+    <table id="messages-table">
+      <thead>
+        <tr><th>Użytkownik</th><th>Wiadomość</th><th>Czas</th><th>Usuń</th></tr>
+      </thead>
+      <tbody id="messages-table-body"></tbody>
+    </table>
+
+    <!-- Ustawienia aplikacji -->
+    <h2>Ustawienia aplikacji</h2>
+    <div class="devices-container">
+      <label for="setting-work-mins">Domyślny czas pracy (minuty):</label>
+      <input id="setting-work-mins" type="number" class="form-field">
+      <label for="setting-theme">Motyw:</label>
+      <select id="setting-theme" class="form-field">
+        <option value="dark">Ciemny</option>
+        <option value="light">Jasny</option>
+      </select>
+      <button id="save-settings-btn" class="action-btn">Zapisz ustawienia</button>
+    </div>
 
     <button id="back-to-main" class="admin-btn">Strona Główna</button>
     <button id="logout-btn"     class="admin-btn">Wyloguj się</button>

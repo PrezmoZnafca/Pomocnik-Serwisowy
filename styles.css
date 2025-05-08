@@ -7,7 +7,7 @@
 }
 
 /* reset */
-* { box-sizing: border-box; margin:0; padding:0 }
+* { box-sizing: border-box; margin:0; padding:0; }
 body, html {
   font-family: 'Roboto', sans-serif;
   background: var(--dark-bg);
@@ -16,7 +16,7 @@ body, html {
 }
 .hidden { display:none !important; }
 
-/* nagłówek */
+/* header */
 .header {
   position:fixed; top:0; left:0; width:100%;
   background: var(--primary);
@@ -24,7 +24,6 @@ body, html {
   padding:10px 20px; box-shadow:0 2px 8px rgba(0,0,0,0.5); z-index:1000;
 }
 .header-left h1 { font-size:24px; color:#000; }
-/* zapobiega zawijaniu się przycisków w headerze */
 .header-right { display:flex; align-items:center; flex-wrap: nowrap; }
 .clock {
   font-size:16px; font-weight:bold;
@@ -42,7 +41,7 @@ body, html {
   background:#000; color:var(--primary); transform:scale(1.05);
 }
 
-/* sekcje */
+/* sections */
 #auth-section, #main-section { padding-top:70px; }
 .container {
   max-width:1200px; margin:0 auto; padding:20px;
@@ -57,14 +56,14 @@ body, html {
   color: var(--primary); margin-bottom:10px;
 }
 
-/* pola formularza */
+/* form fields */
 .form-field {
   width:100%; padding:10px; margin-bottom:10px;
   border:2px solid var(--primary); border-radius:6px;
   background:#3a3a3a; color:#fff; font-size:14px;
 }
 
-/* przyciski */
+/* buttons */
 .action-btn, button {
   width:100%; margin-top:10px; padding:10px;
   background: var(--primary); color:#000;
@@ -96,7 +95,7 @@ body, html {
 .work-stats { margin-top:10px; }
 .work-stats p { font-size:16px; margin:4px 0; color: var(--text); }
 
-/* linki */
+/* links */
 .links-section {
   width:100%; text-align:center; margin-top:30px;
 }
@@ -133,39 +132,40 @@ body, html {
   box-shadow:0 4px 10px rgba(0,0,0,0.4);
   transition:opacity 0.4s, transform 0.4s;
 }
-.toast.hidden {
-  opacity:0; transform:translateY(20px);
-}
+.toast.hidden { opacity:0; transform:translateY(20px); }
 
-/* tabele admina: użytkownicy, globalne i prywatne */
-#user-table, #bookmark-table, #personal-bookmark-table {
+/* admin tables */
+#user-table, #proposal-table, #bookmark-table, #personal-bookmark-table, #messages-table {
   width:100%; border-collapse:collapse; margin-top:20px;
 }
-#user-table th, #bookmark-table th, #personal-bookmark-table th,
-#user-table td, #bookmark-table td, #personal-bookmark-table td {
+#user-table th, #proposal-table th, #bookmark-table th,
+#personal-bookmark-table th, #messages-table th,
+#user-table td, #proposal-table td, #bookmark-table td,
+#personal-bookmark-table td, #messages-table td {
   padding:10px; border-bottom:1px solid #444; text-align:center;
 }
-#user-table th, #bookmark-table th, #personal-bookmark-table th {
+#user-table th, #proposal-table th, #bookmark-table th,
+#personal-bookmark-table th, #messages-table th {
   background: var(--card-bg); color: var(--primary);
 }
-#user-table td, #bookmark-table td, #personal-bookmark-table td {
+#user-table td, #proposal-table td, #bookmark-table td,
+#personal-bookmark-table td, #messages-table td {
   background:#252525;
 }
-/* nagłówki grup prywatnych zakładek */
-.group-header td {
+/* grupowe nagłówki w prywatnych zakładkach */
+#personal-bookmark-table .group-header td {
   background: var(--card-bg);
   color: var(--primary);
   font-weight: bold;
+  text-align: left;
 }
-/* przyciski usuń */
+/* delete/promote buttons */
 .admin-btn {
   background:#d9534f; color:#fff; padding:6px 10px;
   border:none; border-radius:6px; cursor:pointer;
   transition:background 0.3s;
 }
-.admin-btn:hover {
-  background:#c9302c;
-}
+.admin-btn:hover { background:#c9302c; }
 
 /* modal */
 .modal {
@@ -175,9 +175,7 @@ body, html {
   display:flex; align-items:center; justify-content:center;
   z-index:2000;
 }
-.modal.hidden {
-  display:none;
-}
+.modal.hidden { display:none; }
 .modal-content {
   background: var(--card-bg);
   padding:20px;
@@ -185,12 +183,8 @@ body, html {
   width:90%; max-width:400px;
   color: var(--text);
 }
-.modal-content h3 {
-  margin-top:0; color: var(--primary);
-}
-.modal-content p {
-  margin:10px 0;
-}
+.modal-content h3 { margin-top:0; color: var(--primary); }
+.modal-content p  { margin:10px 0; }
 .modal-content label {
   display:block; margin-bottom:8px; cursor:pointer;
 }
