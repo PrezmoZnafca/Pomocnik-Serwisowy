@@ -31,6 +31,14 @@
   <div id="toast-container"></div>
 
   <main class="container admin-container">
+
+    <!-- Zarządzaj rolami -->
+    <div class="devices-container">
+      <h2>Zarządzaj rolami</h2>
+      <input id="new-role-name" type="text" class="form-field" placeholder="Nowa rola">
+      <button id="add-role-btn" class="action-btn">Dodaj rolę</button>
+    </div>
+
     <!-- Użytkownicy -->
     <h2>Użytkownicy</h2>
     <table id="user-table">
@@ -68,7 +76,7 @@
       <tbody id="bookmark-table-body"></tbody>
     </table>
 
-    <!-- Prywatne zakładki -->
+    <!-- Prywatne zakładki użytkowników -->
     <h2>Zakładki prywatne użytkowników</h2>
     <table id="personal-bookmark-table">
       <thead>
@@ -85,19 +93,6 @@
       </thead>
       <tbody id="messages-table-body"></tbody>
     </table>
-
-    <!-- Ustawienia aplikacji -->
-    <h2>Ustawienia aplikacji</h2>
-    <div class="devices-container">
-      <label for="setting-work-mins">Domyślny czas pracy (minuty):</label>
-      <input id="setting-work-mins" type="number" class="form-field">
-      <label for="setting-theme">Motyw:</label>
-      <select id="setting-theme" class="form-field">
-        <option value="dark">Ciemny</option>
-        <option value="light">Jasny</option>
-      </select>
-      <button id="save-settings-btn" class="action-btn">Zapisz ustawienia</button>
-    </div>
 
     <button id="back-to-main" class="admin-btn">Strona Główna</button>
     <button id="logout-btn"     class="admin-btn">Wyloguj się</button>

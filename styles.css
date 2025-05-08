@@ -72,6 +72,17 @@ body, html {
 }
 .action-btn:hover, button:hover { background: var(--hover); transform:scale(1.03); }
 
+/* custom bookmark item */
+.bookmark-item {
+  display:flex; gap:8px; margin-bottom:8px;
+}
+.delete-btn {
+  background:#d9534f; color:#fff; border:none;
+  padding:6px 10px; border-radius:6px; cursor:pointer;
+  transition:background 0.3s; flex-shrink:0;
+}
+.delete-btn:hover { background:#c9302c; }
+
 /* time-picker */
 .time-picker {
   position: relative; display:inline-block; width:180px; margin-bottom:10px;
@@ -93,7 +104,7 @@ body, html {
 
 /* work-stats */
 .work-stats { margin-top:10px; }
-.work-stats p { font-size:16px; margin:4px 0; color: var(--text); }
+.work-stats p { font-size:16px; margin:4px 0; }
 
 /* links */
 .links-section {
@@ -102,8 +113,7 @@ body, html {
 .links-section a {
   display:inline-block; padding:8px 14px; margin:5px;
   background: var(--card-bg); color: var(--primary);
-  text-decoration:none; border-radius:6px;
-  transition:background 0.3s;
+  text-decoration:none; border-radius:6px; transition:background 0.3s;
 }
 .links-section a:hover { background:#3a3a3a; }
 
@@ -135,7 +145,8 @@ body, html {
 .toast.hidden { opacity:0; transform:translateY(20px); }
 
 /* admin tables */
-#user-table, #proposal-table, #bookmark-table, #personal-bookmark-table, #messages-table {
+#user-table, #proposal-table, #bookmark-table,
+#personal-bookmark-table, #messages-table {
   width:100%; border-collapse:collapse; margin-top:20px;
 }
 #user-table th, #proposal-table th, #bookmark-table th,
@@ -152,20 +163,13 @@ body, html {
 #personal-bookmark-table td, #messages-table td {
   background:#252525;
 }
-/* grupowe nagłówki w prywatnych zakładkach */
+/* group header for personal bookmarks */
 #personal-bookmark-table .group-header td {
   background: var(--card-bg);
   color: var(--primary);
   font-weight: bold;
   text-align: left;
 }
-/* delete/promote buttons */
-.admin-btn {
-  background:#d9534f; color:#fff; padding:6px 10px;
-  border:none; border-radius:6px; cursor:pointer;
-  transition:background 0.3s;
-}
-.admin-btn:hover { background:#c9302c; }
 
 /* modal */
 .modal {
