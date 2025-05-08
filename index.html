@@ -71,6 +71,7 @@
           <button onclick="copyData('NA073630, 1\n604107-00, 1\n642883-00C, 1\nN866541, 1\nN921819, 1\nBC-N019351, 1\nNA202231, 1\nN864734, 1\nN811325, 1\nN864740, 1\nN864736, 1\nN919242, 1')" class="copy-btn">DCF850</button>
           <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN439271, 1\nN424032, 1\nN437890, 1\nN612522, 1\nN019351, 1\nN016823, 1\nN421245, 1\nN075339, 1')" class="copy-btn">DCF887</button>
           <button onclick="copyData('NA472056, 1\nNA163453, 1\nNA472064, 1\nNA562707, 1\nN019351, 1\n604107-00, 1\nNA168988, 2\nN864740, 1\nN864736, 1\nNA166862, 1\nNA162532, 1\nNA549696, 1')" class="copy-btn">DCF860N</button>
+          <button onclick="copyData('N439275, 1\nN089668, 1\n642883-00C, 1\nN611681, 1\nN424032, 1\nN437890, 1\nN019351, 1\nN612522, 1\nN453417, 1\nN421245, 1')" class="copy-btn">DCF809</button>
           <button onclick="copyData('N233871, 1\n330003-60, 1\nN233867, 1\n330003-64, 1\nN233866, 1\nN915019, 1\nN915018, 1\nN077124, 1\n577744-00, 1\nN233864, 2\nN233863, 2\n323711-41, 1\nN077123, 1\nN093430, 2\nN233865, 1\nN233859, 1\n870889-02, 1')" class="copy-btn">Aligator Zestaw</button>
           <button onclick="copyData('N430442, 1\nN329079, 1\nNA293294, 1')" class="copy-btn">Oscylacyjna DWE6423</button>
         </div>
@@ -157,73 +158,30 @@
   </div>
 
   <script>
-    // zegar
-    function updateClock() {
-      const d = new Date();
-      document.getElementById('clock').innerText =
-        `${String(d.getHours()).padStart(2,'0')}:` +
-        `${String(d.getMinutes()).padStart(2,'0')}:` +
-        `${String(d.getSeconds()).padStart(2,'0')}`;
-    }
-    setInterval(updateClock, 1000);
+    document.addEventListener('DOMContentLoaded', () => {
+      // zegar
+      function updateClock() {
+        const d = new Date();
+        document.getElementById('clock').innerText =
+          `${String(d.getHours()).padStart(2,'0')}:` +
+          `${String(d.getMinutes()).padStart(2,'0')}:` +
+          `${String(d.getSeconds()).padStart(2,'0')}`;
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
 
-    // kopiowanie
-    function copyData(text) {
-      navigator.clipboard.writeText(text)
-        .then(() => { showToast('Skopiowano numery części!'); window.incrementCopy(); })
-        .catch(() => showToast('Błąd kopiowania!'));
-    }
+      // toggle login/register
+      document.getElementById('show-register').addEventListener('click', () => {
+        document.getElementById('login-form').classList.add('hidden');
+        document.getElementById('register-form').classList.remove('hidden');
+      });
+      document.getElementById('show-login').addEventListener('click', () => {
+        document.getElementById('register-form').classList.add('hidden');
+        document.getElementById('login-form').classList.remove('hidden');
+      });
 
-    // obliczanie czasu
-    function calculateTime() {
-      const v = document.getElementById('arrivalTime').value;
-      if (!v) { showToast('Podaj czas przyjścia!'); return; }
-      const [h, m] = v.split(':').map(Number);
-      const now = new Date();
-      const arrival = new Date(now.getTime());
-      arrival.setHours(h, m, 0, 0);
-
-      const workMs = (8 * 60 + 15) * 60 * 1000;
-      const exitTime = new Date(arrival.getTime() + workMs);
-
-      const fmt = t =>
-        `${String(t.getHours()).padStart(2,'0')}:` +
-        `${String(t.getMinutes()).padStart(2,'0')}`;
-      document.getElementById('outputTime').innerText = fmt(exitTime);
-
-      let workedMs = now - arrival; if (workedMs < 0) workedMs = 0;
-      let remainingMs = exitTime - now; if (remainingMs < 0) remainingMs = 0;
-      const formatDur = ms => {
-        const mins = Math.floor(ms / 60000);
-        const hh = Math.floor(mins / 60);
-        const mm = mins % 60;
-        return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
-      };
-      document.getElementById('workedTime').innerText    = `Przepracowano: ${formatDur(workedMs)}`;
-      document.getElementById('remainingTime').innerText = `Pozostało: ${formatDur(remainingMs)}`;
-
-      window.incrementCalc();
-    }
-
-    // toasty
-    function showToast(msg) {
-      const c = document.getElementById('toast-container');
-      const t = document.createElement('div');
-      t.className = 'toast';
-      t.innerText = msg;
-      c.appendChild(t);
-      setTimeout(() => { t.classList.add('hidden'); setTimeout(() => t.remove(), 500); }, 3000);
-    }
-
-    // auth toggle
-    document.getElementById('show-register').onclick = () => {
-      document.getElementById('login-form').classList.add('hidden');
-      document.getElementById('register-form').classList.remove('hidden');
-    };
-    document.getElementById('show-login').onclick = () => {
-      document.getElementById('register-form').classList.add('hidden');
-      document.getElementById('login-form').classList.remove('hidden');
-    };
+      // kopiowanie, calculateTime, showToast – pozostawione inline w onclick
+    });
   </script>
 
   <script type="module">
@@ -245,7 +203,7 @@
       onValue(globalRef, snap => { globalSnap = snap; renderAll(); });
       onValue(personalRef, snap => { personalSnap = snap; renderAll(); });
 
-      document.getElementById('add-custom-btn').onclick = () => {
+      document.getElementById('add-custom-btn').addEventListener('click', () => {
         pendingLabel = document.getElementById('custom-btn-label').value.trim();
         pendingData  = document.getElementById('custom-btn-data').value.trim();
         if (!pendingLabel || !pendingData) {
@@ -253,8 +211,8 @@
           return;
         }
         document.getElementById('scope-modal').classList.remove('hidden');
-      };
-      document.getElementById('confirm-add-btn').onclick = () => {
+      });
+      document.getElementById('confirm-add-btn').addEventListener('click', () => {
         const scope = document.querySelector('input[name="scope"]:checked').value;
         const tgt = scope === 'proposal' ? propRef : personalRef;
         push(tgt, { uid, label: pendingLabel, data: pendingData })
@@ -265,11 +223,12 @@
           })
           .catch(() => showToast('Błąd dodawania!'))
           .finally(() => document.getElementById('scope-modal').classList.add('hidden'));
-      };
-      document.getElementById('cancel-add-btn').onclick = () =>
+      });
+      document.getElementById('cancel-add-btn').addEventListener('click', () => {
         document.getElementById('scope-modal').classList.add('hidden');
+      });
 
-      document.getElementById('send-message-btn').onclick = () => {
+      document.getElementById('send-message-btn').addEventListener('click', () => {
         const txt = document.getElementById('message-text').value.trim();
         if (!txt) return showToast('Wpisz wiadomość!');
         push(ref(db, 'messages'), { uid, text: txt, ts: Date.now() })
@@ -278,7 +237,7 @@
             showToast('Wiadomość wysłana!');
           })
           .catch(() => showToast('Błąd wysyłania!'));
-      };
+      });
     });
 
     function renderAll() {
