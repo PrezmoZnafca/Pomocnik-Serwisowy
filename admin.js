@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('logout-btn')
     .addEventListener('click', () => signOut(auth).then(redirectToLogin));
   document.getElementById('back-to-main')
-    .addEventListener('click', () => window.location.href='index.html');
+    .addEventListener('click', () => window.location.href = 'index.html');
 });
 
 function redirectToLogin() {
@@ -37,8 +37,8 @@ function loadUsers() {
       tr.innerHTML = `
         <td>${escapeHTML(u.username)}</td>
         <td>${escapeHTML(u.role)}</td>
-        <td>${u.createdAt? new Date(u.createdAt).toLocaleString('pl-PL') : '—'}</td>
-        <td>${u.lastActive? new Date(u.lastActive).toLocaleString('pl-PL') : '—'}</td>
+        <td>${u.createdAt ? new Date(u.createdAt).toLocaleString('pl-PL') : '—'}</td>
+        <td>${u.lastActive ? new Date(u.lastActive).toLocaleString('pl-PL') : '—'}</td>
         <td>${u.copies ?? 0}</td>
         <td>${u.calculations ?? 0}</td>
         <td>${u.logins ?? 0}</td>
@@ -77,12 +77,18 @@ function loadPersonalBookmarks() {
     const tbody = document.getElementById('personal-bookmark-table-body');
     tbody.innerHTML = '';
     if (!snap.exists()) return;
+    // Dla każdego użytkownika z bookmarks
     Object.entries(snap.val()).forEach(([uid,u]) => {
       if (!u.bookmarks) return;
+      // wiersz grupy z nazwą użytkownika
+      const headerTr = document.createElement('tr');
+      headerTr.className = 'group-header';
+      headerTr.innerHTML = `<td colspan="3">${escapeHTML(u.username)}</td>`;
+      tbody.appendChild(headerTr);
+      // wiersze z jego zakładkami
       Object.entries(u.bookmarks).forEach(([key,b]) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${escapeHTML(u.username)}</td>
           <td>${escapeHTML(b.label)}</td>
           <td><pre>${escapeHTML(b.data)}</pre></td>
           <td><button class="admin-btn" data-delete-pbm="${uid}|${key}">Usuń</button></td>
@@ -91,8 +97,8 @@ function loadPersonalBookmarks() {
       });
     });
     tbody.querySelectorAll('[data-delete-pbm]').forEach(btn => {
-      const [uid, key] = btn.dataset.deletePbm.split('|');
-      btn.addEventListener('click', () => deletePersonalBookmark(uid, key));
+      const [uid,key] = btn.dataset.deletePbm.split('|');
+      btn.addEventListener('click', () => deletePersonalBookmark(uid,key));
     });
   });
 }
@@ -111,8 +117,8 @@ function deleteGlobalBookmark(key) {
     .catch(e => alert('Błąd: ' + e.message));
 }
 
-function deletePersonalBookmark(uid, key) {
-  if (!confirm('Na pewno usunąć tę zakładkę prywatną?')) return;
+function deletePersonalBookmark(uid,key) {
+  if (!confirm('Na pewno usunąć tę prywatną zakładkę?')) return;
   remove(ref(db, `users/${uid}/bookmarks/${key}`))
     .then(loadPersonalBookmarks)
     .catch(e => alert('Błąd: ' + e.message));
