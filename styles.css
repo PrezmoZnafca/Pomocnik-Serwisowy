@@ -31,8 +31,6 @@ body, html {
   background: var(--primary); color:#000;
   padding:6px 10px; border-radius:6px; margin-left:12px;
 }
-
-/* przyciski w headerze */
 .header-btn {
   background:transparent; border:2px solid #000;
   color:#000; padding:6px 12px; margin-right:10px;
@@ -44,16 +42,12 @@ body, html {
   background:#000; color:var(--primary); transform:scale(1.05);
 }
 
-/* sekcje niżej */
+/* sekcje */
 #auth-section, #main-section { padding-top:70px; }
-
-/* kontener główny */
 .container {
   max-width:1200px; margin:0 auto; padding:20px;
   display:flex; flex-wrap:wrap; gap:20px; justify-content:center;
 }
-
-/* karty urządzeń i główna zawartość */
 .devices-container, .main-content {
   background: var(--card-bg); padding:20px;
   border-radius:8px; flex:1 1 280px; min-width:260px;
@@ -70,7 +64,7 @@ body, html {
   background:#3a3a3a; color:#fff; font-size:14px;
 }
 
-/* przyciski akcji */
+/* przyciski */
 .action-btn, button {
   width:100%; margin-top:10px; padding:10px;
   background: var(--primary); color:#000;
@@ -93,27 +87,16 @@ body, html {
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
   transition:border-color 0.2s; cursor:pointer;
 }
-.time-picker-input::placeholder { color:#888; }
 .time-picker-input:focus {
-  outline:none;
-  border-color: var(--primary);
+  outline:none; border-color: var(--primary);
   box-shadow:0 0 0 3px rgba(255,203,0,0.3);
-}
-/* ukryj domyślne strzałki w WebKit */
-.time-picker-input::-webkit-clear-button,
-.time-picker-input::-webkit-inner-spin-button { display:none; }
-.time-picker-input::-webkit-calendar-picker-indicator {
-  opacity:0; display:block;
-  position:absolute; right:10px; top:50%; transform:translateY(-50%);
 }
 
 /* work-stats */
 .work-stats { margin-top:10px; }
-.work-stats p {
-  font-size:16px; margin:4px 0; color: var(--text);
-}
+.work-stats p { font-size:16px; margin:4px 0; color: var(--text); }
 
-/* sekcja linków */
+/* linki */
 .links-section {
   width:100%; text-align:center; margin-top:30px;
 }
@@ -125,7 +108,7 @@ body, html {
 }
 .links-section a:hover { background:#3a3a3a; }
 
-/* formularze auth */
+/* auth forms */
 .auth-container {
   display:flex; flex-direction:column; align-items:center;
   justify-content:center; min-height:100vh;
@@ -154,20 +137,27 @@ body, html {
   opacity:0; transform:translateY(20px);
 }
 
-/* tabela admina */
-#user-table, #bookmark-table {
+/* tabele admina: użytkownicy, globalne i prywatne */
+#user-table, #bookmark-table, #personal-bookmark-table {
   width:100%; border-collapse:collapse; margin-top:20px;
 }
-#user-table th, #bookmark-table th,
-#user-table td, #bookmark-table td {
+#user-table th, #bookmark-table th, #personal-bookmark-table th,
+#user-table td, #bookmark-table td, #personal-bookmark-table td {
   padding:10px; border-bottom:1px solid #444; text-align:center;
 }
-#user-table th, #bookmark-table th {
+#user-table th, #bookmark-table th, #personal-bookmark-table th {
   background: var(--card-bg); color: var(--primary);
 }
-#user-table td, #bookmark-table td {
+#user-table td, #bookmark-table td, #personal-bookmark-table td {
   background:#252525;
 }
+/* nagłówki grup prywatnych zakładek */
+.group-header td {
+  background: var(--card-bg);
+  color: var(--primary);
+  font-weight: bold;
+}
+/* przyciski usuń */
 .admin-btn {
   background:#d9534f; color:#fff; padding:6px 10px;
   border:none; border-radius:6px; cursor:pointer;
