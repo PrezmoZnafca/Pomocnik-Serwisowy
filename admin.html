@@ -6,7 +6,6 @@
   <title>Panel Administratora - Pomocnik Serwisowy</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-
   <script type="module" defer>
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
     const firebaseConfig = {
@@ -54,36 +53,28 @@
     <!-- Propozycje globalnych zakładek -->
     <h2>Propozycje zakładek globalnych</h2>
     <table id="proposal-table">
-      <thead>
-        <tr><th>Użytkownik</th><th>Nazwa</th><th>Numery</th><th>Akcje</th></tr>
-      </thead>
+      <thead><tr><th>Użytkownik</th><th>Nazwa</th><th>Numery</th><th>Akcje</th></tr></thead>
       <tbody id="proposal-table-body"></tbody>
     </table>
 
     <!-- Globalne zakładki -->
     <h2>Zakładki globalne</h2>
     <table id="bookmark-table">
-      <thead>
-        <tr><th>Nazwa</th><th>Numery</th><th>Usuń</th></tr>
-      </thead>
+      <thead><tr><th>Nazwa</th><th>Numery</th><th>Usuń</th></tr></thead>
       <tbody id="bookmark-table-body"></tbody>
     </table>
 
-    <!-- Prywatne zakładki użytkowników -->
+    <!-- Prywatne zakładki -->
     <h2>Zakładki prywatne użytkowników</h2>
     <table id="personal-bookmark-table">
-      <thead>
-        <tr><th>Nazwa</th><th>Numery</th><th>Usuń</th></tr>
-      </thead>
+      <thead><tr><th>Nazwa</th><th>Numery</th><th>Usuń</th></tr></thead>
       <tbody id="personal-bookmark-table-body"></tbody>
     </table>
 
     <!-- Wiadomości od użytkowników -->
     <h2>Wiadomości od użytkowników</h2>
     <table id="messages-table">
-      <thead>
-        <tr><th>Użytkownik</th><th>Wiadomość</th><th>Czas</th><th>Usuń</th></tr>
-      </thead>
+      <thead><tr><th>Użytkownik</th><th>Wiadomość</th><th>Czas</th><th>Usuń</th></tr></thead>
       <tbody id="messages-table-body"></tbody>
     </table>
 
