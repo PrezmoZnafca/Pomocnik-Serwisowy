@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   onAuthStateChanged(auth, user => {
     const lo = document.getElementById('logout-btn'),
           ad = document.getElementById('admin-panel-btn'),
+		  cat = document.getElementById('catalog-btn'),
           au = document.getElementById('auth-section'),
           ma = document.getElementById('main-section');
     if (user) {
