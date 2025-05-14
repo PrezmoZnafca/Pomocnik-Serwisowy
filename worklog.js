@@ -17,10 +17,11 @@ const db   = getDatabase();
 onAuthStateChanged(auth, user => {
   if (!user) {
     console.warn('Nie zalogowano – przekierowanie');
-    return window.location.href = 'index.html';
+    window.location.href = 'index.html';
+    return;
   }
 
-  // Ustawienia DOM
+  // Elementy DOM
   const section     = document.getElementById('worklog-section');
   const dateInput   = document.getElementById('worklog-date');
   const startInput  = document.getElementById('start-time');
@@ -30,21 +31,23 @@ onAuthStateChanged(auth, user => {
   const reportSelect= document.getElementById('report-time');
   const computeBtn  = document.getElementById('compute-exit');
   const saveBtn     = document.getElementById('save-entry');
-  const tbody        = document.getElementById('worklog-body');
+  const tbody       = document.getElementById('worklog-body');
   const totalWork   = document.getElementById('total-work');
   const totalOt     = document.getElementById('total-ot');
-  const headerBtn   = document.getElementById('worklog-btn');
 
-  // Pokaż sekcję i ustaw datę
+  // Pokaż panel i ustaw datę
   section.classList.remove('hidden');
   dateInput.valueAsDate = new Date();
 
-  // Header button (jeżeli wracasz z index.html)
-  headerBtn.addEventListener('click', () => window.location.href = 'worklog.html');
+  // Oblicz planowane wyjście
+  computeBtn.addEventListener('click', () => {
+    if (!startInput.value) return alert('Podaj czas przyjścia!');
+    plannedInput.value = fmt(toMinutes(startInput.value) + DAILY_LIMIT);
+  });
 
-  // Funkcja wczytująca i renderująca wpisy
+  // Funkcja wczytująca wpisy dla wybranego miesiąca
   function loadEntries() {
-    const monthKey = dateInput.value.slice(0,7); // YYYY-MM
+    const monthKey = dateInput.value.slice(0,7);       // "YYYY-MM"
     console.log('Ładowanie wpisów dla:', monthKey);
     const monthRef = ref(db, `worklogs/${user.uid}/${monthKey}`);
     onValue(monthRef, snap => {
@@ -54,7 +57,7 @@ onAuthStateChanged(auth, user => {
       let sumWork = 0, sumOt = 0;
 
       if (data) {
-        Object.values(data).forEach(entry => {
+        Object.entries(data).forEach(([dayKey, entry]) => {
           const { date, start, planned, actual, rbh, reportHour } = entry;
           const workedMin = toMinutes(actual) - toMinutes(start);
           const workMin   = Math.min(workedMin, DAILY_LIMIT);
@@ -82,15 +85,10 @@ onAuthStateChanged(auth, user => {
     });
   }
 
-  // rekalkulacja planowanego wyjścia
-  computeBtn.addEventListener('click', () => {
-    if (!startInput.value) return alert('Podaj czas przyjścia!');
-    plannedInput.value = fmt(toMinutes(startInput.value) + DAILY_LIMIT);
-  });
-
-  // zapis i odświeżenie
+  // Zapis wpisu w strukturze worklogs/uid/YYYY-MM/YYYY-MM-DD
   saveBtn.addEventListener('click', () => {
-    const dateVal    = dateInput.value;
+    const dateVal    = dateInput.value;                  // YYYY-MM-DD
+    const monthKey   = dateVal.slice(0,7);               // YYYY-MM
     const startVal   = startInput.value;
     const plannedVal = plannedInput.value;
     const actualVal  = actualInput.value;
@@ -101,7 +99,7 @@ onAuthStateChanged(auth, user => {
       return alert('Uzupełnij wszystkie pola!');
     }
 
-    const entryRef = ref(db, `worklogs/${user.uid}/${dateVal}`);
+    const entryRef = ref(db, `worklogs/${user.uid}/${monthKey}/${dateVal}`);
     set(entryRef, {
       date: dateVal,
       start: startVal,
@@ -120,7 +118,8 @@ onAuthStateChanged(auth, user => {
     });
   });
 
-  // odśwież przy zmianie daty i pierwszy render
+  // Odśwież przy zmianie daty i pierwszy render
   dateInput.addEventListener('change', loadEntries);
   loadEntries();
-});
+}
+);
