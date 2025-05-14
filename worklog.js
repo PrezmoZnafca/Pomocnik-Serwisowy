@@ -16,21 +16,21 @@ const fmt = mins => {
 };
 
 onAuthStateChanged(auth, user => {
-  const btn     = document.getElementById('worklog-btn');
-  const section = document.getElementById('worklog-section');
-
   if (!user) {
-    btn.classList.add('hidden');
-    section.classList.add('hidden');
+    // jeżeli użytkownik nie jest zalogowany, przekieruj na stronę główną
+    window.location.href = 'index.html';
     return;
   }
 
+  // jeżeli zalogowany, wyświetl sekcję rejestracji czasu
+  document.getElementById('worklog-section').classList.remove('hidden');
+
+  // konfiguracja przycisku w headerze
+  const btn = document.getElementById('worklog-btn');
   btn.classList.remove('hidden');
   btn.addEventListener('click', () => window.location.href = 'worklog.html');
 
-  if (!section) return;
-  section.classList.remove('hidden');
-
+  // elementy formularza i tabeli
   const dateInput    = document.getElementById('worklog-date');
   const startInput   = document.getElementById('start-time');
   const plannedInput = document.getElementById('planned-exit');
@@ -42,16 +42,17 @@ onAuthStateChanged(auth, user => {
   const totalWork    = document.getElementById('total-work');
   const totalOt      = document.getElementById('total-ot');
 
-  // domyślnie dzisiaj
+  // ustaw datę na dzisiaj
   dateInput.valueAsDate = new Date();
 
+  // oblicz planowane wyjście
   computeBtn.addEventListener('click', () => {
     if (!startInput.value) return alert('Podaj godzinę przyjścia!');
     const planMin = toMinutes(startInput.value) + DAILY_LIMIT;
     plannedInput.value = fmt(planMin);
   });
 
-  // odczyt danych miesiąca
+  // wczytaj wpisy dla bieżącego miesiąca
   const monthKey = dateInput.value.slice(0,7); // YYYY-MM
   const monthRef = ref(db, `worklogs/${user.uid}/${monthKey}`);
 
@@ -87,18 +88,14 @@ onAuthStateChanged(auth, user => {
     totalOt.innerText   = fmt(sumOt);
   });
 
+  // zapisz nowy wpis
   saveBtn.addEventListener('click', () => {
     const date    = dateInput.value;
     const start   = startInput.value;
     const planned = plannedInput.value;
     const actual  = actualInput.value;
     const report  = reportSelect.value;
-    if (!date||!start||!planned||!actual) return alert('Uzupełnij wszystkie pola!');
-
-    set(ref(db, `worklogs/${user.uid}/${date}`), {
-      date, start, planned, actual, report
-    });
+    if (!date || !start || !planned || !actual) return alert('Uzupełnij wszystkie pola!');
+    set(ref(db, `worklogs/${user.uid}/${date}`), { date, start, planned, actual, report });
   });
 });
-
-// koniec pliku worklog.js
