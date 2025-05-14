@@ -9,7 +9,15 @@
   <!-- Firebase init -->
   <script type="module" defer>
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-    const firebaseConfig = { /* Twoja konfiguracja */ };
+    const firebaseConfig = {
+      apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
+      authDomain: "pomocnik-serwisowy.firebaseapp.com",
+      databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "pomocnik-serwisowy",
+      storageBucket: "pomocnik-serwisowy.appspot.com",
+      messagingSenderId: "683654368007",
+      appId: "1:683654368007:web:d90e76b516275a847153a2"
+    };
     initializeApp(firebaseConfig);
   </script>
   <script type="module" src="worklog.js" defer></script>

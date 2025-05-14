@@ -1,101 +1,76 @@
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
-
-const auth = getAuth();
-const db   = getDatabase();
-const DAILY_LIMIT = 8*60 + 15; // 8h15m w minutach
-
-const toMinutes = hm => {
-  const [h, m] = hm.split(':').map(Number);
-  return h*60 + m;
-};
-const fmt = mins => {
-  const h = Math.floor(mins/60);
-  const m = mins % 60;
-  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-};
-
-onAuthStateChanged(auth, user => {
-  if (!user) {
-    // jeżeli użytkownik nie jest zalogowany, przekieruj na stronę główną
-    window.location.href = 'index.html';
-    return;
-  }
-
-  // jeżeli zalogowany, wyświetl sekcję rejestracji czasu
-  document.getElementById('worklog-section').classList.remove('hidden');
-
-  // konfiguracja przycisku w headerze
-  const btn = document.getElementById('worklog-btn');
-  btn.classList.remove('hidden');
-  btn.addEventListener('click', () => window.location.href = 'worklog.html');
-
-  // elementy formularza i tabeli
-  const dateInput    = document.getElementById('worklog-date');
-  const startInput   = document.getElementById('start-time');
-  const plannedInput = document.getElementById('planned-exit');
-  const actualInput  = document.getElementById('actual-exit');
-  const reportSelect = document.getElementById('report-time');
-  const computeBtn   = document.getElementById('compute-exit');
-  const saveBtn      = document.getElementById('save-entry');
-  const tbody        = document.getElementById('worklog-body');
-  const totalWork    = document.getElementById('total-work');
-  const totalOt      = document.getElementById('total-ot');
-
-  // ustaw datę na dzisiaj
-  dateInput.valueAsDate = new Date();
-
-  // oblicz planowane wyjście
-  computeBtn.addEventListener('click', () => {
-    if (!startInput.value) return alert('Podaj godzinę przyjścia!');
-    const planMin = toMinutes(startInput.value) + DAILY_LIMIT;
-    plannedInput.value = fmt(planMin);
-  });
-
-  // wczytaj wpisy dla bieżącego miesiąca
-  const monthKey = dateInput.value.slice(0,7); // YYYY-MM
-  const monthRef = ref(db, `worklogs/${user.uid}/${monthKey}`);
-
-  onValue(monthRef, snap => {
-    tbody.innerHTML = '';
-    let sumWork = 0;
-    let sumOt   = 0;
-
-    snap.forEach(ch => {
-      const { date, start, planned, actual, report } = ch.val();
-      const workedMin = toMinutes(actual) - toMinutes(start);
-      const workMin   = Math.min(workedMin, DAILY_LIMIT);
-      const otMin     = Math.max(0, workedMin - DAILY_LIMIT);
-      const rbhMin    = Math.max(0, toMinutes(report) - toMinutes(start));
-
-      sumWork += workMin;
-      sumOt   += otMin;
-
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${date}</td>
-        <td>${start}</td>
-        <td>${planned}</td>
-        <td>${actual}</td>
-        <td>${fmt(workMin)}</td>
-        <td>${fmt(otMin)}</td>
-        <td>${fmt(rbhMin)}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    totalWork.innerText = fmt(sumWork);
-    totalOt.innerText   = fmt(sumOt);
-  });
-
-  // zapisz nowy wpis
-  saveBtn.addEventListener('click', () => {
-    const date    = dateInput.value;
-    const start   = startInput.value;
-    const planned = plannedInput.value;
-    const actual  = actualInput.value;
-    const report  = reportSelect.value;
-    if (!date || !start || !planned || !actual) return alert('Uzupełnij wszystkie pola!');
-    set(ref(db, `worklogs/${user.uid}/${date}`), { date, start, planned, actual, report });
-  });
-});
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rejestracja Czasu Pracy</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <!-- Firebase init -->
+  <script type="module" defer>
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
+      authDomain: "pomocnik-serwisowy.firebaseapp.com",
+      databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "pomocnik-serwisowy",
+      storageBucket: "pomocnik-serwisowy.appspot.com",
+      messagingSenderId: "683654368007",
+      appId: "1:683654368007:web:d90e76b516275a847153a2"
+    };
+    initializeApp(firebaseConfig);
+  </script>
+  <script type="module" src="worklog.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left"><h1>Pomocnik Serwisowy</h1></div>
+    <div class="header-right">
+      <!-- inne przyciski -->
+      <button id="worklog-btn" class="header-btn hidden">Czas pracy</button>
+      <div id="clock" class="clock"></div>
+    </div>
+  </header>
+  <main>
+    <section id="worklog-section" class="container hidden">
+      <h2>Rejestracja czasu pracy (miesiąc bieżący)</h2>
+      <div class="worklog-inputs">
+        <label>Data: <input type="date" id="worklog-date" /></label>
+        <label>Przyjście: <input type="time" id="start-time" /></label>
+        <button id="compute-exit" class="action-btn">Oblicz plan. wyjście</button>
+        <label>Plan. wyjście: <input type="time" id="planned-exit" readonly /></label>
+        <label>Wyjście faktyczne: <input type="time" id="actual-exit" /></label>
+        <label>Raport o (RBH): 
+          <select id="report-time">
+            <option>08:05</option><option>10:05</option><option>12:05</option>
+            <option>14:05</option><option>16:05</option><option>18:05</option>
+          </select>
+        </label>
+        <button id="save-entry" class="action-btn">Zapisz wpis</button>
+      </div>
+      <table class="worklog-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Przyjście</th>
+            <th>Plan. wyjście</th>
+            <th>Wyj. faktyczne</th>
+            <th>Godziny pracy</th>
+            <th>Nadgodziny</th>
+            <th>RBH</th>
+          </tr>
+        </thead>
+        <tbody id="worklog-body"></tbody>
+        <tfoot>
+          <tr>
+            <th colspan="4">Razem:</th>
+            <th id="total-work">00:00</th>
+            <th id="total-ot">00:00</th>
+            <th></th> <!-- RBH bez sumowania -->
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
