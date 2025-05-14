@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Akumulatory i Ładowarki - Pomocnik Serwisowy</title>
+
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+<style>
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+
+    background-color: var(--card-bg);
+    background-image: url('pattern.jpg');
+    background-repeat: repeat;
+    line-height: 1.2;
+    font-size: 0.875rem;
+    color: var(--text, #333);
+  }
+
+
+  header.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: var(--card-bg);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header.header h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  .header-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.875rem;
+  }
+  .header-btn:hover {
+    background: var(--hover);
+  }
+
+  main.container {
+    max-width: 1200px;
+    margin: 0.75rem auto;
+    padding: 0 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+
+  .devices-container {
+    background: var(--card-bg);
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: visible;
+  }
+  .devices-container h3 {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+
+  .table-wrapper {
+    overflow-x: visible;
+  }
+  table.compact {
+    table-layout: auto;
+    border-collapse: collapse;
+    width: auto;
+    font-size: 0.8rem;
+    margin: 0;
+  }
+  table.compact th,
+  table.compact td {
+    padding: 0.3rem 0.6rem;   
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  table.compact th {
+    background: var(--card-bg);
+    color: var(--primary);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  table.compact tbody tr {
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  table.compact tbody tr:nth-child(odd) {
+    background-color: rgba(0,0,0,0.03);
+  }
+  table.compact tbody tr:hover {
+    background: var(--hover);
+  }
+
+
+  .copy-icon {
+    font-size: 0.875rem;
+    color: var(--primary);
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    cursor: pointer;
+    outline: none !important;
+    transition: transform 0.2s, color 0.2s;
+  }
+  .copy-icon:hover {
+    transform: scale(1.1);
+    color: var(--hover);
+  }
+  .copy-icon:focus,
+  .copy-icon:active {
+    background: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  @keyframes flashRow {
+    from { background: var(--hover); }
+    to   { background: transparent; }
+  }
+  table.compact tbody tr.copied {
+    animation: flashRow 0.6s ease-out;
+  }
+  @keyframes flashIcon {
+    0%,80% { transform: scale(1.3); }
+    100%   { transform: scale(1); }
+  }
+  .copy-icon.copied {
+    animation: flashIcon 0.6s ease-out;
+  }
+</style>
+
+
+
+</head>
+<body>
+  <header class="header">
+    <div class="header-left"><h1>Akumulatory i Ładowarki</h1></div>
+    <div class="header-right">
+      <button onclick="window.location.href='index.html'" class="header-btn">Powrót</button>
+    </div>
+  </header>
+  <main class="container">
+
+    <div class="devices-container">
+      <h3>Akumulatory DeWALT</h3>
+      <div class="table-wrapper">
+        <table class="compact">
+          <thead>
+            <tr><th>Symbol handlowy</th><th>Symbol serwisowy</th><th>Napięcie</th><th>Pojemność</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>DCB121</td><td><button class="copy-icon" data-copy="BC-N394620">📋</button></td><td>10,8V</td><td>1,5Ah</td></tr>
+            <tr><td>DCB125</td><td><button class="copy-icon" data-copy="BC-N394615">📋</button></td><td>10,8V</td><td>1,3Ah</td></tr>
+            <tr><td>DCB124</td><td><button class="copy-icon" data-copy="BC-N752771">📋</button></td><td>10,8V</td><td>3,0Ah</td></tr>
+            <tr><td>DCB127</td><td><button class="copy-icon" data-copy="BC-N394620">📋</button></td><td>10,8V</td><td>2,0Ah</td></tr>
+            <tr><td>DCB140</td><td><button class="copy-icon" data-copy="BC-N123281">📋</button></td><td>14,4V</td><td>3,0Ah</td></tr>
+            <tr><td>DCB141</td><td><button class="copy-icon" data-copy="BC-N123280">📋</button></td><td>14,4V</td><td>1,5Ah</td></tr>
+            <tr><td>DCB142</td><td><button class="copy-icon" data-copy="BC-N394622">NLS - KOPIUJE DCB144</button></td><td>14,4V</td><td>4,0Ah</td></tr>
+            <tr><td>DCB143</td><td><button class="copy-icon" data-copy="NLS">NLS</button></td><td>14,4V</td><td>2,0Ah</td></tr>
+            <tr><td>DCB144</td><td><button class="copy-icon" data-copy="BC-N394622">📋</button></td><td>14,4V</td><td>5,0Ah</td></tr>
+            <tr><td>DCB145</td><td><button class="copy-icon" data-copy="BC-N123280">NLS - KOPIUJE DCB141</button></td><td>14,4V</td><td>1,3Ah</td></tr>
+            <tr><td>DCB181</td><td><button class="copy-icon" data-copy="BC-N123282">📋</button></td><td>18,0V</td><td>1,5Ah</td></tr>
+            <tr><td>DCB182</td><td><button class="copy-icon" data-copy="BC-N195933">📋</button></td><td>18,0V</td><td>4,0Ah</td></tr>
+            <tr><td>DCB183</td><td><button class="copy-icon" data-copy="BC-N314783">📋</button></td><td>18,0V</td><td>2,0Ah</td></tr>
+            <tr><td>DCB183B</td><td><button class="copy-icon" data-copy="BC-N436206">📋</button></td><td>18,0V</td><td>2,0Ah</td></tr>
+            <tr><td>DCB184</td><td><button class="copy-icon" data-copy="BC-N394624">📋</button></td><td>18,0V</td><td>5,0Ah</td></tr>
+            <tr><td>DCB184B</td><td><button class="copy-icon" data-copy="BC-N436213">📋</button></td><td>18,0V</td><td>5,0Ah</td></tr>
+            <tr><td>DCB185</td><td><button class="copy-icon" data-copy="BC-N379111">📋</button></td><td>18,0V</td><td>1,3Ah</td></tr>
+            <tr><td>DCB187</td><td><button class="copy-icon" data-copy="BC-N565824">📋</button></td><td>18,0V</td><td>3,0Ah</td></tr>
+            <tr><td>DCB189</td><td><button class="copy-icon" data-copy="BC-N716942">📋</button></td><td>18,0V</td><td>4,0Ah</td></tr>
+            <tr><td>DCB546</td><td><button class="copy-icon" data-copy="BC-N473851">📋</button></td><td>54,0V</td><td>6,0Ah</td></tr>
+            <tr><td>DCB547</td><td><button class="copy-icon" data-copy="BC-N491552">📋</button></td><td>54,0V</td><td>9,0Ah</td></tr>
+            <tr><td>DCB548</td><td><button class="copy-icon" data-copy="BC-N722442">📋</button></td><td>54,0V</td><td>12,0Ah</td></tr>
+            <tr><td>DCBP034</td><td><button class="copy-icon" data-copy="BC-NA132874">📋</button></td><td>18,0V</td><td>1,7Ah</td></tr>
+            <tr><td>DCBP034G</td><td><button class="copy-icon" data-copy="BC-NA319168">📋</button></td><td>18,0V</td><td>1,7Ah</td></tr>
+            <tr><td>DCBP518</td><td><button class="copy-icon" data-copy="BC-NA283204">📋</button></td><td>18,0V</td><td>5,0Ah</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <div class="devices-container">
+      <h3>Ładowarki DeWALT</h3>
+      <div class="table-wrapper">
+        <table class="compact">
+          <thead><tr><th>Model</th><th>Symbol serwisowy</th><th>Napięcie</th><th>Prąd</th></tr></thead>
+          <tbody>
+            <tr><td>DCB115</td><td><button class="copy-icon" data-copy="BC-N450536">📋</button></td><td>do 18V</td><td>4A</td></tr>
+            <tr><td>DCB116</td><td><button class="copy-icon" data-copy="BC-NA069327">📋</button></td><td>do 18V</td><td>6A</td></tr>
+            <tr><td>DCB118</td><td><button class="copy-icon" data-copy="BC-N473860">📋</button></td><td>18/54V</td><td>8A</td></tr>
+            <tr><td>DCB107</td><td><button class="copy-icon" data-copy="BC-N385683">📋</button></td><td>do 18V</td><td>1,25A</td></tr>
+            <tr><td>DCB112</td><td><button class="copy-icon" data-copy="BC-N394633">📋</button></td><td>do 18V</td><td>2A</td></tr>
+            <tr><td>DCB1102</td><td><button class="copy-icon" data-copy="BC-NA010209">📋</button></td><td>do 18V</td><td>2A</td></tr>
+            <tr><td>DCB1104</td><td><button class="copy-icon" data-copy="BC-NA132878">📋</button></td><td>do 18V</td><td>4A</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="devices-container">
+      <h3>Ładowarki Stanley</h3>
+      <div class="table-wrapper">
+        <table class="compact">
+          <thead><tr><th>Model</th><th>Symbol serwisowy</th><th>Napięcie</th><th>Prąd</th></tr></thead>
+          <tbody>
+            <tr><td>SFMCB10</td><td><button class="copy-icon" data-copy="BC-NA517195">📋</button></td><td>—</td><td>—</td></tr>
+            <tr><td>SFMCB12</td><td><button class="copy-icon" data-copy="BC-N567649">📋</button></td><td>20V</td><td>2,0A</td></tr>
+            <tr><td>SFMCB14</td><td><button class="copy-icon" data-copy="">📋</button></td><td>—</td><td>4,0A</td></tr>
+            <tr><td>SFMCB24</td><td><button class="copy-icon" data-copy="">📋</button></td><td>20V</td><td>4,0A</td></tr>
+            <tr><td>FMC692L</td><td><button class="copy-icon" data-copy="BC-90608625-01">📋</button></td><td>do 18V</td><td>2,0A</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+<div class="devices-container">
+      <h3>Akumulatory Stanley</h3>
+      <div class="table-wrapper">
+        <table class="compact">
+          <thead><tr><th>Model</th><th>Symbol serwisowy</th><th>Napięcie</th><th>Prąd</th></tr></thead>
+          <tbody>
+            <tr><td>SFMCB201</td><td><button class="copy-icon" data-copy="BC-NA039665">📋</button></td><td>20V</td><td>1,5Ah</td></tr>
+            <tr><td>SFMCB202</td><td><button class="copy-icon" data-copy="BC-NA154282">📋</button></td><td>20V</td><td>2,0Ah</td></tr>
+            <tr><td>SFMCB204</td><td><button class="copy-icon" data-copy="BC-NA158849">📋</button></td><td>20V</td><td>4,0Ah</td></tr>
+            <tr><td>SFMCB206</td><td><button class="copy-icon" data-copy="BC-NA262097">📋</button></td><td>20V</td><td>6,0Ah</td></tr>
+            <tr><td>FMC687L</td><td><button class="copy-icon" data-copy="BC-NA012168">📋</button></td><td>18V</td><td>2,0Ah</td></tr>
+            <tr><td>FMC688L</td><td><button class="copy-icon" data-copy="BC-N726515">📋</button></td><td>18V</td><td>4,0Ah</td></tr>
+            <tr><td>FMC684L</td><td><button class="copy-icon" data-copy="BC-NA012168">📋</button></td><td>18V</td><td>2,0Ah</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+	
+	<div class="devices-container">
+	      <h3>Akumulatory Black & Decker</h3>
+      <div class="table-wrapper">
+        <table class="compact">
+          <thead><tr><th>Model</th><th>Symbol serwisowy</th><th>Napięcie</th><th>Prąd</th></tr></thead>
+          <tbody>
+            <tr><td>BL2018</td><td><button class="copy-icon" data-copy="BC-N879820">📋</button></td><td>18V</td><td>2,0Ah</td></tr>
+            <tr><td>BL1518</td><td><button class="copy-icon" data-copy="BC-NA011189">📋</button></td><td>18V</td><td>1,5Ah</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+  </main>
+  
+  <script>
+    function flashCopy(row, icon) {
+      row.classList.add('copied');
+      icon.classList.add('copied');
+      const old = icon.textContent;
+      icon.textContent = '✅';
+      setTimeout(() => {
+        row.classList.remove('copied');
+        icon.classList.remove('copied');
+        icon.textContent = old;
+      }, 600);
+    }
+    document.querySelectorAll('.copy-icon').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const base = btn.dataset.copy;
+        const formatted = `${base}, 1`;
+        navigator.clipboard.writeText(formatted).then(() => {
+          const row = btn.closest('tr');
+          flashCopy(row, btn);
+        });
+      });
+    });
+    document.querySelectorAll('table.compact tbody tr').forEach(row => {
+      row.addEventListener('click', () => {
+        const btn = row.querySelector('.copy-icon');
+        if (!btn) return;
+        const base = btn.dataset.copy;
+        const formatted = `${base}, 1`;
+        navigator.clipboard.writeText(formatted).then(() => flashCopy(row, btn));
+      });
+    });
+  </script>
+</body>
+</html>
