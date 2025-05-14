@@ -60,13 +60,19 @@ document.addEventListener('DOMContentLoaded', () => {
           ad.classList.remove('hidden');
           ad.addEventListener('click', ()=>window.location.href='admin.html');
         }
+		
+		cat.classList.remove('hidden');
+    cat.addEventListener('click', () =>
+      window.location.href = 'akumulatory.html'
+    );
       });
     } else {
       au.classList.remove('hidden');
       ma.classList.add('hidden');
       lo.classList.add('hidden');
       ad.classList.add('hidden');
-    }
+    cat.classList.add('hidden');
+	}
   });
 });
 
