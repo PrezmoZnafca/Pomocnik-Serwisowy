@@ -1,76 +1,93 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rejestracja Czasu Pracy</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="favicon.png" type="image/png">
-  <!-- Firebase init -->
-  <script type="module" defer>
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-    const firebaseConfig = {
-      apiKey: "AIzaSyDbQ195yf4-lgLhLCf30SlJn6op7tDb8l0",
-      authDomain: "pomocnik-serwisowy.firebaseapp.com",
-      databaseURL: "https://pomocnik-serwisowy-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "pomocnik-serwisowy",
-      storageBucket: "pomocnik-serwisowy.appspot.com",
-      messagingSenderId: "683654368007",
-      appId: "1:683654368007:web:d90e76b516275a847153a2"
-    };
-    initializeApp(firebaseConfig);
-  </script>
-  <script type="module" src="worklog.js" defer></script>
-</head>
-<body>
-  <header class="header">
-    <div class="header-left"><h1>Pomocnik Serwisowy</h1></div>
-    <div class="header-right">
-      <!-- inne przyciski -->
-      <button id="worklog-btn" class="header-btn hidden">Czas pracy</button>
-      <div id="clock" class="clock"></div>
-    </div>
-  </header>
-  <main>
-    <section id="worklog-section" class="container hidden">
-      <h2>Rejestracja czasu pracy (miesiąc bieżący)</h2>
-      <div class="worklog-inputs">
-        <label>Data: <input type="date" id="worklog-date" /></label>
-        <label>Przyjście: <input type="time" id="start-time" /></label>
-        <button id="compute-exit" class="action-btn">Oblicz plan. wyjście</button>
-        <label>Plan. wyjście: <input type="time" id="planned-exit" readonly /></label>
-        <label>Wyjście faktyczne: <input type="time" id="actual-exit" /></label>
-        <label>Raport o (RBH): 
-          <select id="report-time">
-            <option>08:05</option><option>10:05</option><option>12:05</option>
-            <option>14:05</option><option>16:05</option><option>18:05</option>
-          </select>
-        </label>
-        <button id="save-entry" class="action-btn">Zapisz wpis</button>
-      </div>
-      <table class="worklog-table">
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Przyjście</th>
-            <th>Plan. wyjście</th>
-            <th>Wyj. faktyczne</th>
-            <th>Godziny pracy</th>
-            <th>Nadgodziny</th>
-            <th>RBH</th>
-          </tr>
-        </thead>
-        <tbody id="worklog-body"></tbody>
-        <tfoot>
-          <tr>
-            <th colspan="4">Razem:</th>
-            <th id="total-work">00:00</th>
-            <th id="total-ot">00:00</th>
-            <th></th> <!-- RBH bez sumowania -->
-          </tr>
-        </tfoot>
-      </table>
-    </section>
-  </main>
-</body>
-</html>
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+const DAILY_LIMIT = 8 * 60 + 15; // 8h15m
+const toMinutes = hm => {
+  const [h, m] = hm.split(':').map(Number);
+  return h * 60 + m;
+};
+const fmt = mins => {
+  const h = Math.floor(mins / 60), m = mins % 60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+};
+
+const auth = getAuth();
+const db   = getDatabase();
+
+onAuthStateChanged(auth, user => {
+  if (!user) return window.location.href = 'index.html';
+
+  // Pokaż panel
+  document.getElementById('worklog-section').classList.remove('hidden');
+  document.getElementById('worklog-date').valueAsDate = new Date();
+
+  // Header button
+  const btn = document.getElementById('worklog-btn');
+  btn.classList.remove('hidden');
+  btn.addEventListener('click', () => window.location.href = 'worklog.html');
+
+  // Formularz
+  const dateInput    = document.getElementById('worklog-date');
+  const startInput   = document.getElementById('start-time');
+  const plannedInput = document.getElementById('planned-exit');
+  const actualInput  = document.getElementById('actual-exit');
+  const rbhInput     = document.getElementById('rbh-input');
+  const computeBtn   = document.getElementById('compute-exit');
+  const saveBtn      = document.getElementById('save-entry');
+  const tbody        = document.getElementById('worklog-body');
+  const totalWork    = document.getElementById('total-work');
+  const totalOt      = document.getElementById('total-ot');
+
+  // Dynamiczne przeładowanie przy zmianie miesiąca
+  dateInput.addEventListener('change', () => loadEntries(dateInput.value.slice(0,7)));
+
+  computeBtn.addEventListener('click', () => {
+    if (!startInput.value) return alert('Podaj czas przyjścia!');
+    plannedInput.value = fmt(toMinutes(startInput.value) + DAILY_LIMIT);
+  });
+
+  saveBtn.addEventListener('click', () => {
+    const d      = dateInput.value;
+    const start  = startInput.value;
+    const planned= plannedInput.value;
+    const actual = actualInput.value;
+    const rbhVal = rbhInput.value;
+    if (!d||!start||!planned||!actual||!rbhVal) return alert('Uzupełnij wszystkie pola!');
+
+    set(ref(db, `worklogs/${user.uid}/${d}`), { date: d, start, planned, actual, rbh: rbhVal })
+      .then(() => loadEntries(d.slice(0,7)))
+      .catch(e => alert('Błąd: '+e.message));
+  });
+
+  function loadEntries(monthKey) {
+    const refMonth = ref(db, `worklogs/${user.uid}/${monthKey}`);
+    onValue(refMonth, snap => {
+      tbody.innerHTML = '';
+      let sumWork = 0, sumOt = 0;
+      snap.forEach(ch => {
+        const { date, start, planned, actual, rbh } = ch.val();
+        const worked = toMinutes(actual) - toMinutes(start);
+        const work   = Math.min(worked, DAILY_LIMIT);
+        const ot     = Math.max(0, worked - DAILY_LIMIT);
+        const rbhMin = toMinutes(rbh);
+
+        sumWork += work;
+        sumOt   += ot;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${date}</td>
+          <td>${start}</td>
+          <td>${planned}</td>
+          <td>${actual}</td>
+          <td>${fmt(work)}</td>
+          <td>${fmt(ot)}</td>
+          <td>${fmt(rbhMin)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      totalWork.innerText = fmt(sumWork);
+      totalOt.innerText   = fmt(sumOt);
+    });
+  }
+});

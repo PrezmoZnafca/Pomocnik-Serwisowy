@@ -20,19 +20,21 @@
     };
     initializeApp(firebaseConfig);
   </script>
+  <script type="module" src="auth.js" defer></script>
+  <script type="module" src="counter.js" defer></script>
   <script type="module" src="worklog.js" defer></script>
 </head>
 <body>
   <header class="header">
     <div class="header-left"><h1>Pomocnik Serwisowy</h1></div>
     <div class="header-right">
-      <!-- inne przyciski -->
-      <button id="worklog-btn" class="header-btn hidden">Czas pracy</button>
+      <button id="worklog-btn" class="header-btn">Czas pracy</button>
       <div id="clock" class="clock"></div>
     </div>
   </header>
+
   <main>
-    <section id="worklog-section" class="container hidden">
+    <section id="worklog-section" class="container">
       <h2>Rejestracja czasu pracy (miesiąc bieżący)</h2>
       <div class="worklog-inputs">
         <label>Data: <input type="date" id="worklog-date" /></label>
@@ -40,12 +42,7 @@
         <button id="compute-exit" class="action-btn">Oblicz plan. wyjście</button>
         <label>Plan. wyjście: <input type="time" id="planned-exit" readonly /></label>
         <label>Wyjście faktyczne: <input type="time" id="actual-exit" /></label>
-        <label>Raport o (RBH): 
-          <select id="report-time">
-            <option>08:05</option><option>10:05</option><option>12:05</option>
-            <option>14:05</option><option>16:05</option><option>18:05</option>
-          </select>
-        </label>
+        <label>RBH (godziny napraw): <input type="time" id="rbh-input" /></label>
         <button id="save-entry" class="action-btn">Zapisz wpis</button>
       </div>
       <table class="worklog-table">
@@ -66,7 +63,7 @@
             <th colspan="4">Razem:</th>
             <th id="total-work">00:00</th>
             <th id="total-ot">00:00</th>
-            <th></th> <!-- RBH bez sumowania -->
+            <th></th>
           </tr>
         </tfoot>
       </table>
